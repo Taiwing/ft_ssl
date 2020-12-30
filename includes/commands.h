@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:28:21 by yforeau           #+#    #+#             */
-/*   Updated: 2020/12/30 12:34:19 by yforeau          ###   ########.fr       */
+/*   Updated: 2020/12/30 13:42:26 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@ typedef void (* t_cmdf)(void); /* unsure about parameters for now */
 ** MDC: Message Digest Command
 ** CIC: Cipher Command
 ** STC: Standard Command
+** INC: Internal Command (for openssl builtins like help, exit, etc..)
 */
-enum e_type = { NONE, MDC, CIC, STC };
+enum e_type = { NONE, MDC, CIC, STC, INC };
 
 typedef struct	s_command
 {
