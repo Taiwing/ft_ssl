@@ -2,8 +2,7 @@
 
 CC			=	gcc
 #CFLAGS		=	-Wall -Wextra -Werror
-#CFLAGS		=	-g -Wall -Wextra -Werror -fsanitize=address,undefined
-CFLAGS		=	-g -Wall -Wextra -fsanitize=address,undefined
+CFLAGS		=	-g -Wall -Wextra -Werror -fsanitize=address,undefined
 HDIR		=	includes
 SRCDIR		=	src
 SUB1D		=	libft
