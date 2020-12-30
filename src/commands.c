@@ -6,13 +6,22 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:27:58 by yforeau           #+#    #+#             */
-/*   Updated: 2020/12/30 18:01:05 by yforeau          ###   ########.fr       */
+/*   Updated: 2020/12/30 20:01:28 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "commands.h"
 #include "help.h"
 
+/* type of commands for cmd_help */
+const char		*g_type_strings[] = {
+	"Message Digest commands",
+	"Cipher commands",
+	"Standard commands",
+	NULL
+};
+
+/* every command ordered by type */
 const t_command	g_commands[] = {
 	/* Message Digest Commands */
 	{ "md5", NULL, g_mdc_options, g_mdc_help, MDC },
@@ -30,7 +39,7 @@ const t_command	g_commands[] = {
 	{ "rsautl", NULL, g_rsautl_options, g_rsautl_help, STC },
 
 	/* Internal Commands */
-	{ "help", NULL, NULL, NULL, INC },
+	{ "help", cmd_help, NULL, NULL, INC },
 	{ "exit", NULL, NULL, NULL, INC },
 	{ "quit", NULL, NULL, NULL, INC },
 
