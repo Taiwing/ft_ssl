@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   commands.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/12/30 12:28:21 by yforeau           #+#    #+#             */
+/*   Updated: 2020/12/30 12:34:19 by yforeau          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef COMMANDS_H
 # define COMMANDS_H
 
@@ -19,11 +31,11 @@ enum e_type = { NONE, MDC, CIC, STC };
 
 typedef struct	s_command
 {
-	char		*name;
+	const char	*name;
 	t_cmdf		cmd;
 	t_opt		*options;
-	char		*usage;
-	char		*help;
+	const char	*usage;
+	const char	*help;
 	enum e_type	type;
 }				t_command;
 
