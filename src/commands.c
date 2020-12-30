@@ -6,12 +6,11 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:27:58 by yforeau           #+#    #+#             */
-/*   Updated: 2020/12/30 13:45:03 by yforeau          ###   ########.fr       */
+/*   Updated: 2020/12/30 16:40:03 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "commands.h"
-#include "options.h"
 #include "help.h"
 
 const t_command	g_command[] = {

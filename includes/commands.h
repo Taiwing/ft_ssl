@@ -6,15 +6,14 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:28:21 by yforeau           #+#    #+#             */
-/*   Updated: 2020/12/30 13:42:26 by yforeau          ###   ########.fr       */
+/*   Updated: 2020/12/30 16:39:34 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COMMANDS_H
 # define COMMANDS_H
 
-# include "libft.h"
-
+# include "options.h"
 
 /* cmd function that will execute the command */
 typedef void (* t_cmdf)(void); /* unsure about parameters for now */
@@ -41,5 +40,9 @@ typedef struct	s_command
 }				t_command;
 
 extern const t_command	g_commands[];
+
+/* command functions */
+void	input_cmd(void);
+int		exec_cmd(char **argv);
 
 #endif
