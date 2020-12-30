@@ -1,2 +1,2 @@
-- create help.h help.c for the usage and help strings
+- create internal openssl commands
 - write the option parsing function
