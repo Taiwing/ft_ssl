@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:27:58 by yforeau           #+#    #+#             */
-/*   Updated: 2020/12/30 20:01:28 by yforeau          ###   ########.fr       */
+/*   Updated: 2020/12/30 20:10:06 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ const t_command	g_commands[] = {
 
 	/* Internal Commands */
 	{ "help", cmd_help, NULL, NULL, INC },
-	{ "exit", NULL, NULL, NULL, INC },
-	{ "quit", NULL, NULL, NULL, INC },
+	{ "exit", cmd_exit, NULL, NULL, INC },
+	{ "quit", cmd_exit, NULL, NULL, INC },
 
 	{ NULL, NULL, NULL, NULL, NONE }
 };
