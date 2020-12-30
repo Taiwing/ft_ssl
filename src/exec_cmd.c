@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 16:02:27 by yforeau           #+#    #+#             */
-/*   Updated: 2020/12/30 17:18:44 by yforeau          ###   ########.fr       */
+/*   Updated: 2020/12/30 17:55:30 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	get_options(t_command *command, char ***argv,
 	opt_id = 0;
 	argc = ft_wtlen(*argv);
 	ft_bzero((void *)&opt, sizeof(t_optdata));
-	init_getopt(&opt, OPTSTRING, command.options, &opt_id);
+	init_getopt(&opt, OPTSTRING, command->options, &opt_id);
 	while ((ret = ft_getopt_long_only(argc, *argv, &opt)) != -1)
 	{
 		if (ret == '?')

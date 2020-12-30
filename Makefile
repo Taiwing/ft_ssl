@@ -2,7 +2,8 @@
 
 CC			=	gcc
 #CFLAGS		=	-Wall -Wextra -Werror
-CFLAGS		=	-g -Wall -Wextra -Werror -fsanitize=address,undefined
+#CFLAGS		=	-g -Wall -Wextra -Werror -fsanitize=address,undefined
+CFLAGS		=	-g -Wall -Wextra -fsanitize=address,undefined
 HDIR		=	includes
 SRCDIR		=	src
 SUB1D		=	libft
@@ -12,7 +13,12 @@ NAME		=	ft_ssl
 
 ############################## SOURCES #########################################
 
-SRCC			=	main.c\
+SRCC			=	options.c\
+					commands.c\
+					main.c\
+					input_cmd.c\
+					exec_cmd.c\
+					help.c\
 
 ODIR			=	obj
 OBJ				=	$(patsubst %.c,%.o,$(SRCC))
@@ -32,7 +38,11 @@ $(NAME): $(SUB1D)/libft.a $(ODIR) $(OBJ)
 $(SUB1D)/libft.a:
 	make -C $(SUB1D)
 
-main.o: libft.h
+options.o: options.h libft.h
+commands.o: commands.h options.h libft.h help.h
+main.o: commands.h options.h libft.h
+input_cmd.o: commands.h options.h libft.h
+exec_cmd.o: commands.h options.h libft.h
 %.o: %.c
 	@mkdir -p $(ODIR)
 	$(CC) -c $(CFLAGS) $< $(HFLAGS) -o $(ODIR)/$@

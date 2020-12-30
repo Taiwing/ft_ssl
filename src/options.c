@@ -6,19 +6,11 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:28:14 by yforeau           #+#    #+#             */
-/*   Updated: 2020/12/30 12:28:15 by yforeau          ###   ########.fr       */
+/*   Updated: 2020/12/30 17:51:04 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-enum e_mdc_option_codes = {
-	MDC_PRINT = 0,
-	MDC_QUIET,
-	MDC_REVERSE,
-	MDC_STRING,
-	MDC_HELP
-};
+#include "options.h"
 
 const t_opt g_mdc_options[] = {
 	{ "p", 0, NULL, MDC_PRINT },
@@ -27,23 +19,10 @@ const t_opt g_mdc_options[] = {
 	{ "s", 1, NULL, MDC_STRING },
 	{ "h", 0, NULL, MDC_HELP },
 	{ NULL, 0, NULL, 0 }
-}
-
-enum e_cc_option_codes = {
-	CC_BASE64 = 0,
-	CC_KEY,
-	CC_PASSWORD,
-	CC_SALT,
-	CC_INIT_VECTOR,
-	CC_DECRYPT,
-	CC_ENCRYPT,
-	CC_INPUT,
-	CC_OUTPUT,
-	CC_HELP
 };
 
 const t_opt g_cc_options[] = {
-	{ "a", 0, NULL, CC_BASE64 = 0 },
+	{ "a", 0, NULL, CC_BASE64 },
 	{ "k", 1, NULL, CC_KEY },
 	{ "p", 1, NULL, CC_PASSWORD },
 	{ "s", 1, NULL, CC_SALT },
@@ -57,12 +36,13 @@ const t_opt g_cc_options[] = {
 };
 
 /* base64 is part of cc but hasnt the first 5 options */
-const t_opt *g_base64_options = &g_cc_options[CC_DECRYPT];
-
-enum e_genrsa_option_codes = {
-	GENRSA_INPUT = 0,
-	GENRSA_OUTPUT,
-	GENRSA_HELP
+const t_opt g_base64_options[] = {
+	{ "d", 0, NULL, BASE64_DECRYPT },
+	{ "e", 0, NULL, BASE64_ENCRYPT },
+	{ "i", 1, NULL, BASE64_INPUT },
+	{ "o", 1, NULL, BASE64_OUTPUT },
+	{ "h", 0, NULL, BASE64_HELP },
+	{ NULL, 0, NULL, 0 }
 };
 
 const t_opt g_genrsa_options[] = {
@@ -70,23 +50,6 @@ const t_opt g_genrsa_options[] = {
 	{ "o", 1, NULL, GENRSA_OUTPUT },
 	{ "h", 0, NULL, GENRSA_HELP },
 	{ NULL, 0, NULL, 0 }
-};
-
-enum e_rsa_option_codes = {
-	RSA_INFORM = 0,
-	RSA_OUTFORM,
-	RSA_IN,
-	RSA_PASSIN,
-	RSA_OUT,
-	RSA_PASSOUT,
-	RSA_DES,
-	RSA_TEXT,
-	RSA_NOOUT,
-	RSA_MODULUS,
-	RSA_CHECK,
-	RSA_PUBIN,
-	RSA_PUBOUT,
-	RSA_HELP
 };
 
 const t_opt g_rsa_options[] = {
@@ -107,18 +70,7 @@ const t_opt g_rsa_options[] = {
 	{ NULL, 0, NULL, 0 }
 };
 
-enum e_rsautl_option_codes = {
-	RSAUTL_IN,
-	RSAUTL_OUT,
-	RSAUTL_INKEY,
-	RSAUTL_PUBIN,
-	RSAUTL_ENCRYPT,
-	RSAUTL_DECRYPT,
-	RSAUTL_HEXDUMP,
-	RSAUTL_HELP
-};
-
-const t_opt g_rsa_options[] = {
+const t_opt g_rsautl_options[] = {
 	{ "in", 1, NULL, RSAUTL_IN },
 	{ "out", 1, NULL, RSAUTL_OUT },
 	{ "inkey", 1, NULL, RSAUTL_INKEY },

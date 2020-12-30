@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:28:21 by yforeau           #+#    #+#             */
-/*   Updated: 2020/12/30 17:21:07 by yforeau          ###   ########.fr       */
+/*   Updated: 2020/12/30 17:43:54 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 # define COMMANDS_H
 
 # include "options.h"
-
-/* cmd function that will execute the command */
-typedef int (* t_cmdf)(t_command *, t_cmdopt *, char **);
 
 /*
 ** type of command
@@ -27,14 +24,13 @@ typedef int (* t_cmdf)(t_command *, t_cmdopt *, char **);
 ** STC: Standard Command
 ** INC: Internal Command (for openssl builtins like help, exit, etc..)
 */
-enum e_type = { NONE, MDC, CIC, STC, INC };
+enum e_type { NONE, MDC, CIC, STC, INC };
 
 typedef struct	s_command
 {
 	const char	*name;
-	t_cmdf		cmd;
-	t_opt		*options;
-	const char	*usage;
+	int			(*cmdf)(struct s_command *, t_cmdopt *, char **);
+	const t_opt	*options;
 	const char	*help;
 	enum e_type	type;
 }				t_command;

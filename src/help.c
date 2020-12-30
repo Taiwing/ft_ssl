@@ -6,25 +6,25 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:27:53 by yforeau           #+#    #+#             */
-/*   Updated: 2020/12/30 13:35:47 by yforeau          ###   ########.fr       */
+/*   Updated: 2020/12/30 17:45:35 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-const char *g_mdc_help = "[options] [file...]\n"
+const char g_mdc_help[] = "[options] [file...]\n"
 "\t-p\t\t\techo STDIN to STDOUT and append the checksum to STDOUT\n"
 "\t-q\t\t\tquiet mode\n"
 "\t-r\t\t\treverse the format of the output\n"
 "\t-s val\t\t\tprint the sum of the given string\n"
 "\t-help\t\t\tprint this\n";
 
-const char *g_base64_help = "[options]\n"
+const char g_base64_help[] = "[options]\n"
 "\t-d\t\t\tdecode mode\n"
 "\t-e\t\t\tencode mode (default)\n"
 "\t-i file\t\t\tinput file\n"
 "\t-o file\t\t\toutput file\n"
 "\t-help\t\t\tprint this\n";
 
-const char *g_cc_help = "[options]\n"
+const char g_cc_help[] = "[options]\n"
 "\t-a\t\t\tdecode/encode the input/output in base64 depending on the encrypt mode\n"
 "\t-d\t\t\tdecrypt mode\n"
 "\t-e\t\t\tencypt mode (default)\n"
@@ -36,12 +36,12 @@ const char *g_cc_help = "[options]\n"
 "\t-v val\t\t\tinitialization vector in hex is the next argument\n"
 "\t-help\t\t\tprint this\n";
 
-const char *g_genrsa_help = "[options]\n"
+const char g_genrsa_help[] = "[options]\n"
 "\t-i file\t\t\tno idea what this does (maybe it's supposed to be -rand...)\n"
 "\t-o file\t\t\toutput the key to specified file\n"
 "\t-help\t\t\tprint this\n";
 
-const char *g_rsa_help = "[options]\n"
+const char g_rsa_help[] = "[options]\n"
 "\t-inform val\t\t\tinput format, one of DER PEM\n"
 "\t-outform val\t\t\toutput format, one of DER PEM PVK\n"
 "\t-in file\t\t\tinput file\n"
@@ -57,7 +57,7 @@ const char *g_rsa_help = "[options]\n"
 "\t-pubout\t\t\toutput a public key\n"
 "\t-help\t\t\tprint this\n";
 
-const char *g_rsautl_help = "[options]\n"
+const char g_rsautl_help[] = "[options]\n"
 "\t-in file\t\t\tinput file\n"
 "\t-out file\t\t\toutput file\n"
 "\t-inkey val\t\t\tinput key\n"

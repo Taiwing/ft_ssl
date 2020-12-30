@@ -6,14 +6,14 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:27:58 by yforeau           #+#    #+#             */
-/*   Updated: 2020/12/30 16:40:03 by yforeau          ###   ########.fr       */
+/*   Updated: 2020/12/30 18:01:05 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "commands.h"
 #include "help.h"
 
-const t_command	g_command[] = {
+const t_command	g_commands[] = {
 	/* Message Digest Commands */
 	{ "md5", NULL, g_mdc_options, g_mdc_help, MDC },
 	{ "sha256", NULL, g_mdc_options, g_mdc_help, MDC },
