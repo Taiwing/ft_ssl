@@ -1,0 +1,2 @@
+- create help.h help.c for the usage and help strings
+- write the option parsing function
