@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:28:21 by yforeau           #+#    #+#             */
-/*   Updated: 2020/12/30 16:39:34 by yforeau          ###   ########.fr       */
+/*   Updated: 2020/12/30 17:21:07 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "options.h"
 
 /* cmd function that will execute the command */
-typedef void (* t_cmdf)(void); /* unsure about parameters for now */
+typedef int (* t_cmdf)(t_command *, t_cmdopt *, char **);
 
 /*
 ** type of command
