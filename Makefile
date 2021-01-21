@@ -12,21 +12,26 @@ NAME		=	ft_ssl
 
 ############################## SOURCES #########################################
 
-SRCC			=	options.c\
-					commands.c\
-					internal_commands.c\
-					readfile.c\
+CMDFDIR			=	cmdf
+
+SRCC			=	readfile.c\
 					main.c\
 					input_cmd.c\
 					exec_cmd.c\
+
+CMDFC			=	options.c\
+					commands.c\
+					internal_commands.c\
 					help.c\
 
 ODIR			=	obj
-OBJ				=	$(patsubst %.c,%.o,$(SRCC))
+OBJ				=	$(patsubst %.c,%.o,$(CMDFC))\
+					$(patsubst %.c,%.o,$(SRCC))\
 
 vpath			%.o	$(ODIR)
 vpath			%.h	$(HDIR)
 vpath			%.h	$(SUB1D)/$(HDIR)
+vpath			%.c	$(SRCDIR)/$(CMDFDIR)
 vpath			%.c	$(SRCDIR)
 
 ############################## BUILD ###########################################
@@ -39,13 +44,13 @@ $(NAME): $(SUB1D)/libft.a $(ODIR) $(OBJ)
 $(SUB1D)/libft.a:
 	make -C $(SUB1D)
 
-options.o: options.h libft.h
-commands.o: commands.h options.h libft.h help.h
-internal_commands.o: commands.h options.h libft.h
 readfile.o: readfile.h libft.h
 main.o: commands.h options.h libft.h
 input_cmd.o: commands.h options.h libft.h
 exec_cmd.o: commands.h options.h libft.h
+options.o: options.h libft.h
+commands.o: commands.h options.h libft.h help.h
+internal_commands.o: commands.h options.h libft.h
 %.o: %.c
 	@mkdir -p $(ODIR)
 	$(CC) -c $(CFLAGS) $< $(HFLAGS) -o $(ODIR)/$@
