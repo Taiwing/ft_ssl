@@ -15,6 +15,7 @@ NAME		=	ft_ssl
 SRCC			=	options.c\
 					commands.c\
 					internal_commands.c\
+					readfile.c\
 					main.c\
 					input_cmd.c\
 					exec_cmd.c\
@@ -41,6 +42,7 @@ $(SUB1D)/libft.a:
 options.o: options.h libft.h
 commands.o: commands.h options.h libft.h help.h
 internal_commands.o: commands.h options.h libft.h
+readfile.o: readfile.h libft.h
 main.o: commands.h options.h libft.h
 input_cmd.o: commands.h options.h libft.h
 exec_cmd.o: commands.h options.h libft.h
