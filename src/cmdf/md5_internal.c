@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 15:59:59 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/22 17:40:17 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/22 19:36:20 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #define OPS_COUNT	64
 #define ROTATE_LEFT(x, n) (((x) << n) | ((x) >> (32-n)))
 #define MD5_OP(a, b, c, d, k, s, j) \
-	a += fptr(b, c, d) + block[k] + g_T[j]; \
+	a += g_roundf[j/16](b, c, d) + block[k] + g_T[j]; \
 	a = b + ROTATE_LEFT(a, s)
 
 static uint32_t	f(uint32_t x, uint32_t y, uint32_t z)
@@ -38,9 +38,12 @@ static uint32_t	i(uint32_t x, uint32_t y, uint32_t z)
 	return (y ^ (x | ~z));
 }
 
+/* this will dispatch the right function depending on j/16 */
+uint32_t (*g_roundf[4])(uint32_t, uint32_t, uint32_t) = { f, g, h, i };
+
 /*
  * Theses integer arrays each represent an operation:
- * a = b + ((a + fptr(b,c,d) + X[k] + g_T[j]) <<< s)
+ * a = b + ((a + g_roundf[j/16](b,c,d) + block[k] + g_T[j]) <<< s)
  * 0-3: the order of the registers (a, b, c, d)
  * 4: k
  * 5: s
@@ -117,19 +120,8 @@ const uint32_t g_T[OPS_COUNT] =
 
 void	md5(uint32_t regs[4], uint32_t *block)
 {
-	uint32_t	(*fptr)(uint32_t x, uint32_t y, uint32_t z);
-	//uint32_t	tmp;
-
-	fptr = f;
 	for (int j = 0; j < OPS_COUNT; ++j)
 	{
-		// TODO: change the pointer system, thats really ugly
-		if (j == 16)
-			fptr = g;
-		else if (j == 32)
-			fptr = h;
-		else if (j == 48)
-			fptr = i;
 		MD5_OP(regs[g_ops[j][0]], regs[g_ops[j][1]], regs[g_ops[j][2]],
 			regs[g_ops[j][3]], g_ops[j][4], g_ops[j][5], j);
 		/* TODO: use the pointers above instead (like reg + (j + 1 % 4)) */
