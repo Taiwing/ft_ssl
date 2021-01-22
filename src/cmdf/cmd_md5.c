@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 13:51:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/22 14:51:31 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/22 17:47:43 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ static int	md5_from_file(const char *file_name)
 		return (1);
 	}
 	add_md5_padding(regs, buf, rd, size);
-	ft_printf("RESULT: %x%x%x%x\n", regs[0], regs[1], regs[2], regs[3]);
+	//ft_printf("RESULT: %x%x%x%x\n", regs[0], regs[1], regs[2], regs[3]);
+	ft_printf("%16t%02hhx\n", (unsigned char *)regs);
 	return (0);
 }
 

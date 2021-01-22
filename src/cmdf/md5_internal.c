@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 15:59:59 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/22 16:44:02 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/22 17:40:17 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 #define OPS_COUNT	64
 #define ROTATE_LEFT(x, n) (((x) << n) | ((x) >> (32-n)))
 #define MD5_OP(a, b, c, d, k, s, j) \
-	(a = b + ROTATE_LEFT(a + fptr(b, c, d) + block[k] + g_T[j], s))
+	a += fptr(b, c, d) + block[k] + g_T[j]; \
+	a = b + ROTATE_LEFT(a, s)
 
 static uint32_t	f(uint32_t x, uint32_t y, uint32_t z)
 {
@@ -131,12 +132,6 @@ void	md5(uint32_t regs[4], uint32_t *block)
 			fptr = i;
 		MD5_OP(regs[g_ops[j][0]], regs[g_ops[j][1]], regs[g_ops[j][2]],
 			regs[g_ops[j][3]], g_ops[j][4], g_ops[j][5], j);
-		/* shift register values to the right */
 		/* TODO: use the pointers above instead (like reg + (j + 1 % 4)) */
-		/*
-		tmp = regs[3];
-		ft_memmove((void *)regs + 1, (void *)regs, 3 * sizeof(uint32_t));
-		regs[0] = tmp;
-		*/
 	}
 }
