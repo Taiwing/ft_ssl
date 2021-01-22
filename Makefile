@@ -24,6 +24,8 @@ CMDFC			=	cmd_md5.c\
 					commands.c\
 					internal_commands.c\
 					help.c\
+					md5_internal.c\
+					md5.c\
 
 ODIR			=	obj
 OBJ				=	$(patsubst %.c,%.o,$(CMDFC))\
@@ -49,10 +51,11 @@ readfile.o: readfile.h libft.h
 main.o: commands.h options.h libft.h
 input_cmd.o: commands.h options.h libft.h
 exec_cmd.o: commands.h options.h libft.h
-cmd_md5.o: commands.h options.h libft.h readfile.h
+cmd_md5.o: commands.h options.h libft.h readfile.h md5.h
 options.o: options.h libft.h
 commands.o: commands.h options.h libft.h help.h
 internal_commands.o: commands.h options.h libft.h
+md5.o: md5.h
 %.o: %.c
 	@mkdir -p $(ODIR)
 	$(CC) -c $(CFLAGS) $< $(HFLAGS) -o $(ODIR)/$@

@@ -6,25 +6,36 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 13:51:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/21 14:34:08 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/22 14:51:31 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "commands.h"
 #include "readfile.h"
-
-#define MD5_BUF_SIZE 64
+#include "md5.h"
 
 static int	md5_from_file(const char *file_name)
 {
-	char	buf[MD5_BUF_SIZE];
-	int		rd;
+	uint64_t	size;
+	uint32_t	regs[4];
+	char		buf[MD5_BUF_SIZE];
+	int			rd;
 
-	while ((rd = readfile(file_name, buf, MD5_BUF_SIZE)) > 0)
-		ft_printf("'%.*s'", rd, buf);
+	size = 0;
+	init_regs(regs);
+	while ((rd = readfile(file_name, buf, MD5_BUF_SIZE)) == MD5_BUF_SIZE)
+	{
+		exec_md5(regs, (uint32_t *)buf);
+		size += rd * 8;
+	}
 	if (rd < 0)
+	{
 		print_readfile_error(file_name ? file_name : "stdin");
-	return (rd < 0);
+		return (1);
+	}
+	add_md5_padding(regs, buf, rd, size);
+	ft_printf("RESULT: %x%x%x%x\n", regs[0], regs[1], regs[2], regs[3]);
+	return (0);
 }
 
 int	cmd_md5(const t_command *cmd, t_cmdopt *opt, char **args)
