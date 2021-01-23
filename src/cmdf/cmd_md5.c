@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 13:51:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/23 02:17:48 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/23 11:58:44 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	cmd_md5(const t_command *cmd, t_cmdopt *opt, char **args)
 
 	(void)cmd;
 	ret = 0;
-	if (!*args || opt[MDC_PRINT].is_set)
+	if (opt[MDC_PRINT].is_set || (!opt[MDC_STRING].is_set && !*args))
 		ret = md5_from_file(NULL, opt);
 	if (opt[MDC_STRING].is_set)
 		md5_from_string(opt[MDC_STRING].value, opt);
