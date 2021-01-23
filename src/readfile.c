@@ -6,18 +6,13 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 12:15:12 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/23 11:39:33 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/23 11:46:25 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <errno.h>
 #include "readfile.h"
 #include "libft.h"
-
-void		print_readfile_error(const char *file_name)
-{
-	ft_dprintf(2, "%s: %s\n", file_name, strerror(errno));
-}
 
 static int	readstdin(char *buf, size_t bufsize)
 {
@@ -34,7 +29,7 @@ static int	readstdin(char *buf, size_t bufsize)
 	return (ret);
 }
 
-int			readfile(const char *file_name, char *buf, size_t bufsize)
+int	readfile(const char *file_name, char *buf, size_t bufsize)
 {
 	static int	fd = -1;
 	int			rd;
@@ -53,4 +48,9 @@ int			readfile(const char *file_name, char *buf, size_t bufsize)
 		fd = -1;
 	}
 	return (rd);
+}
+
+void	print_readfile_error(const char *file_name)
+{
+	ft_dprintf(2, "%s: %s\n", file_name, strerror(errno));
 }
