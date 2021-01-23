@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 13:51:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/23 01:47:12 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/23 02:17:48 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ static int	md5_from_string(const char *str, t_cmdopt *opt)
 	init_regs(regs);
 	while (len >= MD5_BUF_SIZE)
 	{
-		exec_md5(regs, (uint32_t *)ptr);
+		ft_memcpy((void *)buf, (void *)ptr, MD5_BUF_SIZE);
+		exec_md5(regs, (uint32_t *)buf);
 		ptr += MD5_BUF_SIZE;
 		len -= MD5_BUF_SIZE;
 	}
