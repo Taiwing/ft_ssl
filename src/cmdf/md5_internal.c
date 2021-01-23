@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 15:59:59 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/22 20:08:45 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/22 20:19:44 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static uint32_t	i(uint32_t x, uint32_t y, uint32_t z)
 uint32_t (*g_roundf[4])(uint32_t, uint32_t, uint32_t) = { f, g, h, i };
 
 /*
- * Theses integer arrays each represent an operation:
+ * These integer arrays each represent an operation:
  * a = b + ((a + g_roundf[j/16](b,c,d) + block[k] + g_T[j]) <<< s)
  * 0: k
  * 1: s
@@ -84,14 +84,14 @@ const uint32_t g_T[OPS_COUNT] =
 
 	/* Round 2 */
 	0xf61e2562,	0xc040b340,	0x265e5a51,	0xe9b6c7aa,
-	0xd62f105d,	0x2441453,	0xd8a1e681,	0xe7d3fbc8,
+	0xd62f105d,	0x02441453,	0xd8a1e681,	0xe7d3fbc8,
 	0x21e1cde6,	0xc33707d6,	0xf4d50d87,	0x455a14ed,
 	0xa9e3e905,	0xfcefa3f8,	0x676f02d9,	0x8d2a4c8a,
 
 	/* Round 3 */
 	0xfffa3942,	0x8771f681,	0x6d9d6122,	0xfde5380c,
 	0xa4beea44,	0x4bdecfa9,	0xf6bb4b60,	0xbebfbc70,
-	0x289b7ec6,	0xeaa127fa,	0xd4ef3085,	0x4881d05,
+	0x289b7ec6,	0xeaa127fa,	0xd4ef3085,	0x04881d05,
 	0xd9d4d039,	0xe6db99e5,	0x1fa27cf8,	0xc4ac5665,
 
 	/* Round 4 */
