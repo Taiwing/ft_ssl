@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 13:51:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/23 11:58:44 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/23 12:07:22 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	print_md5_hash(const char *name, t_cmdopt *opt, uint32_t *regs)
 	ft_printf("\n");
 }
 
-static int	md5_from_file(const char *file_name, t_cmdopt *opt)
+static int	md5_from_file(const char *cmd, const char *file_name, t_cmdopt *opt)
 {
 	uint64_t	size;
 	uint32_t	regs[4];
@@ -44,7 +44,7 @@ static int	md5_from_file(const char *file_name, t_cmdopt *opt)
 	}
 	if (rd < 0)
 	{
-		print_readfile_error(file_name ? file_name : "stdin");
+		print_readfile_error(cmd, file_name ? file_name : "stdin");
 		return (1);
 	}
 	add_md5_padding(regs, buf, rd, size);
@@ -81,13 +81,12 @@ int	cmd_md5(const t_command *cmd, t_cmdopt *opt, char **args)
 {
 	int	ret;
 
-	(void)cmd;
 	ret = 0;
 	if (opt[MDC_PRINT].is_set || (!opt[MDC_STRING].is_set && !*args))
-		ret = md5_from_file(NULL, opt);
+		ret = md5_from_file(cmd->name, NULL, opt);
 	if (opt[MDC_STRING].is_set)
 		md5_from_string(opt[MDC_STRING].value, opt);
 	while (*args)
-		ret += md5_from_file(*args++, opt);
+		ret += md5_from_file(cmd->name, *args++, opt);
 	return (ret);
 }

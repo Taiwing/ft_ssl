@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 12:15:12 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/23 11:46:25 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/23 12:07:45 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	readfile(const char *file_name, char *buf, size_t bufsize)
 	return (rd);
 }
 
-void	print_readfile_error(const char *file_name)
+void	print_readfile_error(const char *cmd, const char *file_name)
 {
-	ft_dprintf(2, "%s: %s\n", file_name, strerror(errno));
+	ft_dprintf(2, "ft_ssl: %s: %s: %s\n", cmd, file_name, strerror(errno));
 }
