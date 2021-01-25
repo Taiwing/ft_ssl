@@ -19,12 +19,12 @@ SRCC			=	readfile.c\
 					input_cmd.c\
 					exec_cmd.c\
 
-CMDFC			=	cmd_md5.c\
-					options.c\
+CMDFC			=	options.c\
 					commands.c\
 					internal_commands.c\
+					md.c\
 					help.c\
-					md5_internal.c\
+					cmd_md.c\
 					md5.c\
 
 ODIR			=	obj
@@ -51,11 +51,12 @@ readfile.o: readfile.h libft.h
 main.o: commands.h options.h libft.h
 input_cmd.o: commands.h options.h libft.h
 exec_cmd.o: commands.h options.h libft.h
-cmd_md5.o: commands.h options.h libft.h readfile.h md5.h
 options.o: options.h libft.h
 commands.o: commands.h options.h libft.h help.h
 internal_commands.o: commands.h options.h libft.h
-md5.o: md5.h
+md.o: md.h libft.h
+cmd_md.o: commands.h options.h libft.h readfile.h md.h
+md5.o: libft.h
 %.o: %.c
 	@mkdir -p $(ODIR)
 	$(CC) -c $(CFLAGS) $< $(HFLAGS) -o $(ODIR)/$@

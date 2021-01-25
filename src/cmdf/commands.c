@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:27:58 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/21 14:29:19 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/23 14:26:19 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ const char		*g_type_strings[] = {
 /* every command ordered by type */
 const t_command	g_commands[] = {
 	/* Message Digest Commands */
-	{ "md5", cmd_md5, g_mdc_options, g_mdc_help, MDC },
+	{ "md5", cmd_md, g_mdc_options, g_mdc_help, MDC },
 	{ "sha256", NULL, g_mdc_options, g_mdc_help, MDC },
 
 	/* Cipher Commands */
