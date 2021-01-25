@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 13:51:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/25 17:08:20 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/25 17:59:43 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,25 @@ t_md_cmd	g_md_cmds[] = {
 		"md5", md5, 4,
 		{
 			0x67452301,
-			0xEFCDAB89,
-			0x98BADCFE,
+			0xefcdab89,
+			0x98badcfe,
 			0x10325476
 		}
 	},
-	{ NULL, NULL, 0, { 0 }}
+	{
+		"sha256", sha256, 8,
+		{
+			0x6a09e667,
+			0xbb67ae85,
+			0x3c6ef372,
+			0xa54ff53a,
+			0x510e527f,
+			0x9b05688c,
+			0x1f83d9ab,
+			0x5be0cd19
+		}
+	},
+	{ NULL, NULL, 0, { 0 } }
 };
 
 static int	init_context(const t_command *cmd, t_md_ctx *ctx)
@@ -53,7 +66,7 @@ static void	print_hash(const char *name, t_cmdopt *opt, t_md_ctx *ctx)
 	if (name && !opt[MDC_QUIET].is_set && !opt[MDC_REVERSE].is_set)
 		ft_printf("MD5 (%2$s%1$s%2$s) = ", name,
 			opt[MDC_STRING].value == name ? "\"" : "");
-	ft_printf("%16t%02hhx", ctx->regs);
+	ft_printf("%*t%02hhx", (int)ctx->regs_size * 4, ctx->regs);
 	if (name && !opt[MDC_QUIET].is_set && opt[MDC_REVERSE].is_set)
 		ft_printf(" %2$s%1$s%2$s", name,
 			opt[MDC_STRING].value == name ? "\"" : "");

@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:41:21 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/25 17:05:48 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/25 17:53:53 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,6 @@ void	add_md_padding(t_md_ctx *ctx, int rd, uint64_t size);
 */
 
 void	md5(uint32_t regs[REGS_MAX_SIZE], uint32_t *block);
+void	sha256(uint32_t regs[REGS_MAX_SIZE], uint32_t *block);
 
 #endif
