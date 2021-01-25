@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 15:59:59 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/25 17:57:12 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/25 19:44:08 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,109 +14,73 @@
 #include "libft.h"
 #define OPS_COUNT	64
 
-/*
-#define ROTATE_LEFT(x, n) (((x) << n) | ((x) >> (32-n)))
-#define MD5_OP(a, b, c, d, k, s, j) \
-	a += g_roundf[j/16](b, c, d) + block[k] + g_T[j]; \
-	a = b + ROTATE_LEFT(a, s)
-
-static uint32_t	f(uint32_t x, uint32_t y, uint32_t z)
-{
-	return ((x & y) | (~x & z));
-}
-
-static uint32_t	g(uint32_t x, uint32_t y, uint32_t z)
-{
-	return ((x & z) | (y & ~z));
-}
-
-static uint32_t	h(uint32_t x, uint32_t y, uint32_t z)
-{
-	return (x ^ y ^ z);
-}
-
-static uint32_t	i(uint32_t x, uint32_t y, uint32_t z)
-{
-	return (y ^ (x | ~z));
-}
-*/
-
-/* this will dispatch the right function depending on j/16 */
-//uint32_t (*g_roundf[4])(uint32_t, uint32_t, uint32_t) = { f, g, h, i };
-
-/*
- * These integer arrays each represent an operation:
- * a = b + ((a + g_roundf[j/16](b,c,d) + block[k] + g_T[j]) <<< s)
- * 0: k
- * 1: s
-*/
-const int g_sha256_ops[OPS_COUNT][2] =
-{
-	/* Round 1. (f) */
-	{ 0,  7}, { 1, 12}, { 2, 17}, { 3, 22},
-	{ 4,  7}, { 5, 12}, { 6, 17}, { 7, 22},
-	{ 8,  7}, { 9, 12}, {10, 17}, {11, 22},
-	{12,  7}, {13, 12}, {14, 17}, {15, 22},
-
-	/* Round 2. (g) */
-	{ 1,  5}, { 6,  9}, {11, 14}, { 0, 20},
-	{ 5,  5}, {10,  9}, {15, 14}, { 4, 20},
-	{ 9,  5}, {14,  9}, { 3, 14}, { 8, 20},
-	{13,  5}, { 2,  9}, { 7, 14}, {12, 20},
-
-	/* Round 3. (h) */
-	{ 5,  4}, { 8, 11}, {11, 16}, {14, 23},
-	{ 1,  4}, { 4, 11}, { 7, 16}, {10, 23},
-	{13,  4}, { 0, 11}, { 3, 16}, { 6, 23},
-	{ 9,  4}, {12, 11}, {15, 16}, { 2, 23},
-
-	/* Round 4. (i) */
-	{ 0,  6}, { 7, 10}, {14, 15}, { 5, 21},
-	{12,  6}, { 3, 10}, {10, 15}, { 1, 21},
-	{ 8,  6}, {15, 10}, { 6, 15}, {13, 21},
-	{ 4,  6}, {11, 10}, { 2, 15}, { 9, 21}
-};
+#define ROTATE_RIGHT(x, n) (((x) >> n) | ((x) << (32-n)))
+#define a regs[0]
+#define b regs[1]
+#define c regs[2]
+#define d regs[3]
+#define e regs[4]
+#define f regs[5]
+#define g regs[6]
+#define h regs[7]
 
 const uint32_t g_sha256_T[OPS_COUNT] =
 {
-	/* Round 1 */
-	0xd76aa478,	0xe8c7b756,	0x242070db,	0xc1bdceee,
-	0xf57c0faf,	0x4787c62a,	0xa8304613,	0xfd469501,
-	0x698098d8,	0x8b44f7af,	0xffff5bb1,	0x895cd7be,
-	0x6b901122,	0xfd987193,	0xa679438e,	0x49b40821,
-
-	/* Round 2 */
-	0xf61e2562,	0xc040b340,	0x265e5a51,	0xe9b6c7aa,
-	0xd62f105d,	0x02441453,	0xd8a1e681,	0xe7d3fbc8,
-	0x21e1cde6,	0xc33707d6,	0xf4d50d87,	0x455a14ed,
-	0xa9e3e905,	0xfcefa3f8,	0x676f02d9,	0x8d2a4c8a,
-
-	/* Round 3 */
-	0xfffa3942,	0x8771f681,	0x6d9d6122,	0xfde5380c,
-	0xa4beea44,	0x4bdecfa9,	0xf6bb4b60,	0xbebfbc70,
-	0x289b7ec6,	0xeaa127fa,	0xd4ef3085,	0x04881d05,
-	0xd9d4d039,	0xe6db99e5,	0x1fa27cf8,	0xc4ac5665,
-
-	/* Round 4 */
-	0xf4292244,	0x432aff97,	0xab9423a7,	0xfc93a039,
-	0x655b59c3,	0x8f0ccc92,	0xffeff47d,	0x85845dd1,
-	0x6fa87e4f,	0xfe2ce6e0,	0xa3014314,	0x4e0811a1,
-	0xf7537e82,	0xbd3af235,	0x2ad7d2bb,	0xeb86d391
+	0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
+	0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
+	0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3,
+	0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
+	0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc,
+	0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
+	0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7,
+	0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
+	0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13,
+	0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
+	0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3,
+	0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
+	0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5,
+	0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
+	0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
+	0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
 };
 
-void	sha256(uint32_t regs[REGS_MAX_SIZE], uint32_t *block)
+static void	init_block(uint32_t block[64], uint32_t *raw_block)
 {
-	(void)regs;
-	(void)block;
-	/*
-	int	jp;
+	uint32_t	s0, s1;
 
-	for (int j = 0; j < OPS_COUNT; ++j)
-
+	ft_memcpy((void *)block, (void *)raw_block, sizeof(uint32_t) * 16);
+	for (int i = 16; i < 64; ++i)
 	{
-		jp = OPS_COUNT - j;
-		MD5_OP(regs[jp & 3], regs[(jp + 1) & 3], regs[(jp + 2) & 3],
-			regs[(jp + 3) & 3], g_ops[j][0], g_ops[j][1], j);
+		s0 = ROTATE_RIGHT(block[i - 15], 7)
+			^ ROTATE_RIGHT(block[i - 15], 18)
+			^ (block[i - 15] >> 3);
+		s1 = ROTATE_RIGHT(block[i - 2], 17)
+			^ ROTATE_RIGHT(block[i - 2], 19)
+			^ (block[i - 2] >> 10);
+		block[i] = block[i - 16] + s0 + block[i - 7] + s1;
 	}
-	*/
+}
+
+void	sha256(uint32_t regs[REGS_MAX_SIZE], uint32_t *raw_block)
+{
+	uint32_t	block[80];
+	uint32_t	tmp, tmp2;
+
+	(void)regs;
+	init_block(block, raw_block);
+	for (int i = 0; i < OPS_COUNT; ++i)
+	{
+		tmp = (ROTATE_RIGHT(e, 6) ^ ROTATE_RIGHT(e, 11) ^ ROTATE_RIGHT(e, 25))
+			+ ((e & f) ^ (~e & g)) + h + g_sha256_T[i] + block[i];
+		tmp2 = (ROTATE_RIGHT(a, 2) ^ ROTATE_RIGHT(a, 13) ^ ROTATE_RIGHT(a, 22))
+			+ ((a & b) ^ (a & c) ^ (b & c));
+		h = g;
+		g = f;
+		f = e;
+		e = d + tmp;
+		d = c;
+		c = b;
+		b = a;
+		a = tmp + tmp2;
+	}
 }
