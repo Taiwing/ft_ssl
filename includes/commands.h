@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:28:21 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/25 17:04:07 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/26 18:58:10 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,6 @@ int		exec_cmd(char **argv);
 int		cmd_md(const t_command *cmd, t_cmdopt *opt, char **args);
 int		cmd_help(const t_command *cmd, t_cmdopt *opt, char **args);
 int		cmd_exit(const t_command *cmd, t_cmdopt *opt, char **args);
+int		cmd_base64(const t_command *cmd, t_cmdopt *opt, char **args);
 
 #endif

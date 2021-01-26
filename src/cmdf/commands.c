@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:27:58 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/25 17:55:47 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/26 18:57:47 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ const t_command	g_commands[] = {
 	{ "sha256", cmd_md, g_mdc_options, g_mdc_help, MDC },
 
 	/* Cipher Commands */
-	{ "base64", NULL, g_base64_options, g_base64_help, CIC },
+	{ "base64", cmd_base64, g_base64_options, g_base64_help, CIC },
 	{ "des", NULL, g_cc_options, g_cc_help, CIC },
 	{ "des-ecb", NULL, g_cc_options, g_cc_help, CIC },
 	{ "des-cbc", NULL, g_cc_options, g_cc_help, CIC },
