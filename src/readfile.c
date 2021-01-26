@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 12:15:12 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/23 12:07:45 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/26 19:59:09 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	readfile(const char *file_name, char *buf, size_t bufsize)
 		rd = read(fd, buf, bufsize);
 	else if (fd == 0)
 		rd = readstdin(buf, bufsize);
-	if (rd < 0 || (size_t)rd < bufsize)
+	if (rd < 1)
 	{
 		if (fd > 0)
 			close(fd);
