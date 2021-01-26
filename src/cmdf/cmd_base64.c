@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 16:17:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/26 19:55:22 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/26 20:06:25 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ int	cmd_base64(const t_command *cmd, t_cmdopt *opt, char **args)
 	(void)args;
 	ret = 1;
 	outfd = 1;
-	if (opt[BASE64_OUTPUT].is_set
-		&& (outfd = open(opt[BASE64_OUTPUT].value, O_WRONLY) == -1))
+	if (opt[BASE64_OUTPUT].is_set && (outfd = open(opt[BASE64_OUTPUT].value,
+		O_WRONLY | O_CREAT, 0664)) == -1)
 	{
 		ft_dprintf(2, "ft_ssl: %s: %s: %s\n", cmd->name,
 			opt[BASE64_OUTPUT].value, strerror(errno));
