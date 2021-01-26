@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 15:59:59 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/25 19:44:08 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/26 15:06:17 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	init_block(uint32_t block[64], uint32_t *raw_block)
 {
 	uint32_t	s0, s1;
 
-	ft_memcpy((void *)block, (void *)raw_block, sizeof(uint32_t) * 16);
+	ft_memcpy((void *)block, (void *)raw_block, 16 * sizeof(uint32_t));
 	for (int i = 16; i < 64; ++i)
 	{
 		s0 = ROTATE_RIGHT(block[i - 15], 7)
@@ -63,7 +63,7 @@ static void	init_block(uint32_t block[64], uint32_t *raw_block)
 
 void	sha256(uint32_t regs[REGS_MAX_SIZE], uint32_t *raw_block)
 {
-	uint32_t	block[80];
+	uint32_t	block[64];
 	uint32_t	tmp, tmp2;
 
 	(void)regs;

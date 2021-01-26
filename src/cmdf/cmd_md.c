@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 13:51:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/25 17:59:43 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/26 15:11:14 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 t_md_cmd	g_md_cmds[] = {
 	{
-		"md5", md5, 4,
+		"md5", "MD5", md5, 4, 0,
 		{
 			0x67452301,
 			0xefcdab89,
@@ -25,7 +25,7 @@ t_md_cmd	g_md_cmds[] = {
 		}
 	},
 	{
-		"sha256", sha256, 8,
+		"sha256", "SHA256", sha256, 8, 1,
 		{
 			0x6a09e667,
 			0xbb67ae85,
@@ -37,7 +37,7 @@ t_md_cmd	g_md_cmds[] = {
 			0x5be0cd19
 		}
 	},
-	{ NULL, NULL, 0, { 0 } }
+	{ NULL, NULL, NULL, 0, 0, { 0 } }
 };
 
 static int	init_context(const t_command *cmd, t_md_ctx *ctx)
@@ -54,6 +54,8 @@ static int	init_context(const t_command *cmd, t_md_ctx *ctx)
 			ctx->process_block = cmds->process_block;
 			ctx->regs_size = cmds->regs_size;
 			ctx->name = cmds->name;
+			ctx->is_be = cmds->is_be;
+			ctx->label = cmds->label;
 			return (0);
 		}
 		++cmds;
@@ -64,9 +66,12 @@ static int	init_context(const t_command *cmd, t_md_ctx *ctx)
 static void	print_hash(const char *name, t_cmdopt *opt, t_md_ctx *ctx) 
 {
 	if (name && !opt[MDC_QUIET].is_set && !opt[MDC_REVERSE].is_set)
-		ft_printf("MD5 (%2$s%1$s%2$s) = ", name,
+		ft_printf("%s (%3$s%2$s%3$s) = ", ctx->label, name,
 			opt[MDC_STRING].value == name ? "\"" : "");
-	ft_printf("%*t%02hhx", (int)ctx->regs_size * 4, ctx->regs);
+	if (ctx->is_be)
+		ft_printf("%*t%08x", (int)ctx->regs_size, ctx->regs);
+	else
+		ft_printf("%*t%02hhx", (int)ctx->regs_size * 4, ctx->regs);
 	if (name && !opt[MDC_QUIET].is_set && opt[MDC_REVERSE].is_set)
 		ft_printf(" %2$s%1$s%2$s", name,
 			opt[MDC_STRING].value == name ? "\"" : "");
