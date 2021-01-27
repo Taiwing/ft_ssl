@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 16:17:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/27 19:10:41 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/27 20:37:53 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,19 @@ int	base64_file_encrypt(int outfd, const char *input_file, const char *cmd)
 	char	inbuf[BASE64_INBUF_SIZE];
 	char	outbuf[BASE64_OUTBUF_SIZE];
 
-	while ((rd = readfile(input_file, (char *)inbuf, BASE64_INBUF_SIZE)) > 0)
+	while (1)
 	{
-		len = base64_encrypt(outbuf, (unsigned char *)inbuf, rd);
-		ft_dprintf(outfd, "%.*s\n", len, outbuf);
+		if ((rd = readfile(input_file, (char *)inbuf, BASE64_INBUF_SIZE)) < 0)
+		{
+			print_readfile_error(cmd, input_file ? input_file : "stdin");
+			return (1);
+		}
+		if ((len = base64_encrypt(outbuf, (unsigned char *)inbuf, rd)))
+			ft_dprintf(outfd, "%.*s\n", len, outbuf);
+		if (rd < BASE64_INBUF_SIZE)
+			break;
 	}
-	if (rd < 0)
-		print_readfile_error(cmd, input_file ? input_file : "stdin");
-	return (rd < 0);
+	return (0);
 }
 
 /* TODO: maybe stop at equal instead of just ignoring it */
@@ -65,16 +70,21 @@ int	base64_file_decrypt(int outfd, const char *input_file, const char *cmd)
 	char	inbuf[BASE64_OUTBUF_SIZE];
 	char	outbuf[BASE64_INBUF_SIZE];
 
-	while ((rd = readfile(input_file, (char *)inbuf, BASE64_OUTBUF_SIZE)) > 0)
+	base64_decrypt(NULL, NULL, 0, 1);
+	while (1)
 	{
+		if ((rd = readfile(input_file, (char *)inbuf, BASE64_OUTBUF_SIZE)) < 0)
+		{
+			print_readfile_error(cmd, input_file ? input_file : "stdin");
+			return (1);
+		}
 		valid = base64_buffer_parse(inbuf, rd);
 		if ((len = base64_decrypt((unsigned char *)outbuf, inbuf, valid, 0)))
 			ft_dprintf(outfd, "%*t%c", len, outbuf);
+		if (rd < BASE64_OUTBUF_SIZE)
+			break;
 	}
-	base64_decrypt(NULL, NULL, 0, 1);
-	if (rd < 0)
-		print_readfile_error(cmd, input_file ? input_file : "stdin");
-	return (rd < 0);
+	return (0);
 }
 
 int	cmd_base64(const t_command *cmd, t_cmdopt *opt, char **args)
