@@ -24,11 +24,13 @@ CMDFC			=	options.c\
 					commands.c\
 					internal_commands.c\
 					sha256.c\
+					cmd_des.c\
 					md.c\
 					help.c\
 					base64.c\
 					cmd_md.c\
 					md5.c\
+					des_cem.c\
 
 ODIR			=	obj
 OBJ				=	$(patsubst %.c,%.o,$(CMDFC))\
@@ -59,10 +61,12 @@ cmd_base64.o: commands.h options.h libft.h readfile.h base64.h
 commands.o: commands.h options.h libft.h help.h
 internal_commands.o: commands.h options.h libft.h
 sha256.o: md.h libft.h
+cmd_des.o: commands.h options.h libft.h readfile.h des.h
 md.o: md.h libft.h
 base64.o: base64.h libft.h
 cmd_md.o: commands.h options.h libft.h readfile.h md.h
 md5.o: md.h libft.h
+des_cem.o: des.h
 %.o: %.c
 	@mkdir -p $(ODIR)
 	$(CC) -c $(CFLAGS) $< $(HFLAGS) -o $(ODIR)/$@
