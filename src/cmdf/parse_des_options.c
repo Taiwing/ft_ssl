@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 10:20:12 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/29 11:33:02 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/29 11:44:48 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 #define HEX_LEN	16
 
-int	parse_hex(uint64_t *value, char *str)
+static int	parse_hex(uint64_t *value, const char *str, const char *cmd)
 {
 	uint8_t		d;
 	uint64_t	n;
@@ -26,7 +26,7 @@ int	parse_hex(uint64_t *value, char *str)
 	
 	ft_memset((void *)hex, '0', HEX_LEN);
 	if ((len = ft_strlen(str)) != HEX_LEN)
-		ft_dprintf(2, "hex string is too %s\n",
+		ft_dprintf(2, "ft_ssl: %s: warning: hex string is too %s\n", cmd,
 			len > HEX_LEN ? "long, ignoring excess"
 			: "short, padding with zero bytes to length");
 	ft_strncpy(hex, str, len > HEX_LEN ? HEX_LEN : len);
@@ -39,7 +39,7 @@ int	parse_hex(uint64_t *value, char *str)
 		else if (hex[i] >= 'a' && hex[i] <= 'f')
 			d = hex[i] - 'a' + 10;
 		else
-			return (!!ft_dprintf(2, "non-hex digit\n"));
+			return (!!ft_dprintf(2, "ft_ssl: %s: non-hex digit\n", cmd));
 		n = (n << 4) | (d & 0x0f);
 	}
 	*value = n;
@@ -82,10 +82,10 @@ int			parse_des_options(t_des_ctx *ctx, const t_command *cmd,
 		&& !opt[CC_INIT_VECTOR].is_set)
 		return (!!ft_dprintf(2, "ft_ssl: %s: iv undefined\n", cmd->name));
 	else if (opt[CC_INIT_VECTOR].is_set
-		&& parse_hex(&ctx->iv, opt[CC_INIT_VECTOR].value))
+		&& parse_hex(&ctx->iv, opt[CC_INIT_VECTOR].value, cmd->name))
 		return (1);
 	if (opt[CC_KEY].is_set)
-		return (parse_hex(&ctx->key, opt[CC_KEY].value));
+		return (parse_hex(&ctx->key, opt[CC_KEY].value, cmd->name));
 	if (!opt[CC_PASSWORD].value)
 	{
 		if (read_password(pass, cmd->name))
