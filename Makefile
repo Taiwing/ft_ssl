@@ -19,7 +19,8 @@ SRCC			=	readfile.c\
 					input_cmd.c\
 					exec_cmd.c\
 
-CMDFC			=	options.c\
+CMDFC			=	parse_des_options.c\
+					options.c\
 					cmd_base64.c\
 					commands.c\
 					internal_commands.c\
@@ -56,12 +57,13 @@ readfile.o: readfile.h libft.h
 main.o: commands.h options.h libft.h
 input_cmd.o: commands.h options.h libft.h
 exec_cmd.o: commands.h options.h libft.h
+parse_des_options.o: libft.h commands.h options.h des.h
 options.o: options.h libft.h
 cmd_base64.o: commands.h options.h libft.h readfile.h base64.h
 commands.o: commands.h options.h libft.h help.h
 internal_commands.o: commands.h options.h libft.h
 sha256.o: md.h libft.h
-cmd_des.o: commands.h options.h libft.h readfile.h des.h
+cmd_des.o: parse_des_options.h commands.h options.h libft.h des.h readfile.h
 md.o: md.h libft.h
 base64.o: base64.h libft.h
 cmd_md.o: commands.h options.h libft.h readfile.h md.h

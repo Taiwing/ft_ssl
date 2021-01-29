@@ -6,13 +6,12 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:05:16 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/28 13:05:48 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/29 11:13:27 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "commands.h"
+#include "parse_des_options.h"
 #include "readfile.h"
-#include "des.h"
 
 t_des_cmd	g_des_cmds[] = {
 	{ "des-ecb", des_ecb },
@@ -23,7 +22,7 @@ t_des_cmd	g_des_cmds[] = {
 	{ NULL, NULL }
 };
 
-static int	init_context(const t_command *cmd, t_des_ctx *ctx)
+static int	init_context(t_des_ctx *ctx, const t_command *cmd, t_cmdopt *opt)
 {
 	t_des_cmd	*cmds;
 
@@ -31,17 +30,17 @@ static int	init_context(const t_command *cmd, t_des_ctx *ctx)
 	cmds = g_des_cmds;
 	while (cmds->name && ft_strcmp(cmds->name, cmd->name))
 		++cmds;
-	ctx->process_block = cmds->process_block;
-	return (!ctx->process_block);
+	if ((ctx->process_block = cmds->process_block))
+		return (parse_des_options(ctx, cmd, opt));
+	return (1);
 }
 
 int	cmd_des(const t_command *cmd, t_cmdopt *opt, char **args)
 {
 	t_des_ctx	ctx;
 
-	(void)opt;
 	(void)args;
-	if (init_context(cmd, &ctx))
+	if (init_context(&ctx, cmd, opt))
 		return (1);
 	return (0);
 }

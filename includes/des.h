@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:23:37 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/28 13:09:39 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/29 11:13:49 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
  * s_des_ctx: DES context
  *
  * plaintext: raw 64-bit input block
+ * salt: not directly useful in des but needed in context
  * iv: initialization vector (for cbc)
  * key: generated or given key of 64-bit (56 without parity bits)
  * subkeys: subkeys for each round (generated from key)
@@ -31,6 +32,7 @@
 typedef struct	s_des_ctx
 {
 	uint64_t	plaintext;
+	uint64_t	salt;
 	uint64_t	iv;
 	uint64_t	key;
 	uint64_t	subkey[DES_ROUNDS];
@@ -50,6 +52,10 @@ typedef struct	s_des_cmd
 	uint64_t	(*process_block)(struct s_des_ctx *ctx);
 }				t_des_cmd;
 
-uint64_t	des_ecb(struct s_des_ctx *ctx);
+/*
+ * des_cem (cypher encryption mode) functions
+*/
+
+uint64_t		des_ecb(struct s_des_ctx *ctx);
 
 #endif
