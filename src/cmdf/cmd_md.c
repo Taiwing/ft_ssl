@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 13:51:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/26 15:11:14 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/30 14:34:31 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_md_cmd	g_md_cmds[] = {
 	{ NULL, NULL, NULL, 0, 0, { 0 } }
 };
 
-static int	init_context(const t_command *cmd, t_md_ctx *ctx)
+int			init_md_context(const char *md_name, t_md_ctx *ctx)
 {
 	t_md_cmd	*cmds;
 
@@ -48,7 +48,7 @@ static int	init_context(const t_command *cmd, t_md_ctx *ctx)
 	cmds = (t_md_cmd *)g_md_cmds;
 	while (cmds->name)
 	{
-		if (!ft_strcmp(cmd->name, cmds->name))
+		if (!ft_strcmp(md_name, cmds->name))
 		{
 			ctx->regs_start_state = (uint32_t *)cmds->regs_start_state;
 			ctx->process_block = cmds->process_block;
@@ -131,7 +131,7 @@ int	cmd_md(const t_command *cmd, t_cmdopt *opt, char **args)
 	t_md_ctx	ctx;
 
 	ret = 0;
-	if (init_context(cmd, &ctx))
+	if (init_md_context(cmd->name, &ctx))
 		return (1);
 	if (opt[MDC_PRINT].is_set || (!opt[MDC_STRING].is_set && !*args))
 		ret = md_from_file(&ctx, NULL, opt);

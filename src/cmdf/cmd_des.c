@@ -6,19 +6,17 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:05:16 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/29 11:13:27 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/29 12:18:42 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse_des_options.h"
+#include "cmd_des_utils.h"
 #include "readfile.h"
 
 t_des_cmd	g_des_cmds[] = {
 	{ "des-ecb", des_ecb },
-	/*
 	{ "des-cbc", des_cbc },
 	{ "des", des_cbc },
-	*/
 	{ NULL, NULL }
 };
 

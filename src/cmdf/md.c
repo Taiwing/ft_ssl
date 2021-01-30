@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:39:52 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/26 15:12:36 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/29 15:19:49 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,6 @@ void	init_registers(t_md_ctx *ctx)
 		sizeof(uint32_t) * ctx->regs_size);
 }
 
-static void	reverse_bytes(unsigned char *src, size_t n)
-{
-	unsigned char	*dst;
-	unsigned char	tmp;
-
-	dst = src + n - 1;
-	while (dst > src)
-	{
-		tmp = *src;
-		*src++ = *dst;
-		*dst-- = tmp;
-	}
-}
-
 void	add_md_padding(t_md_ctx *ctx, int rd, uint64_t size)
 {
 	size += rd * 8;
@@ -65,7 +51,7 @@ void	add_md_padding(t_md_ctx *ctx, int rd, uint64_t size)
 		ft_bzero((void *)ctx->buf, MD_BUF_SIZE);
 	}
 	if (ctx->is_be)
-		reverse_bytes((unsigned char *)&size, sizeof(size));
+		ft_memswap((void *)&size, sizeof(size));
 	ft_memcpy((void *)ctx->buf + MD_BUF_SIZE - sizeof(size),
 		(void *)&size, sizeof(size));
 	exec_md(ctx);
@@ -78,7 +64,7 @@ void	exec_md(t_md_ctx *ctx)
 	if (ctx->is_be)
 	{
 		for (int i = 0; i < MD_BLOCK_SIZE; ++i)
-			reverse_bytes((unsigned char *)ctx->buf + (i * sizeof(uint32_t)),
+			ft_memswap((void *)ctx->buf + (i * sizeof(uint32_t)),
 				sizeof(uint32_t));
 	}
 	ft_memcpy((void *)tmp_regs, (void *)ctx->regs,

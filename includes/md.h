@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:41:21 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/26 15:05:51 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/30 14:30:10 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,10 @@ typedef struct	s_md_cmd
 }				t_md_cmd;
 
 /*
- * cmd_md functions (called whatever the algorithm is
+ * cmd_md functions (called whatever the algorithm is)
 */
 
+int		init_md_context(const char *md_name, t_md_ctx *ctx);
 void	init_registers(t_md_ctx *ctx);
 void	exec_md(t_md_ctx *ctx);
 void	add_md_padding(t_md_ctx *ctx, int rd, uint64_t size);

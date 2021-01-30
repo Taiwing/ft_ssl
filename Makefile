@@ -25,6 +25,7 @@ CMDFC			=	parse_des_options.c\
 					commands.c\
 					internal_commands.c\
 					sha256.c\
+					get_salty.c\
 					cmd_des.c\
 					md.c\
 					help.c\
@@ -57,13 +58,14 @@ readfile.o: readfile.h libft.h
 main.o: commands.h options.h libft.h
 input_cmd.o: commands.h options.h libft.h
 exec_cmd.o: commands.h options.h libft.h
-parse_des_options.o: libft.h commands.h options.h des.h
+parse_des_options.o: libft.h cmd_des_utils.h commands.h options.h des.h md.h
 options.o: options.h libft.h
 cmd_base64.o: commands.h options.h libft.h readfile.h base64.h
 commands.o: commands.h options.h libft.h help.h
 internal_commands.o: commands.h options.h libft.h
 sha256.o: md.h libft.h
-cmd_des.o: parse_des_options.h commands.h options.h libft.h des.h readfile.h
+get_salty.o: readfile.h cmd_des_utils.h commands.h options.h libft.h des.h
+cmd_des.o: cmd_des_utils.h commands.h options.h libft.h des.h readfile.h
 md.o: md.h libft.h
 base64.o: base64.h libft.h
 cmd_md.o: commands.h options.h libft.h readfile.h md.h
