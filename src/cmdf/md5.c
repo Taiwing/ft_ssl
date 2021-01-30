@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 15:59:59 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/25 17:09:57 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/30 20:54:59 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ static uint32_t	i(uint32_t x, uint32_t y, uint32_t z)
 uint32_t (*g_roundf[4])(uint32_t, uint32_t, uint32_t) = { f, g, h, i };
 
 /*
- * These integer arrays each represent an operation:
- * a = b + ((a + g_roundf[j/16](b,c,d) + block[k] + g_T[j]) <<< s)
- * 0: k
- * 1: s
+** These integer arrays each represent an operation:
+** a = b + ((a + g_roundf[j/16](b,c,d) + block[k] + g_T[j]) <<< s)
+** 0: k
+** 1: s
 */
 const int g_ops[OPS_COUNT][2] =
 {

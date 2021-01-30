@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:23:37 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/29 11:58:39 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/30 20:56:09 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@
 # define DES_ROUNDS	16
 
 /*
- * s_des_ctx: DES context
- *
- * plaintext: raw 64-bit input block
- * salt: not directly useful in des but needed in context
- * iv: initialization vector (for cbc)
- * key: generated or given key of 64-bit (56 without parity bits)
- * subkeys: subkeys for each round (generated from key)
- * cyphertext: raw 64-bit output block
- * process_block: block cypher encryption mode (ecb, cbc, etc...)
+** s_des_ctx: DES context
+**
+** plaintext: raw 64-bit input block
+** salt: not directly useful in des but needed in context
+** iv: initialization vector (for cbc)
+** key: generated or given key of 64-bit (56 without parity bits)
+** subkeys: subkeys for each round (generated from key)
+** cyphertext: raw 64-bit output block
+** process_block: block cypher encryption mode (ecb, cbc, etc...)
 */
 
 typedef struct	s_des_ctx
@@ -41,9 +41,9 @@ typedef struct	s_des_ctx
 }				t_des_ctx;
 
 /*
- * s_des_cmd: map command string to process_block function
- * name: command name
- * process_block: block cypher encryption mode (ecb, cbc, etc...)
+** s_des_cmd: map command string to process_block function
+** name: command name
+** process_block: block cypher encryption mode (ecb, cbc, etc...)
 */
 
 typedef struct	s_des_cmd
@@ -53,7 +53,7 @@ typedef struct	s_des_cmd
 }				t_des_cmd;
 
 /*
- * des_cem (cypher encryption mode) functions
+** des_cem (cypher encryption mode) functions
 */
 
 uint64_t		des_ecb(struct s_des_ctx *ctx);

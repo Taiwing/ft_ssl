@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 01:44:21 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/27 19:56:19 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/30 20:53:57 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ char *g_base64_str =
 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
 /*
- * The output buffer must be larger than the input by at least a third.
- *
- * More precisely, there must be 4 bytes available for every group of 3
- * input bytes, plus 4 for the rest if any:
- * sizeof(output) >= (4 * sizeof(input) / 3) + (sizeof(input) % 3 ? 4 : 0)
+** The output buffer must be larger than the input by at least a third.
+**
+** More precisely, there must be 4 bytes available for every group of 3
+** input bytes, plus 4 for the rest if any:
+** sizeof(output) >= (4 * sizeof(input) / 3) + (sizeof(input) % 3 ? 4 : 0)
 */
 int	base64_encrypt(char *out, unsigned char *in, int inlen)
 {
