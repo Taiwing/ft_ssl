@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 10:20:12 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/30 20:13:50 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/30 20:16:45 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,6 @@ static int		pbkdf(t_des_ctx *des_ctx, t_cmdopt *opt)
 	des_ctx->key = FLIP(*(uint64_t *)md_ctx.regs, 32);
 	if (!opt[CC_INIT_VECTOR].is_set)
 		des_ctx->iv = FLIP(*(uint64_t *)md_ctx.regs + sizeof(uint64_t), 32);
-	//TEST
-	ft_printf("KEY = %016lx\n", des_ctx->key);
-	ft_printf("IV = %016lx\n", des_ctx->iv);
-	ft_printf("raw bytes key = %*t%02hhx\n", sizeof(uint64_t),
-		(unsigned char *)&des_ctx->key); //TEST
-	ft_printf("raw bytes iv = %*t%02hhx\n", sizeof(uint64_t),
-		(unsigned char *)&des_ctx->iv); //TEST
-	//TEST
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 16:02:27 by yforeau           #+#    #+#             */
-/*   Updated: 2020/12/30 18:12:39 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/30 20:48:19 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static int	get_options(const t_command *command, char ***argv,
 			*status = 1;
 			return (*status);
 		}
+		else if (!opt_id)
+			return (!!ft_printf("Usage: %s %s", command->name, command->help));
 		options[opt_id].ind = opt.optind;
 		options[opt_id].is_set = 1;
 		options[opt_id].value = opt.optarg;

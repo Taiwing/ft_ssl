@@ -6,22 +6,23 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:28:14 by yforeau           #+#    #+#             */
-/*   Updated: 2020/12/30 17:51:04 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/30 20:41:52 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "options.h"
 
 const t_opt g_mdc_options[] = {
+	{ "h", 0, NULL, MDC_HELP },
 	{ "p", 0, NULL, MDC_PRINT },
 	{ "q", 0, NULL, MDC_QUIET },
 	{ "r", 0, NULL, MDC_REVERSE },
 	{ "s", 1, NULL, MDC_STRING },
-	{ "h", 0, NULL, MDC_HELP },
 	{ NULL, 0, NULL, 0 }
 };
 
 const t_opt g_cc_options[] = {
+	{ "h", 0, NULL, CC_HELP },
 	{ "a", 0, NULL, CC_BASE64 },
 	{ "k", 1, NULL, CC_KEY },
 	{ "p", 1, NULL, CC_PASSWORD },
@@ -31,28 +32,28 @@ const t_opt g_cc_options[] = {
 	{ "e", 0, NULL, CC_ENCRYPT },
 	{ "i", 1, NULL, CC_INPUT },
 	{ "o", 1, NULL, CC_OUTPUT },
-	{ "h", 0, NULL, CC_HELP },
 	{ NULL, 0, NULL, 0 }
 };
 
-/* base64 is part of cc but hasnt the first 5 options */
+/* base64 is part of cc but does not have the first 5 options after HELP */
 const t_opt g_base64_options[] = {
+	{ "h", 0, NULL, BASE64_HELP },
 	{ "d", 0, NULL, BASE64_DECRYPT },
 	{ "e", 0, NULL, BASE64_ENCRYPT },
 	{ "i", 1, NULL, BASE64_INPUT },
 	{ "o", 1, NULL, BASE64_OUTPUT },
-	{ "h", 0, NULL, BASE64_HELP },
 	{ NULL, 0, NULL, 0 }
 };
 
 const t_opt g_genrsa_options[] = {
+	{ "h", 0, NULL, GENRSA_HELP },
 	{ "i", 1, NULL, GENRSA_INPUT },
 	{ "o", 1, NULL, GENRSA_OUTPUT },
-	{ "h", 0, NULL, GENRSA_HELP },
 	{ NULL, 0, NULL, 0 }
 };
 
 const t_opt g_rsa_options[] = {
+	{ "help", 0, NULL, RSA_HELP },
 	{ "inform", 1, NULL, RSA_INFORM },
 	{ "outform", 1, NULL, RSA_OUTFORM },
 	{ "in", 1, NULL, RSA_IN },
@@ -66,11 +67,11 @@ const t_opt g_rsa_options[] = {
 	{ "check", 0, NULL, RSA_CHECK },
 	{ "pubin", 0, NULL, RSA_PUBIN },
 	{ "pubout", 0, NULL, RSA_PUBOUT },
-	{ "help", 0, NULL, RSA_HELP },
 	{ NULL, 0, NULL, 0 }
 };
 
 const t_opt g_rsautl_options[] = {
+	{ "help", 0, NULL, RSAUTL_HELP },
 	{ "in", 1, NULL, RSAUTL_IN },
 	{ "out", 1, NULL, RSAUTL_OUT },
 	{ "inkey", 1, NULL, RSAUTL_INKEY },
@@ -78,6 +79,5 @@ const t_opt g_rsautl_options[] = {
 	{ "encrypt", 0, NULL, RSAUTL_ENCRYPT },
 	{ "decrypt", 0, NULL, RSAUTL_DECRYPT },
 	{ "hexdump", 0, NULL, RSAUTL_HEXDUMP },
-	{ "help", 0, NULL, RSAUTL_HELP },
 	{ NULL, 0, NULL, 0 }
 };

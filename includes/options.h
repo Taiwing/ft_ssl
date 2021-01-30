@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:28:24 by yforeau           #+#    #+#             */
-/*   Updated: 2020/12/30 17:52:43 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/01/30 20:38:10 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,23 @@ typedef struct	s_cmdopt
 ** They will be used to identify option in the parsed array options
 ** passed to command functions (that's why they all must start with
 ** 0 as they are the index in this array).
+**
+** HELP is always the first one so that it can be identified
+** before executing the command
+**
 */
 
 enum e_mdc_option_codes {
-	MDC_PRINT = 0,
+	MDC_HELP = 0,
+	MDC_PRINT,
 	MDC_QUIET,
 	MDC_REVERSE,
-	MDC_STRING,
-	MDC_HELP
+	MDC_STRING
 };
 
 enum e_cc_option_codes {
-	CC_BASE64 = 0,
+	CC_HELP = 0,
+	CC_BASE64,
 	CC_KEY,
 	CC_PASSWORD,
 	CC_SALT,
@@ -66,26 +71,26 @@ enum e_cc_option_codes {
 	CC_DECRYPT,
 	CC_ENCRYPT,
 	CC_INPUT,
-	CC_OUTPUT,
-	CC_HELP
+	CC_OUTPUT
 };
 
 enum e_base64_option_codes {
-	BASE64_DECRYPT = 0,
+	BASE64_HELP = 0,
+	BASE64_DECRYPT,
 	BASE64_ENCRYPT,
 	BASE64_INPUT,
-	BASE64_OUTPUT,
-	BASE64_HELP
+	BASE64_OUTPUT
 };
 
 enum e_genrsa_option_codes {
-	GENRSA_INPUT = 0,
-	GENRSA_OUTPUT,
-	GENRSA_HELP
+	GENRSA_HELP = 0,
+	GENRSA_INPUT,
+	GENRSA_OUTPUT
 };
 
 enum e_rsa_option_codes {
-	RSA_INFORM = 0,
+	RSA_HELP = 0,
+	RSA_INFORM,
 	RSA_OUTFORM,
 	RSA_IN,
 	RSA_PASSIN,
@@ -97,19 +102,18 @@ enum e_rsa_option_codes {
 	RSA_MODULUS,
 	RSA_CHECK,
 	RSA_PUBIN,
-	RSA_PUBOUT,
-	RSA_HELP
+	RSA_PUBOUT
 };
 
 enum e_rsautl_option_codes {
-	RSAUTL_IN = 0,
+	RSAUTL_HELP = 0,
+	RSAUTL_IN,
 	RSAUTL_OUT,
 	RSAUTL_INKEY,
 	RSAUTL_PUBIN,
 	RSAUTL_ENCRYPT,
 	RSAUTL_DECRYPT,
-	RSAUTL_HEXDUMP,
-	RSAUTL_HELP
+	RSAUTL_HEXDUMP
 };
 
 /*
