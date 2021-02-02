@@ -22,6 +22,7 @@ SRCC			=	readfile.c\
 CMDFC			=	parse_des_options.c\
 					options.c\
 					cmd_base64.c\
+					base64_readfile.c\
 					commands.c\
 					internal_commands.c\
 					sha256.c\
@@ -61,11 +62,13 @@ exec_cmd.o: commands.h options.h libft.h
 parse_des_options.o: libft.h cmd_des_utils.h commands.h options.h des.h md.h
 options.o: options.h libft.h
 cmd_base64.o: commands.h options.h libft.h readfile.h base64.h
+base64_readfile.o: readfile.h base64.h libft.h
 commands.o: commands.h options.h libft.h help.h
 internal_commands.o: commands.h options.h libft.h
 sha256.o: md.h libft.h
 get_salty.o: readfile.h cmd_des_utils.h commands.h options.h libft.h des.h
-cmd_des.o: cmd_des_utils.h commands.h options.h libft.h des.h readfile.h
+cmd_des.o: cmd_des_utils.h commands.h options.h libft.h des.h readfile.h\
+	base64.h
 md.o: md.h libft.h
 base64.o: base64.h libft.h
 cmd_md.o: commands.h options.h libft.h readfile.h md.h

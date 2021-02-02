@@ -6,12 +6,13 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:05:16 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/29 12:18:42 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/02 17:42:53 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd_des_utils.h"
 #include "readfile.h"
+#include "base64.h"
 
 t_des_cmd	g_des_cmds[] = {
 	{ "des-ecb", des_ecb },
@@ -19,6 +20,14 @@ t_des_cmd	g_des_cmds[] = {
 	{ "des", des_cbc },
 	{ NULL, NULL }
 };
+
+int			des_readfile(const char *file_name, char *buf, size_t bufsize,
+	t_cmdopt *opt)
+{
+	if (opt[CC_BASE64].is_set)
+		return (base64_readfile(file_name, buf, bufsize, 0));
+	return (readfile(file_name, buf, bufsize));
+}
 
 static int	init_context(t_des_ctx *ctx, const t_command *cmd, t_cmdopt *opt)
 {

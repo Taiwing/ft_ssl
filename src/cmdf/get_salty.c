@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 12:15:53 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/30 14:50:21 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/02 17:44:34 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,19 @@
 #include "readfile.h"
 #include "cmd_des_utils.h"
 
-static int	read_salt(uint64_t *salt, const char *input_file, const char *cmd)
+static int	read_salt(uint64_t *salt, const char *cmd, t_cmdopt *opt)
 {
-	int		rd;
-	char	magic[8];
+	int			rd;
+	char		magic[8];
+	const char	*input_file;
 
-	if ((rd = readfile(input_file, magic, 8)) < 0)
+	input_file = opt[CC_INPUT].value;
+	if ((rd = des_readfile(input_file, magic, 8, opt)) < 0)
 		print_readfile_error(cmd, input_file);
 	else if (rd < 8 || ft_strncmp(magic, "Salted__", 8))
 		return (!!ft_dprintf(2, "ft_ssl: %s: bad magic number\n", cmd));
-	else if ((rd = readfile(input_file, (char *)salt, sizeof(uint64_t))) < 0)
+	else if ((rd = des_readfile(input_file, (char *)salt,
+		sizeof(uint64_t), opt)) < 0)
 		print_readfile_error(cmd, input_file);
 	else if (rd < 8)
 		return (!!ft_dprintf(2, "ft_ssl: %s: bad salt\n", cmd));
@@ -56,5 +59,5 @@ int			get_salty(t_des_ctx *ctx, const t_command *cmd, t_cmdopt *opt)
 	else if (opt[CC_ENCRYPT].is_set)
 		return (generate_salt(&ctx->salt, cmd->name));
 	else
-		return (read_salt(&ctx->salt, opt[CC_INPUT].value, cmd->name));
+		return (read_salt(&ctx->salt, cmd->name, opt));
 }
