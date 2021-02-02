@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:05:16 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/02 17:42:53 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/02 21:57:36 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,6 @@ int	cmd_des(const t_command *cmd, t_cmdopt *opt, char **args)
 	(void)args;
 	if (init_context(&ctx, cmd, opt))
 		return (1);
+	des_keygen(&ctx);
 	return (0);
 }

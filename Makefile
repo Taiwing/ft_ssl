@@ -29,6 +29,8 @@ CMDFC			=	parse_des_options.c\
 					get_salty.c\
 					cmd_des.c\
 					md.c\
+					des_keygen.c\
+					des_const.c\
 					help.c\
 					base64.c\
 					cmd_md.c\
@@ -70,6 +72,8 @@ get_salty.o: readfile.h cmd_des_utils.h commands.h options.h libft.h des.h
 cmd_des.o: cmd_des_utils.h commands.h options.h libft.h des.h readfile.h\
 	base64.h
 md.o: md.h libft.h
+des_keygen.o: des.h des_const.h
+des_const.o: des_const.h
 base64.o: base64.h libft.h
 cmd_md.o: commands.h options.h libft.h readfile.h md.h
 md5.o: md.h libft.h

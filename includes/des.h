@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:23:37 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/30 20:56:09 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/02 21:50:17 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,7 @@ typedef struct	s_des_cmd
 
 uint64_t		des_ecb(struct s_des_ctx *ctx);
 uint64_t		des_cbc(struct s_des_ctx *ctx);
+
+void			des_keygen(t_des_ctx *ctx);
 
 #endif

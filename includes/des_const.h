@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 19:34:07 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/02 20:07:35 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/02 22:00:03 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define DES_CONST_H
 
 # include <stddef.h>
+# include <stdint.h>
 
 # define DES_CONST_MAX_SIZE	64
 # define SBOX_NB			8
@@ -34,5 +35,8 @@ extern const t_des_const	g_left_pc1;
 extern const t_des_const	g_right_pc1;
 extern const t_des_const	g_pc2;
 extern const int			g_sbox[SBOX_NB][SBOX_ROW][SBOX_COL];
+
+uint64_t		des_permute(uint64_t x, const t_des_const *p);
+uint64_t		des_sbox(uint64_t x);
 
 #endif
