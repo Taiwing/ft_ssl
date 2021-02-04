@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 12:15:12 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/27 20:11:09 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/04 23:33:52 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	readstdin(char *buf, size_t bufsize)
 		bufsize -= (size_t)rd;
 		ret += rd;
 	}
-	return (ret);
+	return (rd < 0 ? rd : ret);
 }
 
 int	readfile(const char *file_name, char *buf, size_t bufsize)
