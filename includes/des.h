@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:23:37 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/03 03:48:12 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/04 14:18:02 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 ** subkeys: subkeys for each round (generated from key)
 ** cyphertext: raw 64-bit output block
 ** process_block: block cypher encryption mode (ecb, cbc, etc...)
+** reverse: boolean indicating if executing in decryption mode
 */
 
 typedef struct	s_des_ctx
@@ -38,6 +39,7 @@ typedef struct	s_des_ctx
 	uint64_t	subkey[DES_ROUNDS];
 	uint64_t	cyphertext;
 	uint64_t	(*process_block)(struct s_des_ctx *ctx);
+	int			reverse;
 }				t_des_ctx;
 
 /*

@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 21:46:18 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/04 00:42:35 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/04 14:16:39 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	des_keygen(t_des_ctx *ctx)
 		shift = (i == 0 || i == 1 || i == 8 || i == 15) ? 1 : 2;
 		left = ROTATE_LEFT(left, shift);
 		right = ROTATE_LEFT(right, shift);
-		ctx->subkey[i] = des_permute((left << 28) | right, &g_pc2);
+		ctx->subkey[ctx->reverse ? DES_ROUNDS - i - 1 : i] =
+			des_permute((left << 28) | right, &g_pc2);
 	}
 }

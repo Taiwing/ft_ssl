@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:05:16 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/04 01:02:22 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/04 14:22:37 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ int	cmd_des(const t_command *cmd, t_cmdopt *opt, char **args)
 	if (opt[CC_OUTPUT].is_set
 		&& (outfd = output_option(opt[CC_OUTPUT].value, cmd->name)) == -1)
 		return (ret);
-	//TODO: reverse keys for decryption
 	des_keygen(&ctx);
 	if (opt[CC_ENCRYPT].is_set && opt[CC_PASSWORD].is_set)
 	{
