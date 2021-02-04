@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 14:44:21 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/04 14:55:17 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/04 15:08:35 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,9 @@ static int		encrypt_and_write(int fd, t_buf *in)
 
 	len = base64_encrypt(out, (unsigned char *)in->buf, in->len);
 	in->len = 0;
-	return (write(fd, out, len));
+	if (len)
+		return (ft_dprintf(fd, "%.*2$s\n", out, len));
+	return (0);
 }
 
 int				base64_writefile(int fd, char *buf, size_t n, int flush)
