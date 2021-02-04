@@ -4,8 +4,6 @@
   cases too)
 - think about closing the readfile fd when leaving on error
 - handle I/O errors and print corresponding messages
-- change 'help' option or documentation so that they match because right
-  now '-help' is documented where only '-h' can be used
 - clean the cmdf directory (even delete it and create multiple sub directories)
 - write the other commands
 - make the cli parsing great again

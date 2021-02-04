@@ -6,14 +6,14 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:28:14 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/04 15:53:06 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/04 22:36:25 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "options.h"
 
 const t_opt g_mdc_options[] = {
-	{ "h", 0, NULL, MDC_HELP },
+	{ "help", 0, NULL, MDC_HELP },
 	{ "p", 0, NULL, MDC_PRINT },
 	{ "q", 0, NULL, MDC_QUIET },
 	{ "r", 0, NULL, MDC_REVERSE },
@@ -22,7 +22,7 @@ const t_opt g_mdc_options[] = {
 };
 
 const t_opt g_cc_options[] = {
-	{ "h", 0, NULL, CC_HELP },
+	{ "help", 0, NULL, CC_HELP },
 	{ "a", 0, NULL, CC_BASE64 },
 	{ "k", 1, NULL, CC_KEY },
 	{ "p", 1, NULL, CC_PASSWORD },
@@ -38,7 +38,7 @@ const t_opt g_cc_options[] = {
 
 /* base64 is part of cc but does not have the first 5 options after HELP */
 const t_opt g_base64_options[] = {
-	{ "h", 0, NULL, BASE64_HELP },
+	{ "help", 0, NULL, BASE64_HELP },
 	{ "d", 0, NULL, BASE64_DECRYPT },
 	{ "e", 0, NULL, BASE64_ENCRYPT },
 	{ "i", 1, NULL, BASE64_INPUT },
@@ -47,7 +47,7 @@ const t_opt g_base64_options[] = {
 };
 
 const t_opt g_genrsa_options[] = {
-	{ "h", 0, NULL, GENRSA_HELP },
+	{ "help", 0, NULL, GENRSA_HELP },
 	{ "i", 1, NULL, GENRSA_INPUT },
 	{ "o", 1, NULL, GENRSA_OUTPUT },
 	{ NULL, 0, NULL, 0 }
