@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:05:16 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/04 16:07:02 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/04 19:11:51 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,29 +36,61 @@ int			des_writefile(int fd, char *buf, size_t n, t_cmdopt *opt)
 		return (base64_writefile(fd, buf, n, 0));
 	return (write(fd, buf, n));
 }
-
-/* TODO: test and check this shit (pretty sure its completely broken) */
-static int	des_file(int outfd, t_des_ctx *ctx,
+static int	des_decrypt(int outfd, t_des_ctx *ctx,
 	t_cmdopt *opt, const char *cmd)
 {
+	int			rd;
+	int			wr;
+	uint64_t	block;
+	char		*prev;
+
+	(void)cmd;
+	wr = 1;
+	prev = NULL;
+	while ((rd = des_readfile(opt[CC_INPUT].value, (char *)&ctx->plaintext,
+		sizeof(uint64_t), opt)) > 0 && wr >= 0)
+	{
+		if (prev)
+			wr = des_writefile(outfd, prev, sizeof(uint64_t), opt);
+		else
+			prev = (char *)&block;
+		ft_memswap((void *)&ctx->plaintext, sizeof(uint64_t));
+		ctx->process_block(ctx);
+		block = ctx->cyphertext;
+		ft_memswap((void *)&block, sizeof(uint64_t));
+	}
+	if (!rd && wr >= 0 && prev
+		&& prev[sizeof(uint64_t) - 1] < (int)sizeof(uint64_t))
+		wr = des_writefile(outfd, prev,
+			sizeof(uint64_t) - prev[sizeof(uint64_t) - 1], opt);
+	return (rd == -1);
+}
+
+static int	des_encrypt(int outfd, t_des_ctx *ctx,
+	t_cmdopt *opt, const char *cmd)
+{
+	int			c;
 	int			rd;
 	int			wr;
 	uint64_t	block;
 
 	(void)cmd;
 	wr = 1;
+	c = 0;
 	while ((rd = des_readfile(opt[CC_INPUT].value, (char *)&ctx->plaintext,
-		sizeof(uint64_t), opt)) > 0 && wr >= 0)
+		sizeof(uint64_t), opt)) >= 0 && wr >= 0 && !c)
 	{
+		if ((c = sizeof(uint64_t) - rd))
+			ft_memset((void *)&ctx->plaintext + rd, c, c);
 		ft_memswap((void *)&ctx->plaintext, sizeof(uint64_t));
 		ctx->process_block(ctx);
 		block = ctx->cyphertext;
 		ft_memswap((void *)&block, sizeof(uint64_t));
 		wr = des_writefile(outfd, (char *)&block, sizeof(uint64_t), opt);
 	}
-	if (rd >= 0 && wr >= 0)
+	if (opt[CC_BASE64].is_set && rd >= 0 && wr >= 0)
 		return (base64_writefile(outfd, NULL, 0, 1));
-	return (-1);
+	return (rd == -1);
 }
 
 static int	init_context(t_des_ctx *ctx, const t_command *cmd, t_cmdopt *opt)
@@ -95,7 +127,8 @@ int	cmd_des(const t_command *cmd, t_cmdopt *opt, char **args)
 	if (write_salt(outfd, &ctx, opt))
 		return (ret);
 	des_keygen(&ctx);
-	ret = des_file(outfd, &ctx, opt, cmd->name);
+	ret = opt[CC_ENCRYPT].is_set ? des_encrypt(outfd, &ctx, opt, cmd->name)
+		: des_decrypt(outfd, &ctx, opt, cmd->name);
 	if (outfd > 1)
 		close(outfd);
 	return (ret);

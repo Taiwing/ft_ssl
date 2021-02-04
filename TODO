@@ -1,5 +1,4 @@
 - test every options
-- add the des padding
 - test cmd_des I/O robustness (does it work well with the -a option and with
   different types of intput like stdin or an arbitrary files, and handle edge
   cases too)
