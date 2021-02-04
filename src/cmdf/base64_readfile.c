@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 14:44:21 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/02 18:54:27 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/03 05:07:00 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,12 @@ typedef struct	s_buf
 	size_t		len;
 }				t_buf;
 
-static int		flush_base64_readfile(int *rd, t_buf *rawbytes)
+static int		flush_base64_readfile(int *rd, t_buf *b)
 {
-	*rd = BASE64_OUTBUF_SIZE;
-	rawbytes->len = 0;
-	ft_bzero((void *)rawbytes->buf, rawbytes->size);
+	if (rd)
+		*rd = BASE64_OUTBUF_SIZE;
+	b->len = 0;
+	ft_bzero((void *)b->buf, b->size);
 	base64_decrypt(NULL, NULL, 0, 1);
 	return (0);
 }
@@ -69,6 +70,40 @@ static int		read_and_decrypt(t_buf *out, const char *file_name)
 			base64_buf, valid, 0);
 	}
 	return (rd);
+}
+
+static int		encrypt_and_write(int fd, t_buf *in)
+{
+	int		len;
+	char	out[BASE64_OUTBUF_SIZE];
+
+	len = base64_encrypt(out, (unsigned char *)in->buf, in->len);
+	in->len = 0;
+	return (write(fd, out, len));
+}
+
+int				base64_writefile(int fd, char *buf, size_t n, int flush)
+{
+	t_buf			in;
+	int				wr;
+	static char		rawbytes_buf[BASE64_INBUF_SIZE];
+	static t_buf	rawbytes = { rawbytes_buf, BASE64_INBUF_SIZE, 0 };
+
+	wr = 0;
+	in.buf = buf;
+	in.size = n;
+	in.len = n;
+	while (in.len && wr >= 0)
+	{
+		if (!fill_buf(&rawbytes, &in))
+			wr = encrypt_and_write(fd, &rawbytes);
+	}
+	if (flush)
+	{
+		wr = encrypt_and_write(fd, &rawbytes);
+		return (flush_base64_readfile(NULL, &rawbytes));
+	}
+	return (wr);
 }
 
 int				base64_readfile(const char *file_name, char *buf,

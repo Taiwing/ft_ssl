@@ -6,13 +6,14 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 19:33:10 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/02 21:59:45 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/04 00:29:05 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "des_const.h"
 
 const t_des_const	g_ip = {
+	64,
 	64,
 	{
 		58,	50,	42,	34,	26,	18,	10,	2,
@@ -28,6 +29,7 @@ const t_des_const	g_ip = {
 
 const t_des_const	g_reverse_ip = {
 	64,
+	64,
 	{
 		40,	8,	48,	16,	56,	24,	64,	32,
 		39,	7,	47,	15,	55,	23,	63,	31,
@@ -41,6 +43,7 @@ const t_des_const	g_reverse_ip = {
 };
 
 const t_des_const	g_e = {
+	32,
 	48,
 	{
 		32,	1,	2,	3,	4,	5,
@@ -56,6 +59,7 @@ const t_des_const	g_e = {
 
 const t_des_const	g_p = {
 	32,
+	32,
 	{
 		16,	7,	20,	21,
 		29,	12,	28,	17,
@@ -69,6 +73,7 @@ const t_des_const	g_p = {
 };
 
 const t_des_const	g_left_pc1 = {
+	64,
 	28,
 	{
 		57,	49,	41,	33,	25,	17,	9,
@@ -79,6 +84,7 @@ const t_des_const	g_left_pc1 = {
 };
 
 const t_des_const	g_right_pc1 = {
+	64,
 	28,
 	{
 		63,	55,	47,	39,	31,	23,	15,
@@ -89,6 +95,7 @@ const t_des_const	g_right_pc1 = {
 };
 
 const t_des_const	g_pc2 = {
+	56,
 	48,
 	{
 		14,	17,	11,	24,	1,	5,
@@ -102,7 +109,7 @@ const t_des_const	g_pc2 = {
 	}
 };
 
-const int			g_sbox[SBOX_NB][SBOX_ROW][SBOX_COL] = {
+const uint64_t		g_sbox[SBOX_NB][SBOX_ROW][SBOX_COL] = {
 	{
 		{ 14,	4,	13,	1,	2,	15,	11,	8,	3,	10,	6,	12,	5,	9,	0,	7 },
 		{ 0,	15,	7,	4,	14,	2,	13,	1,	10,	6,	12,	11,	9,	5,	3,	8 },
@@ -161,10 +168,10 @@ uint64_t	des_permute(uint64_t x, const t_des_const *p)
 	uint64_t	y;
 
 	y = 0;
-	for (size_t i = 0; i < p->size; ++i)
+	for (size_t i = 0; i < p->output_size; ++i)
 	{
 		y = y << 1;
-		y |= BIT(x, p->bit[i] - 1);
+		y |= BIT(x, p->input_size - p->bit[i]);
 	}
 	return (y);
 }
@@ -182,7 +189,7 @@ uint64_t	des_sbox(uint64_t x)
 		j = (BIT(x, 47) << 1) | BIT(x, 42);
 		k = (BIT(x, 46) << 3) | (BIT(x, 45) << 2)
 			| (BIT(x, 44) << 1) | BIT(x, 43);
-		y |= g_sbox[i][j][k] & 0x07;
+		y |= g_sbox[i][j][k] & 0x0f;
 		x = x << 6;
 	}
 	return (y);

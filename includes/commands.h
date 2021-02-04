@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:28:21 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/28 11:07:31 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/03 04:06:44 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ extern const t_command	g_commands[];
 /* command utility functions */
 void	input_cmd(void);
 int		exec_cmd(char **argv);
+int		output_option(const char *file_name, const char *cmd);
 
 /* commands */
 int		cmd_md(const t_command *cmd, t_cmdopt *opt, char **args);

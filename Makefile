@@ -20,10 +20,12 @@ SRCC			=	readfile.c\
 					exec_cmd.c\
 
 CMDFC			=	parse_des_options.c\
+					debug.c\
 					options.c\
 					cmd_base64.c\
 					base64_readfile.c\
 					commands.c\
+					des.c\
 					internal_commands.c\
 					sha256.c\
 					get_salty.c\
@@ -35,6 +37,7 @@ CMDFC			=	parse_des_options.c\
 					base64.c\
 					cmd_md.c\
 					md5.c\
+					output_option.c\
 					des_cem.c\
 
 ODIR			=	obj
@@ -62,10 +65,12 @@ main.o: commands.h options.h libft.h
 input_cmd.o: commands.h options.h libft.h
 exec_cmd.o: commands.h options.h libft.h
 parse_des_options.o: libft.h cmd_des_utils.h commands.h options.h des.h md.h
+debug.o: libft.h
 options.o: options.h libft.h
 cmd_base64.o: commands.h options.h libft.h readfile.h base64.h
 base64_readfile.o: readfile.h base64.h libft.h
 commands.o: commands.h options.h libft.h help.h
+des.o: des.h des_const.h
 internal_commands.o: commands.h options.h libft.h
 sha256.o: md.h libft.h
 get_salty.o: readfile.h cmd_des_utils.h commands.h options.h libft.h des.h
@@ -77,6 +82,7 @@ des_const.o: des_const.h
 base64.o: base64.h libft.h
 cmd_md.o: commands.h options.h libft.h readfile.h md.h
 md5.o: md.h libft.h
+output_option.o: libft.h
 des_cem.o: des.h
 %.o: %.c
 	@mkdir -p $(ODIR)

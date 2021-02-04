@@ -6,11 +6,10 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 16:17:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/27 20:37:53 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/03 15:40:32 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <errno.h>
 #include "commands.h"
 #include "readfile.h"
 #include "base64.h"
@@ -92,17 +91,12 @@ int	cmd_base64(const t_command *cmd, t_cmdopt *opt, char **args)
 	int		ret;
 	int		outfd;
 
-	(void)cmd;
 	(void)args;
 	ret = 1;
 	outfd = 1;
-	if (opt[BASE64_OUTPUT].is_set && (outfd = open(opt[BASE64_OUTPUT].value,
-		O_WRONLY | O_CREAT, 0664)) == -1)
-	{
-		ft_dprintf(2, "ft_ssl: %s: %s: %s\n", cmd->name,
-			opt[BASE64_OUTPUT].value, strerror(errno));
+	if (opt[BASE64_OUTPUT].is_set
+		&& (outfd = output_option(opt[BASE64_OUTPUT].value, cmd->name)) == -1)
 		return (ret);
-	}
 	if (!opt[BASE64_DECRYPT].is_set
 		|| (opt[BASE64_ENCRYPT].is_set
 		&& opt[BASE64_DECRYPT].ind < opt[BASE64_ENCRYPT].ind))

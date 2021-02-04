@@ -1,28 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   des_cem.c                                          :+:      :+:    :+:   */
+/*   debug.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/28 13:07:20 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/04 01:01:23 by yforeau          ###   ########.fr       */
+/*   Created: 2021/02/03 15:28:07 by yforeau           #+#    #+#             */
+/*   Updated: 2021/02/03 19:51:54 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "des.h"
+#ifndef DEBUG_H
+# define DEBUG_H
 
-uint64_t	des_ecb(struct s_des_ctx *ctx)
-{
-	ctx->cyphertext = des(ctx);
-	ctx->plaintext = ctx->cyphertext;
-	return (ctx->cyphertext);
-}
+# include <stddef.h>
 
-uint64_t	des_cbc(struct s_des_ctx *ctx)
-{
-	ctx->plaintext ^= ctx->iv;
-	ctx->cyphertext = des(ctx);
-	ctx->iv = ctx->cyphertext;
-	return (ctx->cyphertext);
-}
+int	print_bytes(unsigned char *buf, int size);
+int	print_hex(uint64_t n);
+int	print_bits(uint64_t n);
+
+#endif

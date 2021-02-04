@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   des_cem.c                                          :+:      :+:    :+:   */
+/*   output_option.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/28 13:07:20 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/04 01:01:23 by yforeau          ###   ########.fr       */
+/*   Created: 2021/02/03 04:00:07 by yforeau           #+#    #+#             */
+/*   Updated: 2021/02/03 05:34:34 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "des.h"
+#include <fcntl.h>
+#include <errno.h>
+#include "libft.h"
 
-uint64_t	des_ecb(struct s_des_ctx *ctx)
+int	output_option(const char *file_name, const char *cmd)
 {
-	ctx->cyphertext = des(ctx);
-	ctx->plaintext = ctx->cyphertext;
-	return (ctx->cyphertext);
-}
+	int	fd;
 
-uint64_t	des_cbc(struct s_des_ctx *ctx)
-{
-	ctx->plaintext ^= ctx->iv;
-	ctx->cyphertext = des(ctx);
-	ctx->iv = ctx->cyphertext;
-	return (ctx->cyphertext);
+	fd = -1;
+	if ((fd = open(file_name, O_WRONLY | O_CREAT, 0664)) == -1)
+		ft_dprintf(2, "ft_ssl: %s: %s: %s\n", cmd, file_name, strerror(errno));
+	return (fd);
 }

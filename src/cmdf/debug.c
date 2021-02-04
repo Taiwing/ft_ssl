@@ -1,0 +1,55 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   debug.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/03 15:19:24 by yforeau           #+#    #+#             */
+/*   Updated: 2021/02/03 19:54:44 by yforeau          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+#define LINE_LEN 8
+
+int	print_bytes(unsigned char *buf, int size)
+{
+	int	ret;
+	int	tmp;
+
+	ret = 0;
+	while (size > 0)
+	{
+		if ((tmp = ft_printf("%*t %02hhx\n", size > LINE_LEN
+			? LINE_LEN : size, buf)))
+			return (-1);
+		ret += tmp;
+		buf += size > LINE_LEN ? LINE_LEN : size;
+		size -= size > LINE_LEN ? LINE_LEN : size;
+	}
+	return (ret);
+}
+
+int	print_hex(uint64_t n)
+{
+	return (ft_printf("%016lx\n", n));
+}
+
+# define BIT(x, n) (((x) >> (n)) & 0x01)
+
+int	print_bits(uint64_t n)
+{
+	int		ret;
+	char	byte[9];
+
+	for (int i = 0; i < 8; ++i)
+	{
+		for (int j = 0; j < 8; ++j)
+			byte[j] = BIT(n, ((8-i) * 8) - (j+1)) + 48;
+		byte[8] = 0;
+		ret += ft_printf("%s%c", byte, i < 7 ? ' ' : '\n');
+	}
+	return (ret);
+}
