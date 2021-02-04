@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:28:24 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/30 20:38:10 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/04 15:52:31 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ enum e_cc_option_codes {
 	CC_DECRYPT,
 	CC_ENCRYPT,
 	CC_INPUT,
-	CC_OUTPUT
+	CC_OUTPUT,
+	CC_PRINT
 };
 
 enum e_base64_option_codes {

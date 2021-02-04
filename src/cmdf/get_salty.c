@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 12:15:53 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/02 17:44:34 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/04 16:34:10 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,22 @@ static int	generate_salt(uint64_t *salt, const char *cmd)
 			cmd, sizeof(uint64_t));
 	close(fd);
 	return (rd != sizeof(uint64_t));
+}
+
+int			write_salt(int fd, t_des_ctx *ctx, t_cmdopt *opt)
+{
+	uint64_t	salt;
+
+	salt = ctx->salt;
+	if (opt[CC_ENCRYPT].is_set && opt[CC_PASSWORD].is_set)
+	{
+		if (des_writefile(fd, "Salted__", 8, opt) == -1)
+			return (-1);
+		ft_memswap((void *)&salt, sizeof(uint64_t));
+		if (des_writefile(fd, (char *)&salt, sizeof(uint64_t), opt) == -1)
+			return (-1);
+	}
+	return (0);
 }
 
 int			get_salty(t_des_ctx *ctx, const t_command *cmd, t_cmdopt *opt)

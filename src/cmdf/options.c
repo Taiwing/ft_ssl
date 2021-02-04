@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:28:14 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/30 20:41:52 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/04 15:53:06 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ const t_opt g_cc_options[] = {
 	{ "e", 0, NULL, CC_ENCRYPT },
 	{ "i", 1, NULL, CC_INPUT },
 	{ "o", 1, NULL, CC_OUTPUT },
+	{ "P", 0, NULL, CC_PRINT },
 	{ NULL, 0, NULL, 0 }
 };
 

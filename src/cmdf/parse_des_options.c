@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 10:20:12 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/04 14:20:58 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/04 17:32:19 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,24 +38,25 @@ static int		pbkdf(t_des_ctx *des_ctx, t_cmdopt *opt)
 	void		*pass;
 	size_t		pass_len;
 	size_t		len;
+	uint64_t	salt;
 
 	if (init_md_context("sha256", &md_ctx))
 		return (1);
 	init_registers(&md_ctx);
-	ft_memswap((void *)&des_ctx->salt, SALT_LEN);
+	salt = des_ctx->salt;
+	ft_memswap((void *)&salt, SALT_LEN);
 	pass = opt[CC_PASSWORD].value;
 	pass_len = ft_strlen(pass);
 	len = md_block_exec(&md_ctx, pass, pass_len);
 	ft_memcpy((void *)md_ctx.buf, (void *)pass + pass_len - len, len);
-	ft_memcpy((void *)md_ctx.buf + len, (void *)&des_ctx->salt,
+	ft_memcpy((void *)md_ctx.buf + len, (void *)&salt,
 		len + SALT_LEN > MD_BUF_SIZE ? MD_BUF_SIZE - len : SALT_LEN);
 	if ((len = md_block_exec(&md_ctx, NULL, len + SALT_LEN)) < SALT_LEN)
-		ft_memcpy((void *)md_ctx.buf, (void *)&des_ctx->salt + SALT_LEN - len,
-			len);
+		ft_memcpy((void *)md_ctx.buf, (void *)&salt + SALT_LEN - len, len);
 	add_md_padding(&md_ctx, len, (pass_len + SALT_LEN - len) * 8);
 	des_ctx->key = FLIP(*(uint64_t *)md_ctx.regs, 32);
 	if (!opt[CC_INIT_VECTOR].is_set)
-		des_ctx->iv = FLIP(*(uint64_t *)md_ctx.regs + sizeof(uint64_t), 32);
+		des_ctx->iv = FLIP(*(uint64_t *)(md_ctx.regs + 2), 32);
 	return (0);
 }
 

@@ -6,13 +6,14 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:05:16 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/04 14:50:15 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/04 16:07:02 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd_des_utils.h"
 #include "readfile.h"
 #include "base64.h"
+#include "debug.h"
 
 t_des_cmd	g_des_cmds[] = {
 	{ "des-ecb", des_ecb },
@@ -86,15 +87,14 @@ int	cmd_des(const t_command *cmd, t_cmdopt *opt, char **args)
 	base64_writefile(1, NULL, 0, 1);
 	if (init_context(&ctx, cmd, opt))
 		return (ret);
+	if (opt[CC_PRINT].is_set)
+		return (print_des_ctx(&ctx));
 	if (opt[CC_OUTPUT].is_set
 		&& (outfd = output_option(opt[CC_OUTPUT].value, cmd->name)) == -1)
 		return (ret);
+	if (write_salt(outfd, &ctx, opt))
+		return (ret);
 	des_keygen(&ctx);
-	if (opt[CC_ENCRYPT].is_set && opt[CC_PASSWORD].is_set)
-	{
-		des_writefile(outfd, "Salted__", 8, opt);
-		des_writefile(outfd, (char *)&ctx.salt, sizeof(uint64_t), opt);
-	}
 	ret = des_file(outfd, &ctx, opt, cmd->name);
 	if (outfd > 1)
 		close(outfd);

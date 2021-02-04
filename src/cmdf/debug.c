@@ -6,11 +6,12 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 15:19:24 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/03 19:54:44 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/04 17:26:07 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "des.h"
 
 #define LINE_LEN 8
 
@@ -52,4 +53,13 @@ int	print_bits(uint64_t n)
 		ret += ft_printf("%s%c", byte, i < 7 ? ' ' : '\n');
 	}
 	return (ret);
+}
+
+int	print_des_ctx(t_des_ctx *ctx)
+{
+	ft_printf("salt = %016lx\n", ctx->salt);
+	ft_printf("key  = %016lx\n", ctx->key);
+	if (ctx->process_block == des_cbc)
+		ft_printf("iv   = %016lx\n", ctx->iv);
+	return (0);
 }
