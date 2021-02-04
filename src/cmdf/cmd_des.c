@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:05:16 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/04 14:22:37 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/04 14:50:15 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	des_file(int outfd, t_des_ctx *ctx,
 	(void)cmd;
 	wr = 1;
 	while ((rd = des_readfile(opt[CC_INPUT].value, (char *)&ctx->plaintext,
-		sizeof(uint64_t), opt)) > 0 && wr > 0)
+		sizeof(uint64_t), opt)) > 0 && wr >= 0)
 	{
 		ft_memswap((void *)&ctx->plaintext, sizeof(uint64_t));
 		ctx->process_block(ctx);

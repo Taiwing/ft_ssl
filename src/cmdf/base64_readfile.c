@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 14:44:21 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/03 05:07:00 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/04 14:55:17 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static size_t	fill_buf(t_buf *dst, t_buf *src)
 	{
 		to_copy = dst->size - dst->len > src->len ? src->len
 			: dst->size - dst->len;
-		ft_memcpy((void *)dst->buf, (void *)src->buf, to_copy);
+		ft_memcpy((void *)dst->buf + dst->len, (void *)src->buf, to_copy);
 		dst->len += to_copy;
 		ft_memmove((void *)src->buf, (void *)src->buf + to_copy,
 			src->len - to_copy);
