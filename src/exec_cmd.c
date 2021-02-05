@@ -6,11 +6,12 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 16:02:27 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/30 20:48:19 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/05 00:56:19 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "commands.h"
+#include "readfile.h"
 
 static int	get_options(const t_command *command, char ***argv,
 	t_cmdopt *options, int *status)
@@ -73,6 +74,7 @@ int			exec_cmd(char **argv)
 			status = command->cmdf(command, options, argv);
 		else
 			ft_printf("command '%s' has not been implemented yet!\n", cmd_name);
+		readfile(NULL, NULL, 0);
 	}
 	return (status);
 }
