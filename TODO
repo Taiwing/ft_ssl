@@ -1,7 +1,3 @@
-- test every options
-- test cmd_des I/O robustness (does it work well with the -a option and with
-  different types of intput like stdin or an arbitrary files, and handle edge
-  cases too)
 - clean the cmdf directory (even delete it and create multiple sub directories)
 - write the other commands
 - make the cli parsing great again

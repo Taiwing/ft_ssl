@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 10:20:12 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/04 17:32:19 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/05 01:19:51 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,6 @@ int				parse_des_options(t_des_ctx *ctx, const t_command *cmd,
 		if (read_password(pass, cmd->name))
 			return (1);
 		opt[CC_PASSWORD].value = (char *)pass;
-		ft_printf("password: %s\n", opt[CC_PASSWORD].value);
 	}
 	return (get_salty(ctx, cmd, opt) || pbkdf(ctx, opt));
 }
