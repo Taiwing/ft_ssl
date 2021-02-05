@@ -64,7 +64,7 @@ $(SUB1D)/libft.a:
 readfile.o: readfile.h libft.h
 main.o: commands.h options.h libft.h
 input_cmd.o: commands.h options.h libft.h
-exec_cmd.o: commands.h options.h libft.h
+exec_cmd.o: commands.h options.h libft.h readfile.h
 parse_des_options.o: libft.h cmd_des_utils.h commands.h options.h des.h md.h
 debug.o: libft.h des.h
 options.o: options.h libft.h
