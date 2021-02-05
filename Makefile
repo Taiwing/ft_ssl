@@ -12,6 +12,8 @@ NAME		=	ft_ssl
 
 ############################## SOURCES #########################################
 
+CYPHERSDIR		=	cyphers
+HASHDIR			=	hash
 CMDFDIR			=	cmdf
 
 SRCC			=	readfile.c\
@@ -19,35 +21,41 @@ SRCC			=	readfile.c\
 					input_cmd.c\
 					exec_cmd.c\
 
-CMDFC			=	parse_des_options.c\
-					debug.c\
-					options.c\
+CYPHERSC		=	parse_des_options.c\
 					des_io.c\
 					cmd_base64.c\
 					base64_readfile.c\
-					commands.c\
 					des.c\
-					internal_commands.c\
-					sha256.c\
 					get_salty.c\
 					cmd_des.c\
-					md.c\
 					des_keygen.c\
 					des_const.c\
-					help.c\
 					base64.c\
-					cmd_md.c\
-					md5.c\
-					output_option.c\
 					des_cem.c\
 
+HASHC			=	sha256.c\
+					md.c\
+					cmd_md.c\
+					md5.c\
+
+CMDFC			=	debug.c\
+					options.c\
+					commands.c\
+					internal_commands.c\
+					help.c\
+					output_option.c\
+
 ODIR			=	obj
-OBJ				=	$(patsubst %.c,%.o,$(CMDFC))\
+OBJ				=	$(patsubst %.c,%.o,$(CYPHERSC))\
+					$(patsubst %.c,%.o,$(HASHC))\
+					$(patsubst %.c,%.o,$(CMDFC))\
 					$(patsubst %.c,%.o,$(SRCC))\
 
 vpath			%.o	$(ODIR)
 vpath			%.h	$(HDIR)
 vpath			%.h	$(SUB1D)/$(HDIR)
+vpath			%.c	$(SRCDIR)/$(CYPHERSDIR)
+vpath			%.c	$(SRCDIR)/$(HASHDIR)
 vpath			%.c	$(SRCDIR)/$(CMDFDIR)
 vpath			%.c	$(SRCDIR)
 
@@ -61,30 +69,30 @@ $(NAME): $(SUB1D)/libft.a $(ODIR) $(OBJ)
 $(SUB1D)/libft.a:
 	make -C $(SUB1D)
 
+parse_des_options.o: libft.h cmd_des_utils.h commands.h options.h des.h md.h
+des_io.o: commands.h options.h libft.h readfile.h base64.h des.h
+cmd_base64.o: commands.h options.h libft.h readfile.h base64.h
+base64_readfile.o: readfile.h base64.h libft.h
+des.o: des.h des_const.h
+get_salty.o: readfile.h cmd_des_utils.h commands.h options.h libft.h des.h
+cmd_des.o: cmd_des_utils.h commands.h options.h libft.h des.h base64.h debug.h
+des_keygen.o: des.h des_const.h
+des_const.o: des_const.h
+base64.o: base64.h libft.h
+des_cem.o: des.h
+sha256.o: md.h libft.h
+md.o: md.h libft.h
+cmd_md.o: commands.h options.h libft.h readfile.h md.h
+md5.o: md.h libft.h
 readfile.o: readfile.h libft.h
 main.o: commands.h options.h libft.h
 input_cmd.o: commands.h options.h libft.h
 exec_cmd.o: commands.h options.h libft.h readfile.h
-parse_des_options.o: libft.h cmd_des_utils.h commands.h options.h des.h md.h
 debug.o: libft.h des.h
 options.o: options.h libft.h
-des_io.o: commands.h options.h libft.h readfile.h base64.h des.h
-cmd_base64.o: commands.h options.h libft.h readfile.h base64.h
-base64_readfile.o: readfile.h base64.h libft.h
 commands.o: commands.h options.h libft.h help.h
-des.o: des.h des_const.h
 internal_commands.o: commands.h options.h libft.h
-sha256.o: md.h libft.h
-get_salty.o: readfile.h cmd_des_utils.h commands.h options.h libft.h des.h
-cmd_des.o: cmd_des_utils.h commands.h options.h libft.h des.h base64.h debug.h
-md.o: md.h libft.h
-des_keygen.o: des.h des_const.h
-des_const.o: des_const.h
-base64.o: base64.h libft.h
-cmd_md.o: commands.h options.h libft.h readfile.h md.h
-md5.o: md.h libft.h
 output_option.o: libft.h
-des_cem.o: des.h
 %.o: %.c
 	@mkdir -p $(ODIR)
 	$(CC) -c $(CFLAGS) $< $(HFLAGS) -o $(ODIR)/$@

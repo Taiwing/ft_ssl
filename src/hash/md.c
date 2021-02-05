@@ -6,33 +6,12 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 14:39:52 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/29 15:19:49 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/05 01:35:00 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "md.h"
 #include "libft.h"
-
-/* DEBUG */
-/*
-void print_block(unsigned char *block, size_t size)
-{
-	uint32_t	*nbrs;
-
-	for (size_t i = 0; i < size; ++i)
-	{
-		// ft_printf("%02x%s", block[i], !((i + 1) % 4) ? " " : "");
-		ft_printf("%08hhb%s", block[i], !((i + 1) % 4) && ((i + 1) % 8) ? " " : "");
-		if (!((i + 1) % 8))
-			ft_printf("\n");
-	}
-	size /= 4;
-	nbrs = (uint32_t *)block;
-	for (size_t i = 0; i < size; ++i)
-		ft_printf("%032b%c", nbrs[i], ((i + 1) % 2) ? ' ' : '\n');
-}
-*/
-/* DEBUG */
 
 void	init_registers(t_md_ctx *ctx)
 {
