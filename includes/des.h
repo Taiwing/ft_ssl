@@ -6,16 +6,21 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:23:37 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/04 14:18:02 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/05 01:54:35 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DES_H
 # define DES_H
 
+# include <stddef.h>
 # include <stdint.h>
 
-# define DES_ROUNDS	16
+# define DES_CONST_MAX_SIZE	64
+# define DES_ROUNDS			16
+# define SBOX_NB			8
+# define SBOX_ROW			4
+# define SBOX_COL			16
 
 /*
 ** s_des_ctx: DES context
@@ -44,6 +49,7 @@ typedef struct	s_des_ctx
 
 /*
 ** s_des_cmd: map command string to process_block function
+**
 ** name: command name
 ** process_block: block cypher encryption mode (ecb, cbc, etc...)
 */
@@ -53,6 +59,34 @@ typedef struct	s_des_cmd
 	const char	*name;
 	uint64_t	(*process_block)(struct s_des_ctx *ctx);
 }				t_des_cmd;
+
+/*
+** s_des_const: des constants for permutation function
+**
+** input_size: size of the input integer
+** output_size: size of the output integer
+** bit: map of bits to move
+*/
+
+typedef struct	s_des_const
+{
+	size_t		input_size;
+	size_t		output_size;
+	int			bit[DES_CONST_MAX_SIZE];
+}				t_des_const;
+
+/*
+** list of des constants
+*/
+
+extern const t_des_const	g_ip;
+extern const t_des_const	g_reverse_ip;
+extern const t_des_const	g_e;
+extern const t_des_const	g_p;
+extern const t_des_const	g_left_pc1;
+extern const t_des_const	g_right_pc1;
+extern const t_des_const	g_pc2;
+extern const uint64_t		g_sbox[SBOX_NB][SBOX_ROW][SBOX_COL];
 
 /*
 ** des_cem (cypher encryption mode) functions
@@ -66,6 +100,9 @@ uint64_t		des_cbc(struct s_des_ctx *ctx);
 */
 
 void			des_keygen(t_des_ctx *ctx);
+uint64_t		des_sbox(uint64_t x);
+uint64_t		des_permute(uint64_t x, const t_des_const *p);
+uint64_t		des_f(uint64_t x, uint64_t key);
 uint64_t		des(t_des_ctx *ctx);
 
 #endif

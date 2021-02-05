@@ -6,11 +6,11 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 19:33:10 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/05 01:43:06 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/05 01:56:23 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "des_const.h"
+#include "des.h"
 
 const t_des_const	g_ip = {
 	64,
