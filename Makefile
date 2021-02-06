@@ -45,7 +45,8 @@ CMDFC			=	debug.c\
 					help.c\
 					output_option.c\
 
-RSAC			=	prime.c\
+RSAC			=	cmd_genrsa.c\
+					prime.c\
 
 ODIR			=	obj
 OBJ				=	$(patsubst %.c,%.o,$(CYPHERSC))\
@@ -96,6 +97,7 @@ options.o: options.h libft.h
 commands.o: commands.h options.h libft.h help.h
 internal_commands.o: commands.h options.h libft.h
 output_option.o: libft.h
+cmd_genrsa.o: commands.h options.h libft.h prime.h
 prime.o: libft.h prime.h
 %.o: %.c
 	@mkdir -p $(ODIR)
