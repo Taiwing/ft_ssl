@@ -15,6 +15,7 @@ NAME		=	ft_ssl
 CYPHERSDIR		=	cyphers
 HASHDIR			=	hash
 CMDFDIR			=	cmdf
+RSADIR			=	rsa
 
 SRCC			=	readfile.c\
 					main.c\
@@ -44,10 +45,13 @@ CMDFC			=	debug.c\
 					help.c\
 					output_option.c\
 
+RSAC			=	prime.c\
+
 ODIR			=	obj
 OBJ				=	$(patsubst %.c,%.o,$(CYPHERSC))\
 					$(patsubst %.c,%.o,$(HASHC))\
 					$(patsubst %.c,%.o,$(CMDFC))\
+					$(patsubst %.c,%.o,$(RSAC))\
 					$(patsubst %.c,%.o,$(SRCC))\
 
 vpath			%.o	$(ODIR)
@@ -56,6 +60,7 @@ vpath			%.h	$(SUB1D)/$(HDIR)
 vpath			%.c	$(SRCDIR)/$(CYPHERSDIR)
 vpath			%.c	$(SRCDIR)/$(HASHDIR)
 vpath			%.c	$(SRCDIR)/$(CMDFDIR)
+vpath			%.c	$(SRCDIR)/$(RSADIR)
 vpath			%.c	$(SRCDIR)
 
 ############################## BUILD ###########################################
@@ -91,6 +96,7 @@ options.o: options.h libft.h
 commands.o: commands.h options.h libft.h help.h
 internal_commands.o: commands.h options.h libft.h
 output_option.o: libft.h
+prime.o: libft.h
 %.o: %.c
 	@mkdir -p $(ODIR)
 	$(CC) -c $(CFLAGS) $< $(HFLAGS) -o $(ODIR)/$@
