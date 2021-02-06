@@ -6,14 +6,15 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 17:43:24 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/06 17:46:16 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/06 17:53:42 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#define PRIME_H
-# ifndef PRIME_H
+#ifndef PRIME_H
+# define PRIME_H
 
 # include <stdint.h>
+# define uint128_t	__uint128_t
 
 char		*fill_rand_buf(const char *src, int flush);
 uint64_t	*get_rand(uint64_t *n, uint64_t min, uint64_t max);
