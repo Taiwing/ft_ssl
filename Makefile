@@ -45,7 +45,9 @@ CMDFC			=	debug.c\
 					help.c\
 					output_option.c\
 
-RSAC			=	cmd_genrsa.c\
+RSAC			=	get_rand.c\
+					modular_ops.c\
+					cmd_genrsa.c\
 					prime.c\
 
 ODIR			=	obj
@@ -97,8 +99,9 @@ options.o: options.h libft.h
 commands.o: commands.h options.h libft.h help.h
 internal_commands.o: commands.h options.h libft.h
 output_option.o: libft.h
-cmd_genrsa.o: commands.h options.h libft.h prime.h
-prime.o: libft.h prime.h
+modular_ops.o: rsa_math.h
+cmd_genrsa.o: commands.h options.h libft.h rsa_math.h
+prime.o: libft.h rsa_math.h
 %.o: %.c
 	@mkdir -p $(ODIR)
 	$(CC) -c $(CFLAGS) $< $(HFLAGS) -o $(ODIR)/$@

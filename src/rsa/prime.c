@@ -6,120 +6,17 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 17:42:56 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/10 14:42:49 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/10 16:42:10 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <limits.h>
-#include <fcntl.h>
 #include "libft.h"
-#include "prime.h"
+#include "rsa_math.h"
 
-#define BUF_SIZE	4096
-#define	BUF_BYTES	(BUF_SIZE * sizeof(uint64_t))
 #define K_MAX		100
 
-static char	*flush_fd(int *fd)
-{
-	if (*fd != -1)
-		close(*fd);
-	*fd = -1;
-	return (NULL);
-}
-
-/*
-** fill_rand_buf: fill get_rand buffer with random data
-**
-** src: source file, "/dev/urandom" if NULL
-** flush: close opened fd if any (boolean 1 == true)
-**
-** always call fill_rand_buf with flush == 1 one or multiple calls
-** to get_rand if fill_rand_buf has been called outside of get_rand
-** to specify a custom source file for randomness
-*/
-
-char		*fill_rand_buf(const char *src, int flush)
-{
-	int			rd;
-	static int	fd = -1;
-	static char	buf[BUF_BYTES];
-	
-	if (flush)
-		return (flush_fd(&fd));
-	rd = 0;
-	if (fd == -1 && src && (fd = open(src, O_RDONLY)) < 0)
-		return (flush_fd(&fd));
-	else if (fd >= 0 && (rd = read(fd, (char *)buf, BUF_BYTES)) < 0)
-		return (flush_fd(&fd));
-	else if (rd < (int)BUF_BYTES)
-	{
-		flush_fd(&fd);
-		if ((fd = open("/dev/urandom", O_RDONLY)) < 0)
-			return (NULL);
-		rd += read(fd, (char *)buf + rd, BUF_BYTES - rd);
-		flush_fd(&fd);
-	}
-	return (rd == (int)BUF_BYTES ? (char *)buf : NULL);
-}
-
-/*
-** get_rand: get random 64-bit unsinged integer
-**
-** n: uint64_t destination pointer
-** min: lowest possible value (inclusive)
-** max: highest possible value (inclusive)
-**
-** return: store the value in the given n pointer
-** or NULL on error or on bad input
-*/
-
-uint64_t		*get_rand(uint64_t *n, uint64_t min, uint64_t max)
-{
-	uint64_t		dist;
-	static uint64_t	*buf = NULL;
-	static int		i = BUF_SIZE;
-
-	if (!n || max < min)
-		return (NULL);
-	else if (!(dist = max - min))
-	{
-		*n = min;
-		return (n);
-	}
-	if (i == BUF_SIZE)
-	{
-		if (!(buf = (uint64_t *)fill_rand_buf(NULL, 0)))
-			return (NULL);
-		i = 0;
-	}
-	*n = buf[i++];
-	if (dist < UINT64_MAX)
-		*n %= dist + 1;
-	*n += min;
-	return (n);
-}
-
-uint64_t		modexp(uint64_t raw_a, uint64_t raw_b, uint64_t raw_c)
-{
-	uint128_t	res;
-	uint128_t	a;
-	uint128_t	b;
-	uint128_t	c;
-
-	a = raw_a;
-	b = raw_b;
-	c = raw_c;
-	a %= c;
-	res = 1;
-	while (b)
-	{
-		if (b & 0x01)
-			res = (res * a) % c;
-		a = (a * a) % c;
-		b = b >> 1;
-	}
-	return ((uint64_t)res);
-}
+const char		g_plus[K_MAX] = { [ 0 ... K_MAX - 1 ] = '+' };
 
 static int		miller_test(uint64_t n, uint64_t d)
 {
@@ -188,6 +85,7 @@ uint64_t		find_prime(int k, size_t size)
 	uint64_t	max;
 
 	max = UINT64_MAX;
+	k = k > K_MAX ? K_MAX : k;
 	size = size > 64 ? 64 : size;
 	while (size--)
 		max = max >> 1;
@@ -201,7 +99,7 @@ uint64_t		find_prime(int k, size_t size)
 		if ((ret = is_prime(n, k)) < 0)
 			break ;
 		else if (ret <= k)
-			ft_printf(".%.*s", (k - ret) + !ret, "++++++++++++\n");
+			ft_dprintf(2, ".%.*s%s", (k - ret), g_plus, !ret ? "\n" : "");
 		if (!ret)
 			break ;
 		n -= 2;
