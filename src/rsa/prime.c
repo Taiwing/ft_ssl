@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 17:42:56 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/06 17:52:17 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/10 14:42:49 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,12 +181,17 @@ int				is_prime(uint64_t n, int k)
 	return (ret < 0 ? ret : k);
 }
 
-uint64_t		find_prime(int k)
+uint64_t		find_prime(int k, size_t size)
 {
 	uint64_t	n;
 	int			ret;
+	uint64_t	max;
 
-	if (!get_rand(&n, 0, UINT64_MAX))
+	max = UINT64_MAX;
+	size = size > 64 ? 64 : size;
+	while (size--)
+		max = max >> 1;
+	if (!get_rand(&n, 0, max))
 		return (0);
 	if (!(n & 0x01))
 		--n;
