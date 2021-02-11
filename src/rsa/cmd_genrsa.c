@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 23:59:02 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/11 01:44:44 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/11 01:52:54 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int		print_rsa_key(int fd, t_rsa_key *key)
 	if ((ret = ft_dprintf(fd, "-----BEGIN RSA PRIVATE KEY-----\n")) > 0
 		&& (ret = base64_writefile(fd, (char *)derkey, (size_t)len, 1)) >= 0)
 		ret = ft_dprintf(fd, "-----END RSA PRIVATE KEY-----\n");
-	return (ret < 0);
+	return (ret <= 0);
 }
 
 #define MAX_TRY	5
@@ -83,6 +83,8 @@ int	rsa_keygen(t_rsa_key *key)
 			return (!!ft_printf("\n"));
 		key->n = key->p * key->q;
 	}
+	if (key->p == key->q || !(key->n >> 63))
+		return (!!ft_printf("\n"));
 	ft_dprintf(2, "e is %1$lu (0x%1$06lx)\n", key->e);
 	totient = (key->p - 1) * (key->q - 1);
 	key->d = modinv((int128_t)key->e, (int128_t)totient, &gcd);
@@ -91,9 +93,7 @@ int	rsa_keygen(t_rsa_key *key)
 	key->exp1 = key->d % (key->p - 1);
 	key->exp2 = key->d % (key->q - 1);
 	key->coeff = modinv((int128_t)key->q, (int128_t)key->p, &gcd);
-	if (!key->coeff || gcd != 1)
-		return (1);
-	return (0);
+	return (!key->coeff || gcd != 1);
 }
 
 int	cmd_genrsa(const t_command *cmd, t_cmdopt *opt, char **args)
