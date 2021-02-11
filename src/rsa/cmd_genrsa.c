@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 23:59:02 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/11 01:36:20 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/11 01:44:44 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	rsa_keygen(t_rsa_key *key)
 			return (!!ft_printf("\n"));
 		key->n = key->p * key->q;
 	}
-	ft_dprintf(2, "e is %1$lu (%1$#06lx)\n", key->e);
+	ft_dprintf(2, "e is %1$lu (0x%1$06lx)\n", key->e);
 	totient = (key->p - 1) * (key->q - 1);
 	key->d = modinv((int128_t)key->e, (int128_t)totient, &gcd);
 	if (!key->d || gcd != 1)
