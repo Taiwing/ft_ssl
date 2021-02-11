@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 23:59:02 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/11 01:00:39 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/11 01:36:20 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ int		print_rsa_key(int fd, t_rsa_key *key)
 	return (ret < 0);
 }
 
+#define MAX_TRY	5
+
 int	rsa_keygen(t_rsa_key *key)
 {
 	uint64_t	gcd;
@@ -75,12 +77,13 @@ int	rsa_keygen(t_rsa_key *key)
 		"64 bit long modulus (2 primes)\n");
 	ft_bzero((void *)key, sizeof(t_rsa_key));
 	key->e = E_VALUE;
-	if (!(key->p = find_prime(12, 32)) || !(key->q = find_prime(12, 32)))
-		return (!!ft_printf("\n"));
-	if (key->p == key->q || key->p <= E_VALUE || key->q <= E_VALUE)
-		return (1);
+	for (int i = 0; i < MAX_TRY && (key->p == key->q || !(key->n >> 63)) ; ++i)
+	{
+		if (!(key->p = find_prime(12, 32)) || !(key->q = find_prime(12, 32)))
+			return (!!ft_printf("\n"));
+		key->n = key->p * key->q;
+	}
 	ft_dprintf(2, "e is %1$lu (%1$#06lx)\n", key->e);
-	key->n = key->p * key->q;
 	totient = (key->p - 1) * (key->q - 1);
 	key->d = modinv((int128_t)key->e, (int128_t)totient, &gcd);
 	if (!key->d || gcd != 1)
