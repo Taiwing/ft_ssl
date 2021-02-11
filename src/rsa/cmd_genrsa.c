@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 23:59:02 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/11 01:52:54 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/11 14:23:58 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,8 @@ int	cmd_genrsa(const t_command *cmd, t_cmdopt *opt, char **args)
 	ret = 0;
 	outfd = 1;
 	if (opt[GENRSA_INPUT].is_set && !fill_rand_buf(opt[GENRSA_INPUT].value, 0))
-		return (!!ft_dprintf(2, "ft_ssl: %s: %s\n",
-			cmd->name, strerror(errno)));
+		return (!!ft_dprintf(2, "ft_ssl: %s: %s: %s\n",
+			cmd->name, opt[GENRSA_INPUT].value, strerror(errno)));
 	if (opt[GENRSA_OUTPUT].is_set
 		&& (outfd = output_option(opt[GENRSA_OUTPUT].value, cmd->name)) < 0)
 		ret = 1;
