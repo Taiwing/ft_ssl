@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:27:58 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/07 00:12:14 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/12 17:59:24 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ const t_command	g_commands[] = {
 	/* Standard Commands */
 	{ "genrsa", cmd_genrsa, g_genrsa_options, g_genrsa_help, STC },
 	{ "rsa", NULL, g_rsa_options, g_rsa_help, STC },
-	{ "rsautl", NULL, g_rsautl_options, g_rsautl_help, STC },
+	{ "rsautl", cmd_rsautl, g_rsautl_options, g_rsautl_help, STC },
 
 	/* Internal Commands */
 	{ "help", cmd_help, NULL, NULL, INC },

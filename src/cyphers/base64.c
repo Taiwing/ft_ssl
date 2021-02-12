@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 01:44:21 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/30 20:53:57 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/12 17:50:10 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static unsigned char	digit_op(unsigned char *out, int cur_digit,
 	return (byte);
 }
 
-/* The output buffer can be smaller than the input by at most a third  */
+/* The output buffer can be smaller than the input by at most a quarter */
 int	base64_decrypt(unsigned char *out, char *in, int inlen, int flush)
 {
 	unsigned int		c;

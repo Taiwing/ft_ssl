@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 23:59:02 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/11 14:23:58 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/12 17:56:49 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,14 @@
 #include "rsa.h"
 #include "base64.h"
 
-#define DER_MAX_LEN	87
+uint64_t	*der_decode(uint8_t *derkey, uint8_t *len, uint64_t *dst)
+{
+	(void)derkey;
+	(void)len;
+	return (dst);
+}
 
-void	der_encode_uint64(uint8_t *derkey, uint8_t *len, uint64_t n)
+void		der_encode_uint64(uint8_t *derkey, uint8_t *len, uint64_t n)
 {
 	uint8_t	*ptr;
 	uint8_t	cur_len;
@@ -42,11 +47,11 @@ void	der_encode_uint64(uint8_t *derkey, uint8_t *len, uint64_t n)
 		*derkey++ = ptr[i];
 }
 
-int		print_rsa_key(int fd, t_rsa_key *key)
+int			print_rsa_key(int fd, t_rsa_key *key)
 {
 	int		ret;
 	uint8_t	len;
-	uint8_t	derkey[DER_MAX_LEN];
+	uint8_t	derkey[PRIVKEY_MAXLEN];
 
 	len = 2;
 	derkey[0] = 0x30;
@@ -60,15 +65,15 @@ int		print_rsa_key(int fd, t_rsa_key *key)
 	der_encode_uint64(derkey + len, &len, key->exp2);
 	der_encode_uint64(derkey + len, &len, key->coeff);
 	derkey[1] = len - 2;
-	if ((ret = ft_dprintf(fd, "-----BEGIN RSA PRIVATE KEY-----\n")) > 0
+	if ((ret = ft_dprintf(fd, BEGIN_PRIV)) > 0
 		&& (ret = base64_writefile(fd, (char *)derkey, (size_t)len, 1)) >= 0)
-		ret = ft_dprintf(fd, "-----END RSA PRIVATE KEY-----\n");
+		ret = ft_dprintf(fd, END_PRIV);
 	return (ret <= 0);
 }
 
 #define MAX_TRY	5
 
-int	rsa_keygen(t_rsa_key *key)
+int			rsa_keygen(t_rsa_key *key)
 {
 	uint64_t	gcd;
 	uint64_t	totient;;
@@ -96,7 +101,7 @@ int	rsa_keygen(t_rsa_key *key)
 	return (!key->coeff || gcd != 1);
 }
 
-int	cmd_genrsa(const t_command *cmd, t_cmdopt *opt, char **args)
+int			cmd_genrsa(const t_command *cmd, t_cmdopt *opt, char **args)
 {
 	int			outfd;
 	int			ret;
