@@ -51,6 +51,7 @@ RSAC			=	get_rand.c\
 					parse_rsa_key.c\
 					cmd_rsautl.c\
 					prime.c\
+					rsa_hexdump.c\
 
 ODIR			=	obj
 OBJ				=	$(patsubst %.c,%.o,$(CYPHERSC))\
@@ -106,6 +107,7 @@ cmd_genrsa.o: commands.h options.h libft.h rsa_math.h rsa.h base64.h
 parse_rsa_key.o: base64.h libft.h rsa.h
 cmd_rsautl.o: commands.h options.h libft.h rsa.h
 prime.o: libft.h rsa_math.h
+rsa_hexdump.o: libft.h
 %.o: %.c
 	@mkdir -p $(ODIR)
 	$(CC) -c $(CFLAGS) $< $(HFLAGS) -o $(ODIR)/$@

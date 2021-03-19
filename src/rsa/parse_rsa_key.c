@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 17:36:51 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/12 18:09:04 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/02/13 16:24:03 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,10 @@ int			parse_rsa_key(t_rsa_key *key, const char *inkey,
 {
 	int		fd;
 	int		ret;
-	//uint8_t	len;
+	uint8_t	len;
 	uint8_t	derkey[KEY_MAXLEN];
 
-	(void)key;
-	//len = 0;
+	len = 0;
 	if ((fd = open(inkey, O_RDONLY)) < 0)
 		return (1);
 	if ((ret = check_header(fd, is_pub)) < 0)
@@ -112,7 +111,11 @@ int			parse_rsa_key(t_rsa_key *key, const char *inkey,
 		return (!!ft_dprintf(2, "ft_ssl: %s: invalid header\n", cmd));
 	else if (!ret && (ret = read_key(derkey, fd, cmd, is_pub)) < 0)
 		return (1);
-	//else
-		//len = (uint8_t)ret;
-	return (0);
+	else
+	{
+		len = (uint8_t)ret;
+		rsa_hexdump(1, derkey, len);
+		ret = parse_der_key(key, derkey, len, is_pub);
+	}
+	return (ret);
 }

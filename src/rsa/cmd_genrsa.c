@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 23:59:02 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/12 17:56:49 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/03/19 15:24:59 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,49 @@
 #include "rsa.h"
 #include "base64.h"
 
-uint64_t	*der_decode(uint8_t *derkey, uint8_t *len, uint64_t *dst)
+uint64_t	*der_decode(uint8_t *derkey, uint8_t *i, uint8_t len, uint64_t *dst)
 {
-	(void)derkey;
-	(void)len;
+	uint8_t	cur_len;
+
+	*dst = 0;
+	if (*i >= len || derkey[(*i)++] != 0x02 || *i >= len
+		|| (cur_len = derkey[(*i)++]) > RSA_DER_INT_MAXLEN
+		|| (*i) + cur_len > len
+		|| (cur_len < RSA_DER_INT_MAXLEN && (derkey[*i] & 0x80)))
+		return (NULL);
+	if (!derkey[*i])
+	{
+		++(*i);
+		--cur_len;
+	}
+	ft_memcpy((void *)dst, derkey, cur_len);
+	ft_memswap((void *)dst, cur_len);
 	return (dst);
+}
+
+int			parse_der_key(t_rsa_key *key, uint8_t *derkey,
+	uint8_t len, int is_pub)
+{
+	uint8_t		i;
+	int			ret;
+	uint64_t	version;
+
+	i = 0;
+	ret = 0;
+	version = 0;
+	if (!derkey || !len || derkey[i++] != 0x30
+		|| i >= len || derkey[i++] != len - 2)
+		ret = 1;
+	ret = !ret && !is_pub ? !der_decode(derkey, &i, len, &version) : ret;
+	ret = !ret ? !der_decode(derkey, &i, len, &key->n) : ret;
+	ret = !ret ? !der_decode(derkey, &i, len, &key->e) : ret;
+	ret = !ret && !is_pub ? !der_decode(derkey, &i, len, &key->d) : ret;
+	ret = !ret && !is_pub ? !der_decode(derkey, &i, len, &key->p) : ret;
+	ret = !ret && !is_pub ? !der_decode(derkey, &i, len, &key->q) : ret;
+	ret = !ret && !is_pub ? !der_decode(derkey, &i, len, &key->exp1) : ret;
+	ret = !ret && !is_pub ? !der_decode(derkey, &i, len, &key->exp2) : ret;
+	ret = !ret && !is_pub ? !der_decode(derkey, &i, len, &key->coeff) : ret;
+	return (!ret && is_pub ? i != len : ret);
 }
 
 void		der_encode_uint64(uint8_t *derkey, uint8_t *len, uint64_t n)
@@ -65,9 +103,9 @@ int			print_rsa_key(int fd, t_rsa_key *key)
 	der_encode_uint64(derkey + len, &len, key->exp2);
 	der_encode_uint64(derkey + len, &len, key->coeff);
 	derkey[1] = len - 2;
-	if ((ret = ft_dprintf(fd, BEGIN_PRIV)) > 0
+	if ((ret = ft_dprintf(fd, BEGIN_PRIV"\n")) > 0
 		&& (ret = base64_writefile(fd, (char *)derkey, (size_t)len, 1)) >= 0)
-		ret = ft_dprintf(fd, END_PRIV);
+		ret = ft_dprintf(fd, END_PRIV"\n");
 	return (ret <= 0);
 }
 
