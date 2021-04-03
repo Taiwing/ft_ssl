@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 17:36:51 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/13 16:24:03 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/03 13:10:27 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	read_base64(uint8_t derkey[KEY_MAXLEN], int *len,
 		ft_dprintf(2, "ft_ssl: DER key too long\n");
 		return (-1);
 	}
-	*len += base64_decrypt(derkey, line, valid, 0);
+	*len += base64_decrypt(derkey + *len, line, valid, 0);
 	return (0);
 }
 
