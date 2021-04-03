@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 23:59:02 by yforeau           #+#    #+#             */
-/*   Updated: 2021/03/19 15:24:59 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/03 16:17:26 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ uint64_t	*der_decode(uint8_t *derkey, uint8_t *i, uint8_t len, uint64_t *dst)
 		++(*i);
 		--cur_len;
 	}
-	ft_memcpy((void *)dst, derkey, cur_len);
+	ft_memcpy((void *)dst, derkey + *i, cur_len);
 	ft_memswap((void *)dst, cur_len);
+	*i += cur_len;
 	return (dst);
 }
 
