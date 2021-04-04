@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/13 15:58:28 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/04 13:19:34 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define END_PRIV_LEN		(MC_STRLEN(END_PRIV))
 # define BEGIN_PUB_LEN		(MC_STRLEN(BEGIN_PUB))
 # define END_PUB_LEN		(MC_STRLEN(END_PUB))
+# define RSABUF_SIZE		(8+1)
 
 /*
 ** s_rsa_key: rsa key structure (represent private and public key)
