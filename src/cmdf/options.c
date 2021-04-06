@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:28:14 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/04 22:36:25 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/06 17:46:10 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,6 @@ const t_opt g_rsautl_options[] = {
 	{ "encrypt", 0, NULL, RSAUTL_ENCRYPT },
 	{ "decrypt", 0, NULL, RSAUTL_DECRYPT },
 	{ "hexdump", 0, NULL, RSAUTL_HEXDUMP },
+	{ "raw", 0, NULL, RSAUTL_RAW },
 	{ NULL, 0, NULL, 0 }
 };

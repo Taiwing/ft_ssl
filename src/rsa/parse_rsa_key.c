@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 17:36:51 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/03 13:10:27 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/06 17:41:54 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ int			parse_rsa_key(t_rsa_key *key, const char *inkey,
 	else
 	{
 		len = (uint8_t)ret;
-		rsa_hexdump(1, derkey, len);
 		ret = parse_der_key(key, derkey, len, is_pub);
 	}
 	return (ret);

@@ -105,7 +105,7 @@ output_option.o: libft.h
 modular_ops.o: rsa_math.h
 cmd_genrsa.o: commands.h options.h libft.h rsa_math.h rsa.h base64.h
 parse_rsa_key.o: base64.h libft.h rsa.h
-cmd_rsautl.o: commands.h options.h libft.h rsa.h
+cmd_rsautl.o: commands.h options.h libft.h rsa.h readfile.h rsa_math.h
 prime.o: libft.h rsa_math.h
 rsa_hexdump.o: libft.h
 %.o: %.c

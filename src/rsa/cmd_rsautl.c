@@ -6,13 +6,14 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 15:11:34 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/04 14:20:28 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/06 17:38:57 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "commands.h"
 #include "rsa.h"
 #include "readfile.h"
+#include "rsa_math.h"
 
 static int	parse_options(const t_command *cmd, t_cmdopt *opt,
 		t_rsa_key *key, int *outfd)
@@ -32,7 +33,7 @@ static int	parse_options(const t_command *cmd, t_cmdopt *opt,
 }
 
 static int	get_input(uint64_t *input, t_cmdopt *opt,
-		t_rsa_key *key, const char *cmd)
+		t_rsa_key *key, const t_command *cmd)
 {
 	int			rd;
 	int			skip;
@@ -41,7 +42,7 @@ static int	get_input(uint64_t *input, t_cmdopt *opt,
 	*input = 0;
 	if ((rd = readfile(opt[RSAUTL_IN].value, (char *)rsabuf, RSABUF_SIZE)) < 0)
 	{
-		print_readfile_error(cmd, opt[RSAUTL_IN].value
+		print_readfile_error(cmd->name, opt[RSAUTL_IN].value
 			? opt[RSAUTL_IN].value : "stdin");
 		return (1);
 	}
@@ -52,24 +53,37 @@ static int	get_input(uint64_t *input, t_cmdopt *opt,
 	ft_memswap((void *)input, sizeof(uint64_t));
 	if (rd > (int)sizeof(uint64_t) || *input >= key->n)
 		return (!!ft_dprintf(2,
-			"ft_ssl: %s: data greater than mod len\n", cmd));
+			"ft_ssl: %s: data greater than mod len\n", cmd->name));
 	if (opt[RSAUTL_ENCRYPT].is_set && rd < (int)sizeof(uint64_t))
 		return (!!ft_dprintf(2,
-			"ft_ssl: %s: data too small for key size\n", cmd));
+			"ft_ssl: %s: data too small for key size\n", cmd->name));
 	return (0);
 }
 
 int			cmd_rsautl(const t_command *cmd, t_cmdopt *opt, char **args)
 {
-	uint64_t	input;
-	int			outfd;
+	int			fd;
+	int			ret;
 	t_rsa_key	key;
+	uint64_t	out;
+	uint64_t	in;
 
 	(void)args;
-	outfd = 1;
-	if (parse_options(cmd, opt, &key, &outfd))
-		return (1);
-	if (get_input(&input, opt, &key, cmd->name))
-		return (1);
-	return (0);
+	fd = 1;
+	ret = parse_options(cmd, opt, &key, &fd) || get_input(&in, opt, &key, cmd);
+	if (!ret)
+	{
+		if (opt[RSAUTL_ENCRYPT].is_set)
+			out = modexp((uint128_t)in, (uint128_t)key.e, (uint128_t)key.n);
+		else
+			out = modexp((uint128_t)in, (uint128_t)key.d, (uint128_t)key.n);
+		ft_memswap((void *)&out, sizeof(uint64_t));
+		if (opt[RSAUTL_HEXDUMP].is_set)
+			rsa_hexdump(fd, (uint8_t *)&out, sizeof(uint64_t));
+		else
+			write(fd, (void *)&out, sizeof(uint64_t));
+	}
+	if (fd > 1)
+		close(fd);
+	return (ret);
 }
