@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 17:36:51 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/07 19:02:09 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/07 19:04:13 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	read_key(uint8_t derkey[KEY_MAXLEN], int fd,
 	line = NULL;
 	footer = is_pub ? END_PUB : END_PRIV;
 	footer_len = is_pub ? END_PUB_LEN : END_PRIV_LEN;
-	while (footer && !ret && (ret = get_next_line(fd, &line)) > 0)
+	while (!ret && (ret = get_next_line(fd, &line)) > 0)
 	{
 		ret = ft_strlen(line);
 		if (ret == footer_len && !ft_strcmp(footer, line))
