@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/04 13:19:34 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/09 12:51:32 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,15 @@
 # define END_PRIV			"-----END RSA PRIVATE KEY-----"
 # define BEGIN_PUB			"-----BEGIN PUBLIC KEY-----"
 # define END_PUB			"-----END PUBLIC KEY-----"
+# define PROC_TYPE			"Proc-Type: 4,ENCRYPTED"
+# define DEK_INFO			"DEK-Info: DES-CBC,"
 # define BEGIN_PRIV_LEN		(MC_STRLEN(BEGIN_PRIV))
 # define END_PRIV_LEN		(MC_STRLEN(END_PRIV))
 # define BEGIN_PUB_LEN		(MC_STRLEN(BEGIN_PUB))
 # define END_PUB_LEN		(MC_STRLEN(END_PUB))
+# define PROC_TYPE_LEN		(MC_STRLEN(PROC_TYPE))
+# define DEK_INFO_LEN		(MC_STRLEN(DEK_INFO))
+# define IV_LEN				16
 # define RSABUF_SIZE		(8+1)
 
 /*
@@ -42,6 +47,9 @@
 ** exp1: d mod (p -1)
 ** exp2: d mod (q -1)
 ** coeff: modinv(q, p)
+** is_pub: boolean, the key is public if true
+** is_enc: boolean, the key is encrypted if true
+** iv: is the initialization vector and the salt for encrypted keys
 */
 
 typedef struct	s_rsa_key
@@ -54,6 +62,9 @@ typedef struct	s_rsa_key
 	uint64_t	exp1;
 	uint64_t	exp2;
 	uint64_t	coeff;
+	int			is_pub;
+	int			is_enc;
+	uint64_t	iv;
 }				t_rsa_key;
 
 void		der_encode_uint64(uint8_t *derkey, uint8_t *len, uint64_t n);
@@ -61,10 +72,8 @@ uint64_t	*der_decode(uint8_t *derkey, uint8_t *i,
 	uint8_t len, uint64_t *dst);
 int			print_rsa_key(int fd, t_rsa_key *key);
 int			rsa_keygen(t_rsa_key *key);
-int			parse_rsa_key(t_rsa_key *key, const char *inkey,
-	int is_pub, const char *cmd);
-int			parse_der_key(t_rsa_key *key, uint8_t *derkey,
-	uint8_t len, int is_pub);
+int			parse_rsa_key(t_rsa_key *key, const char *inkey, const char *cmd);
+int			parse_der_key(t_rsa_key *key, uint8_t *derkey, uint8_t len);
 void		rsa_hexdump(int fd, uint8_t *data, size_t len);
 
 #endif

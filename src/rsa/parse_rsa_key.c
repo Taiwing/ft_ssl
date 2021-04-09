@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 17:36:51 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/07 19:04:13 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/09 13:32:50 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "base64.h"
 #include "libft.h"
 #include "rsa.h"
+#include "cmd_des_utils.h"
 
 static void	flush_gnl(int fd)
 {
@@ -43,8 +44,29 @@ static int	read_base64(uint8_t derkey[KEY_MAXLEN], int *len,
 	return (0);
 }
 
+static int	check_encryption_headers(t_rsa_key *key, int fd, char **line,
+	const char *cmd)
+{
+	int	ret;
+
+	if (!(ret = get_next_line(fd, line) <= 0)
+		&& ft_strlen(*line) == PROC_TYPE_LEN && !ft_strcmp(PROC_TYPE, *line))
+	{
+		key->is_enc = 1;
+		ft_memdel((void *)line);
+		if ((ret = get_next_line(fd, line) <= 0)
+			|| ft_strlen(*line) != DEK_INFO_LEN + IV_LEN
+			|| ft_strncmp(DEK_INFO, *line, DEK_INFO_LEN)
+			|| parse_hex(&key->iv, *line + DEK_INFO_LEN, cmd))
+			ret = !!ft_dprintf(2,
+				"ft_ssl: %s: invalid encryption headers\n", cmd);
+		ft_memdel((void *)line);
+	}
+	return (ret);
+}
+
 static int	read_key(uint8_t derkey[KEY_MAXLEN], int fd,
-	const char *cmd, int is_pub)
+	const char *cmd, t_rsa_key *key)
 {
 	char	*line;
 	char	*footer;
@@ -52,12 +74,12 @@ static int	read_key(uint8_t derkey[KEY_MAXLEN], int fd,
 	int		ret;
 	int		footer_len;
 
-	len = 0;
-	ret = 0;
+	footer = key->is_pub ? END_PUB : END_PRIV;
+	footer_len = key->is_pub ? END_PUB_LEN : END_PRIV_LEN;
 	line = NULL;
-	footer = is_pub ? END_PUB : END_PRIV;
-	footer_len = is_pub ? END_PUB_LEN : END_PRIV_LEN;
-	while (!ret && (ret = get_next_line(fd, &line)) > 0)
+	len = 0;
+	ret = check_encryption_headers(key, fd, &line, cmd);
+	while (!ret && (line || (ret = get_next_line(fd, &line)) > 0))
 	{
 		ret = ft_strlen(line);
 		if (ret == footer_len && !ft_strcmp(footer, line))
@@ -94,8 +116,10 @@ static int	check_header(int fd, int is_pub)
 	return (ret < 0 ? -1 : ret != len);
 }
 
+//TODO: parse encryption headers and get IV to decrypt data with des
+//before using parse_der_key (IV is also the salt)
 int			parse_rsa_key(t_rsa_key *key, const char *inkey,
-	int is_pub, const char *cmd)
+	const char *cmd)
 {
 	int		fd;
 	int		ret;
@@ -105,16 +129,16 @@ int			parse_rsa_key(t_rsa_key *key, const char *inkey,
 	len = 0;
 	if ((fd = open(inkey, O_RDONLY)) < 0)
 		return (1);
-	if ((ret = check_header(fd, is_pub)) < 0)
+	if ((ret = check_header(fd, key->is_pub)) < 0)
 		return (!!ft_dprintf(2, "ft_ssl: %s: get_next_line error\n", cmd));
 	else if (ret)
 		return (!!ft_dprintf(2, "ft_ssl: %s: invalid header\n", cmd));
-	else if (!ret && (ret = read_key(derkey, fd, cmd, is_pub)) < 0)
+	else if (!ret && (ret = read_key(derkey, fd, cmd, key)) < 0)
 		return (1);
 	else
 	{
 		len = (uint8_t)ret;
-		ret = parse_der_key(key, derkey, len, is_pub);
+		ret = parse_der_key(key, derkey, len);
 	}
 	return (ret);
 }

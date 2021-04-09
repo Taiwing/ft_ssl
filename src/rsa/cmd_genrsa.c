@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 23:59:02 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/03 16:17:26 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/09 12:22:29 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,17 @@ uint64_t	*der_decode(uint8_t *derkey, uint8_t *i, uint8_t len, uint64_t *dst)
 	return (dst);
 }
 
-int			parse_der_key(t_rsa_key *key, uint8_t *derkey,
-	uint8_t len, int is_pub)
+int			parse_der_key(t_rsa_key *key, uint8_t *derkey, uint8_t len)
 {
 	uint8_t		i;
 	int			ret;
+	int			is_pub;
 	uint64_t	version;
 
 	i = 0;
 	ret = 0;
 	version = 0;
+	is_pub = key->is_pub;
 	if (!derkey || !len || derkey[i++] != 0x30
 		|| i >= len || derkey[i++] != len - 2)
 		ret = 1;
