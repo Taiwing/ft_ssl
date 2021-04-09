@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:28:24 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/06 17:45:34 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/09 14:22:34 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,8 @@ enum e_rsautl_option_codes {
 	RSAUTL_ENCRYPT,
 	RSAUTL_DECRYPT,
 	RSAUTL_HEXDUMP,
-	RSAUTL_RAW
+	RSAUTL_RAW,
+	RSAUTL_PASSIN
 };
 
 /*

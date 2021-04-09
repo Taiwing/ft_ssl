@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 17:36:51 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/09 13:32:50 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/09 16:20:35 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ static void	flush_gnl(int fd)
 	if (get_next_line(fd, &line) > 0)
 	{
 		ft_memdel((void *)&line);
-		close(fd);
+		if (fd > 0)
+			close(fd);
 		get_next_line(fd, &line);
 	}
 }
@@ -116,8 +117,6 @@ static int	check_header(int fd, int is_pub)
 	return (ret < 0 ? -1 : ret != len);
 }
 
-//TODO: parse encryption headers and get IV to decrypt data with des
-//before using parse_der_key (IV is also the salt)
 int			parse_rsa_key(t_rsa_key *key, const char *inkey,
 	const char *cmd)
 {
@@ -127,7 +126,7 @@ int			parse_rsa_key(t_rsa_key *key, const char *inkey,
 	uint8_t	derkey[KEY_MAXLEN];
 
 	len = 0;
-	if ((fd = open(inkey, O_RDONLY)) < 0)
+	if ((fd = inkey ? open(inkey, O_RDONLY) : 0) < 0)
 		return (1);
 	if ((ret = check_header(fd, key->is_pub)) < 0)
 		return (!!ft_dprintf(2, "ft_ssl: %s: get_next_line error\n", cmd));
