@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 17:36:51 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/09 16:20:35 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/09 17:08:15 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "base64.h"
 #include "libft.h"
 #include "rsa.h"
-#include "cmd_des_utils.h"
 
 static void	flush_gnl(int fd)
 {
@@ -43,27 +42,6 @@ static int	read_base64(uint8_t derkey[KEY_MAXLEN], int *len,
 	}
 	*len += base64_decrypt(derkey + *len, line, valid, 0);
 	return (0);
-}
-
-static int	check_encryption_headers(t_rsa_key *key, int fd, char **line,
-	const char *cmd)
-{
-	int	ret;
-
-	if (!(ret = get_next_line(fd, line) <= 0)
-		&& ft_strlen(*line) == PROC_TYPE_LEN && !ft_strcmp(PROC_TYPE, *line))
-	{
-		key->is_enc = 1;
-		ft_memdel((void *)line);
-		if ((ret = get_next_line(fd, line) <= 0)
-			|| ft_strlen(*line) != DEK_INFO_LEN + IV_LEN
-			|| ft_strncmp(DEK_INFO, *line, DEK_INFO_LEN)
-			|| parse_hex(&key->iv, *line + DEK_INFO_LEN, cmd))
-			ret = !!ft_dprintf(2,
-				"ft_ssl: %s: invalid encryption headers\n", cmd);
-		ft_memdel((void *)line);
-	}
-	return (ret);
 }
 
 static int	read_key(uint8_t derkey[KEY_MAXLEN], int fd,
@@ -94,27 +72,6 @@ static int	read_key(uint8_t derkey[KEY_MAXLEN], int fd,
 	else if (ret)
 		flush_gnl(fd);
 	return (footer || ret < 0 ? -1 : len);
-}
-
-static int	check_header(int fd, int is_pub)
-{
-	int			ret;
-	int			len;
-	char		*line;
-	char		*header;
-
-	ret = 0;
-	line = NULL;
-	header = is_pub ? BEGIN_PUB : BEGIN_PRIV;
-	len = is_pub ? BEGIN_PUB_LEN : BEGIN_PRIV_LEN;
-	while (!ret && (ret = get_next_line(fd, &line)) > 0)
-	{
-		ret = ft_strlen(line);
-		if (ret != len || ft_strcmp(header, line))
-			ret = 0;
-		ft_memdel((void *)&line);
-	}
-	return (ret < 0 ? -1 : ret != len);
 }
 
 int			parse_rsa_key(t_rsa_key *key, const char *inkey,
