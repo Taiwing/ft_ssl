@@ -6,12 +6,14 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/09 17:06:59 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/11 13:01:18 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RSA_H
 # define RSA_H
+
+# include "des.h"
 
 # define MC_STRLEN(s)		(sizeof(s) - 1)
 
@@ -49,7 +51,7 @@
 ** coeff: modinv(q, p)
 ** is_pub: boolean, the key is public if true
 ** is_enc: boolean, the key is encrypted if true
-** iv: is the initialization vector and the salt for encrypted keys
+** des: des context if the key is encrypted
 */
 
 typedef struct	s_rsa_key
@@ -64,7 +66,7 @@ typedef struct	s_rsa_key
 	uint64_t	coeff;
 	int			is_pub;
 	int			is_enc;
-	uint64_t	iv;
+	t_des_ctx	des;
 }				t_rsa_key;
 
 void		der_encode_uint64(uint8_t *derkey, uint8_t *len, uint64_t n);
@@ -72,11 +74,15 @@ uint64_t	*der_decode(uint8_t *derkey, uint8_t *i,
 	uint8_t len, uint64_t *dst);
 int			print_rsa_key(int fd, t_rsa_key *key);
 int			rsa_keygen(t_rsa_key *key);
-int			parse_rsa_key(t_rsa_key *key, const char *inkey, const char *cmd);
+int			parse_rsa_key(t_rsa_key *key, const char *inkey,
+	const char *cmd, const char *passin);
 int			parse_der_key(t_rsa_key *key, uint8_t *derkey, uint8_t len);
 void		rsa_hexdump(int fd, uint8_t *data, size_t len);
 int			check_header(int fd, int is_pub);
 int			check_encryption_headers(t_rsa_key *key, int fd, char **line,
 	const char *cmd);
+int			rsa_des_getkey(t_rsa_key *key, const char *passin, const char *cmd);
+int			rsa_des_decrypt(uint8_t derkey[KEY_MAXLEN], uint8_t len,
+	t_rsa_key *key, const char *cmd);
 
 #endif

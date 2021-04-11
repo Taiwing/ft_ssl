@@ -46,6 +46,7 @@ CMDFC			=	debug.c\
 					output_option.c\
 
 RSAC			=	parse_rsa_key_headers.c\
+					rsa_des.c\
 					get_rand.c\
 					modular_ops.c\
 					cmd_genrsa.c\
@@ -103,12 +104,13 @@ options.o: options.h libft.h
 commands.o: commands.h options.h libft.h help.h
 internal_commands.o: commands.h options.h libft.h
 output_option.o: libft.h
-parse_rsa_key_headers.o: libft.h rsa.h cmd_des_utils.h commands.h options.h\
-	des.h
+parse_rsa_key_headers.o: libft.h rsa.h des.h cmd_des_utils.h commands.h\
+	options.h
+rsa_des.o: rsa.h des.h cmd_des_utils.h commands.h options.h libft.h
 modular_ops.o: rsa_math.h
-cmd_genrsa.o: commands.h options.h libft.h rsa_math.h rsa.h base64.h
-parse_rsa_key.o: base64.h libft.h rsa.h
-cmd_rsautl.o: commands.h options.h libft.h rsa.h readfile.h rsa_math.h
+cmd_genrsa.o: commands.h options.h libft.h rsa_math.h rsa.h des.h base64.h
+parse_rsa_key.o: base64.h libft.h rsa.h des.h
+cmd_rsautl.o: commands.h options.h libft.h rsa.h des.h readfile.h rsa_math.h
 prime.o: libft.h rsa_math.h
 rsa_hexdump.o: libft.h
 %.o: %.c

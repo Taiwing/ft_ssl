@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 23:58:22 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/05 00:36:30 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/11 12:58:59 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	des_writefile(int fd, char *buf, size_t n, t_cmdopt *opt)
 	return (write(fd, buf, n));
 }
 
-static uint64_t	exec_cypher(t_des_ctx *ctx)
+uint64_t	exec_cypher(t_des_ctx *ctx)
 {
 	uint64_t	block;
 

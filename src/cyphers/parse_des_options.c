@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 10:20:12 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/05 01:19:51 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/09 19:36:09 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,9 @@ static size_t	md_block_exec(t_md_ctx *ctx, const char *src, size_t len)
 	return (len);
 }
 
-static int		pbkdf(t_des_ctx *des_ctx, t_cmdopt *opt)
+int			pbkdf(t_des_ctx *des_ctx, const char *pass, int iv_is_set)
 {
 	t_md_ctx	md_ctx;
-	void		*pass;
 	size_t		pass_len;
 	size_t		len;
 	uint64_t	salt;
@@ -45,7 +44,6 @@ static int		pbkdf(t_des_ctx *des_ctx, t_cmdopt *opt)
 	init_registers(&md_ctx);
 	salt = des_ctx->salt;
 	ft_memswap((void *)&salt, SALT_LEN);
-	pass = opt[CC_PASSWORD].value;
 	pass_len = ft_strlen(pass);
 	len = md_block_exec(&md_ctx, pass, pass_len);
 	ft_memcpy((void *)md_ctx.buf, (void *)pass + pass_len - len, len);
@@ -55,16 +53,15 @@ static int		pbkdf(t_des_ctx *des_ctx, t_cmdopt *opt)
 		ft_memcpy((void *)md_ctx.buf, (void *)&salt + SALT_LEN - len, len);
 	add_md_padding(&md_ctx, len, (pass_len + SALT_LEN - len) * 8);
 	des_ctx->key = FLIP(*(uint64_t *)md_ctx.regs, 32);
-	if (!opt[CC_INIT_VECTOR].is_set)
+	if (!iv_is_set)
 		des_ctx->iv = FLIP(*(uint64_t *)(md_ctx.regs + 2), 32);
 	return (0);
 }
 
-static int		read_password(char *value, const char *cmd)
+int			read_des_password(char *value, const char *cmd)
 {
 	char	*pass;
 
-	(void)value;
 	ft_printf("enter %s ", cmd);
 	if (!(pass = getpass("encryption password:")))
 		return (!!ft_dprintf(2, "ft_ssl: %s: %s\n", cmd, strerror(errno)));
@@ -131,9 +128,10 @@ int				parse_des_options(t_des_ctx *ctx, const t_command *cmd,
 		return (parse_hex(&ctx->key, opt[CC_KEY].value, cmd->name));
 	if (!opt[CC_PASSWORD].value)
 	{
-		if (read_password(pass, cmd->name))
+		if (read_des_password(pass, cmd->name))
 			return (1);
 		opt[CC_PASSWORD].value = (char *)pass;
 	}
-	return (get_salty(ctx, cmd, opt) || pbkdf(ctx, opt));
+	return (get_salty(ctx, cmd, opt)
+		|| pbkdf(ctx, opt[CC_PASSWORD].value, opt[CC_INIT_VECTOR].is_set));
 }
