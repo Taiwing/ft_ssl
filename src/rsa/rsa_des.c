@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/09 19:12:40 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/11 13:39:05 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/12 16:18:43 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	rsa_des_getkey(t_rsa_key *key, const char *passin, const char *cmd)
 		return (1);
 	else if (!passin)
 		passin = passbuf;
-	return (pbkdf(&key->des, passin, 1));
+	return (pbkdf(&key->des, passin, 1, "md5"));
 }
 
 int	rsa_des_decrypt(uint8_t derkey[KEY_MAXLEN], uint8_t len,

@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 10:20:12 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/09 19:36:09 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/12 16:32:36 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,29 +32,33 @@ static size_t	md_block_exec(t_md_ctx *ctx, const char *src, size_t len)
 	return (len);
 }
 
-int			pbkdf(t_des_ctx *des_ctx, const char *pass, int iv_is_set)
+int			pbkdf(t_des_ctx *des, const char *pass,
+	int iv_is_set, const char *md_name)
 {
-	t_md_ctx	md_ctx;
-	size_t		pass_len;
+	t_md_ctx	md;
 	size_t		len;
-	uint64_t	salt;
+	size_t		pass_len;
 
-	if (init_md_context("sha256", &md_ctx))
+	if (init_md_context(md_name, &md))
 		return (1);
-	init_registers(&md_ctx);
-	salt = des_ctx->salt;
-	ft_memswap((void *)&salt, SALT_LEN);
+	init_registers(&md);
+	ft_memswap((void *)&des->salt, SALT_LEN);
 	pass_len = ft_strlen(pass);
-	len = md_block_exec(&md_ctx, pass, pass_len);
-	ft_memcpy((void *)md_ctx.buf, (void *)pass + pass_len - len, len);
-	ft_memcpy((void *)md_ctx.buf + len, (void *)&salt,
+	len = md_block_exec(&md, pass, pass_len);
+	ft_memcpy((void *)md.buf, (void *)pass + pass_len - len, len);
+	ft_memcpy((void *)md.buf + len, (void *)&des->salt,
 		len + SALT_LEN > MD_BUF_SIZE ? MD_BUF_SIZE - len : SALT_LEN);
-	if ((len = md_block_exec(&md_ctx, NULL, len + SALT_LEN)) < SALT_LEN)
-		ft_memcpy((void *)md_ctx.buf, (void *)&salt + SALT_LEN - len, len);
-	add_md_padding(&md_ctx, len, (pass_len + SALT_LEN - len) * 8);
-	des_ctx->key = FLIP(*(uint64_t *)md_ctx.regs, 32);
+	if ((len = md_block_exec(&md, NULL, len + SALT_LEN)) < SALT_LEN)
+		ft_memcpy((void *)md.buf, (void *)&des->salt + SALT_LEN - len, len);
+	add_md_padding(&md, len, (pass_len + SALT_LEN - len) * 8);
+	des->key = md.is_be ? FLIP(*(uint64_t *)md.regs, 32) : *(uint64_t *)md.regs;
 	if (!iv_is_set)
-		des_ctx->iv = FLIP(*(uint64_t *)(md_ctx.regs + 2), 32);
+		des->iv = md.is_be ? FLIP(*(uint64_t *)(md.regs + 2), 32)
+			: *(uint64_t *)(md.regs + 2);
+	if (!md.is_be)
+		ft_memswap((void *)&des->key, sizeof(uint64_t));
+	if (!md.is_be && !iv_is_set)
+		ft_memswap((void *)&des->iv, sizeof(uint64_t));
 	return (0);
 }
 
@@ -132,6 +136,6 @@ int				parse_des_options(t_des_ctx *ctx, const t_command *cmd,
 			return (1);
 		opt[CC_PASSWORD].value = (char *)pass;
 	}
-	return (get_salty(ctx, cmd, opt)
-		|| pbkdf(ctx, opt[CC_PASSWORD].value, opt[CC_INIT_VECTOR].is_set));
+	return (get_salty(ctx, cmd, opt) || pbkdf(ctx, opt[CC_PASSWORD].value,
+		opt[CC_INIT_VECTOR].is_set, "sha256"));
 }
