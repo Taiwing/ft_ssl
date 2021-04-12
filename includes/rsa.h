@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/12 17:53:22 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/12 18:12:56 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,11 @@
 # define DEK_INFO_LEN		(MC_STRLEN(DEK_INFO))
 # define IV_LEN				16
 # define RSABUF_SIZE		(8+1)
+
+# define RETARDED_OPENSSL_PASSWORD_MODE_IS_ON
+# define RETARDED_PREFIX		"pass:"
+# define RETARDED_PREFIX_LEN	(MC_STRLEN(RETARDED_PREFIX))
+# define MIN_PASSLEN			4
 
 /*
 ** s_rsa_key: rsa key structure (represent private and public key)

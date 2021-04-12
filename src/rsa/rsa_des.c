@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/09 19:12:40 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/12 17:58:38 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/12 18:29:46 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,21 @@ int	rsa_des_getkey(t_rsa_key *key, const char *passin,
 {
 	char	passbuf[_SC_PASS_MAX + 1];
 
+	if (passin)
+	{
+#ifdef RETARDED_OPENSSL_PASSWORD_MODE_IS_ON
+		if (ft_strncmp("pass:", passin, RETARDED_PREFIX_LEN))
+			return (!!ft_dprintf(2, "ft_ssl: %s: Invalid password argument "
+				"\"%s\"\n", cmd, passin));
+		passin += RETARDED_PREFIX_LEN;
+#endif
+		if (ft_strlen(passin) < MIN_PASSLEN && passin[0])
+			return (!!ft_dprintf(2, "ft_ssl: %s: password too small (you must "
+				"type in %d to %d characters)\n",
+				cmd, MIN_PASSLEN, _SC_PASS_MAX));
+		else if (!passin[0])
+			passin = NULL;
+	}
 	if (!passin)
 	{
 		ft_printf("Enter pass phrase for %s:", inkey);
