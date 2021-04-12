@@ -6,18 +6,21 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/09 19:12:40 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/12 17:11:01 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/12 17:51:41 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rsa.h"
 #include "cmd_des_utils.h"
 
-int	rsa_des_getkey(t_rsa_key *key, const char *passin, const char *cmd)
+int	rsa_des_getkey(t_rsa_key *key, const char *passin,
+	const char *cmd, const char *inkey)
 {
 	char	passbuf[_SC_PASS_MAX + 1];
 
-	if (!passin && read_des_password(passbuf, cmd))
+	if (!passin)
+		ft_printf("Enter pass phrase for %s:", inkey);
+	if (!passin && read_des_password(passbuf, cmd, 0, 0))
 		return (1);
 	else if (!passin)
 		passin = passbuf;
