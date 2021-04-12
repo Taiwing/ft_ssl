@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/09 19:12:40 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/12 17:51:41 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/12 17:58:38 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,12 @@ int	rsa_des_getkey(t_rsa_key *key, const char *passin,
 	char	passbuf[_SC_PASS_MAX + 1];
 
 	if (!passin)
+	{
 		ft_printf("Enter pass phrase for %s:", inkey);
-	if (!passin && read_des_password(passbuf, cmd, 0, 0))
-		return (1);
-	else if (!passin)
+		if (read_des_password(passbuf, cmd, 0, 0))
+			return (1);
 		passin = passbuf;
+	}
 	return (pbkdf(&key->des, passin, 1, "md5"));
 }
 
