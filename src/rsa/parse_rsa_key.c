@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 17:36:51 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/12 15:53:11 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/12 17:03:25 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int			parse_rsa_key(t_rsa_key *key, const char *inkey,
 		if (key->is_enc)
 		{ //TEMP
 			ret = rsa_des_getkey(key, passin, cmd)
-				|| rsa_des_decrypt(derkey, len, key, cmd);
+				|| rsa_des_decrypt(derkey, &len, key, cmd);
 			ft_dprintf(2, "des key: %016llX\n", key->des.key); //TEMP
 		} //TEMP
 		ft_dprintf(2, "\nafter:\n"); //TEMP
