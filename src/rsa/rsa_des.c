@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/09 19:12:40 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 16:38:41 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 18:38:07 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ const char	*rsa_check_pass(const char *pass, const char *cmd)
 	return (pass);
 }
 
-int	rsa_des_getkey(t_rsa_key *key, const char *pass,
-	const char *cmd, const char *inkey)
+int			rsa_des_getkey(t_rsa_key *key, const char *cmd, t_des_getkey *gk)
 {
-	char	passbuf[_SC_PASS_MAX + 1];
+	char		passbuf[_SC_PASS_MAX + 1];
+	const char	*pass;
 
-	if (!(pass = rsa_check_pass(pass, cmd)))
+	if (!(pass = rsa_check_pass(gk->pass, cmd)))
 	{
-		if (read_des_password(passbuf, cmd, 1, !!inkey))
+		if (read_des_password(passbuf, cmd, gk))
 			return (1);
 		pass = passbuf;
 	}

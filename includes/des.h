@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:23:37 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/05 01:54:35 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 18:39:15 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,26 @@ uint64_t		des_sbox(uint64_t x);
 uint64_t		des_permute(uint64_t x, const t_des_const *p);
 uint64_t		des_f(uint64_t x, uint64_t key);
 uint64_t		des(t_des_ctx *ctx);
+
+/*
+** s_des_getkey: is used for rsa_des_getkey
+**
+** inkey: name of the key file if any
+** pass: pass argument if any
+** arg: argument for printf fmt string
+** prompt: printf format string for prompt
+** verify: boolean indicating if there is a double prompt
+**
+** note: prompt cant be NULL (use "" instead)
+*/
+
+typedef struct	s_des_getkey
+{
+	const char	*inkey;
+	const char	*pass;
+	const char	*arg;
+	const char	*prompt;
+	int			verify;
+}				t_des_getkey;
 
 #endif

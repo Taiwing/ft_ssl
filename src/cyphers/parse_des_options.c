@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 10:20:12 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 14:52:26 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 18:37:43 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,12 @@ int			pbkdf(t_des_ctx *des, const char *pass,
 	return (0);
 }
 
-int			read_des_password(char *value, const char *cmd,
-	int prompt, int verify)
+int			read_des_password(char *value, const char *cmd, t_des_getkey *gk)
 {
 	char	*pass;
 
-	prompt = verify ? 1 : prompt;
-	if (prompt)
-		ft_dprintf(2, "enter %s ", cmd);
-	if (!(pass = getpass(prompt ? "encryption password:" : "")))
+	ft_dprintf(2, gk->prompt, gk->arg);
+	if (!(pass = getpass("")))
 		return (!!ft_dprintf(2, "ft_ssl: %s: %s\n", cmd, strerror(errno)));
 	ft_strncpy(value, pass, _SC_PASS_MAX);
 	value[_SC_PASS_MAX] = 0;
@@ -78,11 +75,12 @@ int			read_des_password(char *value, const char *cmd,
 		ft_dprintf(2, "ft_ssl: %s: warning: the password can't be longer than "
 			"%d characters\n\t(any character above this limit will be "
 			"discarded)\n", cmd, _SC_PASS_MAX);
-	if (verify)
+	if (gk->verify)
 	{
-		ft_dprintf(2, "Verifying - enter %s ", cmd);
+		ft_dprintf(2, "Verifying - ");
+		ft_dprintf(2, gk->prompt, gk->arg);
 		ft_bzero((void *)pass, ft_strlen(pass));
-		if (!(pass = getpass("encryption password:")))
+		if (!(pass = getpass("")))
 			return (!!ft_dprintf(2, "ft_ssl: %s: %s\n", cmd, strerror(errno)));
 		if (ft_strncmp(value, pass, _SC_PASS_MAX))
 			return (!!ft_dprintf(2, "ft_ssl: %s: passwords dont match\n", cmd));
@@ -122,7 +120,8 @@ int				parse_hex(uint64_t *value, const char *str, const char *cmd)
 int				parse_des_options(t_des_ctx *ctx, const t_command *cmd,
 	t_cmdopt *opt)
 {
-	char	pass[_SC_PASS_MAX + 1];
+	t_des_getkey	gk = { 0, 0, 0, "enter des encryption password:", 1 };
+	char			pass[_SC_PASS_MAX + 1];
 
 	opt[CC_PASSWORD].is_set = !opt[CC_KEY].is_set;
 	opt[CC_ENCRYPT].is_set = !opt[CC_DECRYPT].is_set
@@ -138,7 +137,7 @@ int				parse_des_options(t_des_ctx *ctx, const t_command *cmd,
 		return (parse_hex(&ctx->key, opt[CC_KEY].value, cmd->name));
 	if (!opt[CC_PASSWORD].value)
 	{
-		if (read_des_password(pass, cmd->name, 1, 1))
+		if (read_des_password(pass, cmd->name, &gk))
 			return (1);
 		opt[CC_PASSWORD].value = (char *)pass;
 	}

@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 23:59:02 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 17:15:45 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 18:40:48 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include "base64.h"
 
 int			print_rsa_key(int fd, t_rsa_key *key,
-	const char *passout, const char *cmd)
+	const char *cmd, t_des_getkey *gk)
 {
 	int		ret;
 	uint8_t	len;
@@ -28,7 +28,7 @@ int			print_rsa_key(int fd, t_rsa_key *key,
 	if (!key->is_pub && key->is_enc)
 	{
 		if (!get_rand(&key->des.salt, 0, UINT64_MAX)
-			|| rsa_des_getkey(key, passout, cmd, NULL))
+			|| rsa_des_getkey(key, cmd, gk))
 			return (1);
 		ft_memswap((void *)&key->des.salt, sizeof(uint64_t));
 		key->des.process_block = des_cbc;
@@ -75,15 +75,25 @@ int			rsa_keygen(t_rsa_key *key)
 	return (!key->coeff || gcd != 1);
 }
 
+static void	genrsa_init_getkey(t_des_getkey *gk, t_cmdopt *opt)
+{
+	ft_bzero((void *)gk, sizeof(t_des_getkey));
+	gk->pass = opt[GENRSA_PASSOUT].value;
+	gk->prompt = "Enter pass phrase:";
+	gk->verify = 1;
+}
+
 int			cmd_genrsa(const t_command *cmd, t_cmdopt *opt, char **args)
 {
-	int			outfd;
-	int			ret;
-	t_rsa_key	key;
+	int				outfd;
+	int				ret;
+	t_rsa_key		key;
+	t_des_getkey	gk;
 
 	(void)args;
 	ret = 0;
 	outfd = 1;
+	genrsa_init_getkey(&gk, opt);
 	if (opt[GENRSA_INPUT].is_set && !fill_rand_buf(opt[GENRSA_INPUT].value, 0))
 		return (!!ft_dprintf(2, "ft_ssl: %s: %s: %s\n",
 			cmd->name, opt[GENRSA_INPUT].value, strerror(errno)));
@@ -93,8 +103,7 @@ int			cmd_genrsa(const t_command *cmd, t_cmdopt *opt, char **args)
 	if (!ret && (ret = rsa_keygen(&key)))
 		ft_dprintf(2, "ft_ssl: %s: failed to generate key\n", cmd->name);
 	key.is_enc = opt[GENRSA_DES].is_set;
-	if (!ret && (ret = print_rsa_key(outfd, &key,
-		opt[GENRSA_PASSOUT].value, cmd->name)))
+	if (!ret && (ret = print_rsa_key(outfd, &key, cmd->name, &gk)))
 		ft_dprintf(2, "ft_ssl: %s: failed to print key\n", cmd->name);
 	if (outfd > 1)
 		close(outfd);

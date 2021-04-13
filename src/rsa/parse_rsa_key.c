@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 17:36:51 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 16:46:37 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 18:40:28 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,7 @@ static int	read_key(uint8_t der[KEY_BUFLEN], int fd,
 	return (footer || ret < 0 ? -1 : len);
 }
 
-int			parse_rsa_key(t_rsa_key *key, const char *inkey,
-	const char *cmd, const char *passin)
+int			parse_rsa_key(t_rsa_key *key, const char *cmd, t_des_getkey *gk)
 {
 	int		fd;
 	int		ret;
@@ -83,7 +82,7 @@ int			parse_rsa_key(t_rsa_key *key, const char *inkey,
 	uint8_t	der[KEY_BUFLEN];
 
 	len = 0;
-	if ((fd = inkey ? open(inkey, O_RDONLY) : 0) < 0)
+	if ((fd = gk->inkey ? open(gk->inkey, O_RDONLY) : 0) < 0)
 		return (1);
 	if ((ret = check_header(fd, key->is_pub)) < 0)
 		return (!!ft_dprintf(2, "ft_ssl: %s: get_next_line error\n", cmd));
@@ -96,7 +95,7 @@ int			parse_rsa_key(t_rsa_key *key, const char *inkey,
 		len = (uint8_t)ret;
 		ret = 0;
 		if (key->is_enc)
-			ret = rsa_des_getkey(key, passin, cmd, inkey)
+			ret = rsa_des_getkey(key, cmd, gk)
 				|| rsa_des_decrypt(der, &len, key, cmd);
 		if (!ret)
 			ret = parse_der_key(key, der, len);
