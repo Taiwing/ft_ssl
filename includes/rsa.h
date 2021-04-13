@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 10:43:04 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 10:59:17 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 # define E_VALUE			0x00010001
 # define KEY_BUFLEN			128
-# define RSA_DER_INT_MAXLEN	65
+# define RSA_DER_INT_MAXLEN	9
 # define BEGIN_PRIV			"-----BEGIN RSA PRIVATE KEY-----"
 # define END_PRIV			"-----END RSA PRIVATE KEY-----"
 # define BEGIN_PUB			"-----BEGIN PUBLIC KEY-----"
