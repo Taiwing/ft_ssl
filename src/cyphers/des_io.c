@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 23:58:22 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/11 12:58:59 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 13:12:05 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ int	des_encrypt(int outfd, t_des_ctx *ctx, t_cmdopt *opt, const char *cmd)
 	int			wr;
 	uint64_t	block;
 
-	(void)cmd;
 	wr = 1;
 	c = 0;
 	while (wr >= 0 && !c && (rd = des_readfile(opt[CC_INPUT].value,

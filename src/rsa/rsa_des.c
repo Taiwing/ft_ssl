@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/09 19:12:40 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 13:07:34 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 13:44:36 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,30 @@ int	rsa_des_decrypt(uint8_t *der, uint8_t *len,
 	padl = ((uint8_t *)&block)[sizeof(uint64_t) - 1];
 	*len -= padl < sizeof(uint64_t) ? padl : sizeof(uint64_t);
 	return (0);
+}
+
+void rsa_des_encrypt(uint8_t *der, uint8_t *len, t_rsa_key *key)
+{
+	uint64_t	*derptr;
+	uint64_t	old_len;
+	uint64_t	block;
+	int			c;
+
+	c = sizeof(uint64_t) - (*len % sizeof(uint64_t));
+	derptr = (uint64_t *)der;
+	old_len = *len;
+	*len += c;
+	while (c)
+	{
+		ft_memcpy((void *)&key->des.plaintext,
+			(void *)derptr, sizeof(uint64_t));
+		if (old_len < sizeof(uint64_t))
+		{
+			ft_memset((void *)&key->des.plaintext + old_len, c, c);
+			c = 0;
+		}
+		block = exec_cypher(&key->des);
+		*derptr++ = block;
+		old_len -= sizeof(uint64_t);
+	}
 }

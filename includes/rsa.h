@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 12:02:49 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 13:43:19 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,6 @@ int			rsa_des_getkey(t_rsa_key *key, const char *passin,
 	const char *cmd, const char *inkey);
 int			rsa_des_decrypt(uint8_t *der, uint8_t *len,
 	t_rsa_key *key, const char *cmd);
+void		rsa_des_encrypt(uint8_t *der, uint8_t *len, t_rsa_key *key);
 
 #endif
