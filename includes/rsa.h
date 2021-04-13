@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 10:28:10 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 10:43:04 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ typedef struct	s_rsa_key
 	t_des_ctx	des;
 }				t_rsa_key;
 
-uint64_t	*der_decode(uint8_t *der, uint8_t *i,
-	uint8_t len, uint64_t *dst);
+uint64_t	*der_decode_uint64(uint64_t *dst, uint8_t *der,
+	uint8_t *i, uint8_t len);
 void		der_encode_uint64(uint8_t *der, uint8_t *len, uint64_t n);
 int			parse_der_key(t_rsa_key *key, uint8_t *der, uint8_t len);
 void		encode_der_key(uint8_t *der, uint8_t *len, t_rsa_key *key);

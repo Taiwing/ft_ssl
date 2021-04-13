@@ -6,14 +6,15 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 09:41:32 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 10:27:28 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 10:46:29 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "rsa.h"
 
-uint64_t	*der_decode(uint8_t *der, uint8_t *i, uint8_t len, uint64_t *dst)
+uint64_t	*der_decode_uint64(uint64_t *dst, uint8_t *der,
+	uint8_t *i, uint8_t len)
 {
 	uint8_t	cur_len;
 
@@ -70,15 +71,15 @@ int			parse_der_key(t_rsa_key *key, uint8_t *der, uint8_t len)
 	is_pub = key->is_pub;
 	if (!der || !len || der[i++] != 0x30 || i >= len || der[i++] != len - 2)
 		ret = 1;
-	ret = !ret && !is_pub ? !der_decode(der, &i, len, &version) : ret;
-	ret = !ret ? !der_decode(der, &i, len, &key->n) : ret;
-	ret = !ret ? !der_decode(der, &i, len, &key->e) : ret;
-	ret = !ret && !is_pub ? !der_decode(der, &i, len, &key->d) : ret;
-	ret = !ret && !is_pub ? !der_decode(der, &i, len, &key->p) : ret;
-	ret = !ret && !is_pub ? !der_decode(der, &i, len, &key->q) : ret;
-	ret = !ret && !is_pub ? !der_decode(der, &i, len, &key->exp1) : ret;
-	ret = !ret && !is_pub ? !der_decode(der, &i, len, &key->exp2) : ret;
-	ret = !ret && !is_pub ? !der_decode(der, &i, len, &key->coeff) : ret;
+	ret = !ret && !is_pub ? !der_decode_uint64(&version, der, &i, len) : ret;
+	ret = !ret ? !der_decode_uint64(&key->n, der, &i, len) : ret;
+	ret = !ret ? !der_decode_uint64(&key->e, der, &i, len) : ret;
+	ret = !ret && !is_pub ? !der_decode_uint64(&key->d, der, &i, len) : ret;
+	ret = !ret && !is_pub ? !der_decode_uint64(&key->p, der, &i, len) : ret;
+	ret = !ret && !is_pub ? !der_decode_uint64(&key->q, der, &i, len) : ret;
+	ret = !ret && !is_pub ? !der_decode_uint64(&key->exp1, der, &i, len) : ret;
+	ret = !ret && !is_pub ? !der_decode_uint64(&key->exp2, der, &i, len) : ret;
+	ret = !ret && !is_pub ? !der_decode_uint64(&key->coeff, der, &i, len) : ret;
 	return (!ret && is_pub ? i != len : ret);
 }
 
