@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/12 18:12:56 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 10:19:38 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@
 # define MC_STRLEN(s)		(sizeof(s) - 1)
 
 # define E_VALUE			0x00010001
-# define PRIVKEY_MAXLEN		87
-# define PUBKEY_MAXLEN		87
-# define KEY_MAXLEN			87
 # define KEY_BUFLEN			128
 # define RSA_DER_INT_MAXLEN	65
 # define BEGIN_PRIV			"-----BEGIN RSA PRIVATE KEY-----"
@@ -74,21 +71,22 @@ typedef struct	s_rsa_key
 	t_des_ctx	des;
 }				t_rsa_key;
 
-void		der_encode_uint64(uint8_t *derkey, uint8_t *len, uint64_t n);
 uint64_t	*der_decode(uint8_t *derkey, uint8_t *i,
 	uint8_t len, uint64_t *dst);
+void		der_encode_uint64(uint8_t *derkey, uint8_t *len, uint64_t n);
+int			parse_der_key(t_rsa_key *key, uint8_t *derkey, uint8_t len);
+void		encode_der_key(uint8_t *derkey, uint8_t *len, t_rsa_key *key);
 int			print_rsa_key(int fd, t_rsa_key *key);
 int			rsa_keygen(t_rsa_key *key);
 int			parse_rsa_key(t_rsa_key *key, const char *inkey,
 	const char *cmd, const char *passin);
-int			parse_der_key(t_rsa_key *key, uint8_t *derkey, uint8_t len);
 void		rsa_hexdump(int fd, uint8_t *data, size_t len);
 int			check_header(int fd, int is_pub);
 int			check_encryption_headers(t_rsa_key *key, int fd, char **line,
 	const char *cmd);
 int			rsa_des_getkey(t_rsa_key *key, const char *passin,
 	const char *cmd, const char *inkey);
-int			rsa_des_decrypt(uint8_t derkey[KEY_MAXLEN], uint8_t *len,
+int			rsa_des_decrypt(uint8_t *derkey, uint8_t *len,
 	t_rsa_key *key, const char *cmd);
 
 #endif

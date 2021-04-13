@@ -53,6 +53,7 @@ RSAC			=	parse_rsa_key_headers.c\
 					parse_rsa_key.c\
 					cmd_rsautl.c\
 					prime.c\
+					der.c\
 					rsa_hexdump.c\
 
 ODIR			=	obj
@@ -112,6 +113,7 @@ cmd_genrsa.o: commands.h options.h libft.h rsa_math.h rsa.h des.h base64.h
 parse_rsa_key.o: base64.h libft.h rsa.h des.h
 cmd_rsautl.o: commands.h options.h libft.h rsa.h des.h readfile.h rsa_math.h
 prime.o: libft.h rsa_math.h
+der.o: libft.h rsa.h des.h
 rsa_hexdump.o: libft.h
 %.o: %.c
 	@mkdir -p $(ODIR)

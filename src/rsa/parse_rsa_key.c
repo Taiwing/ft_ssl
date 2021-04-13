@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 17:36:51 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/12 17:50:33 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 10:13:42 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ static void	flush_gnl(int fd)
 	}
 }
 
-static int	read_base64(uint8_t derkey[KEY_MAXLEN], int *len,
+static int	read_base64(uint8_t derkey[KEY_BUFLEN], int *len,
 	int ret, char *line)
 {
 	int	valid;
 
 	valid = base64_buffer_parse(line, ret);
-	if ((KEY_MAXLEN - *len) < (((valid *  3) / 4) + 3 * !!((valid * 3) % 4)))
+	if ((KEY_BUFLEN - *len) < (((valid *  3) / 4) + 3 * !!((valid * 3) % 4)))
 	{
 		ft_dprintf(2, "ft_ssl: DER key too long\n");
 		return (-1);
@@ -44,7 +44,7 @@ static int	read_base64(uint8_t derkey[KEY_MAXLEN], int *len,
 	return (0);
 }
 
-static int	read_key(uint8_t derkey[KEY_MAXLEN], int fd,
+static int	read_key(uint8_t derkey[KEY_BUFLEN], int fd,
 	const char *cmd, t_rsa_key *key)
 {
 	char	*line;
@@ -80,7 +80,7 @@ int			parse_rsa_key(t_rsa_key *key, const char *inkey,
 	int		fd;
 	int		ret;
 	uint8_t	len;
-	uint8_t	derkey[KEY_MAXLEN];
+	uint8_t	derkey[KEY_BUFLEN];
 
 	len = 0;
 	if ((fd = inkey ? open(inkey, O_RDONLY) : 0) < 0)
