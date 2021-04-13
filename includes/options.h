@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:28:24 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/09 14:22:34 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 16:47:53 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,9 @@ enum e_base64_option_codes {
 enum e_genrsa_option_codes {
 	GENRSA_HELP = 0,
 	GENRSA_INPUT,
-	GENRSA_OUTPUT
+	GENRSA_OUTPUT,
+	GENRSA_DES,
+	GENRSA_PASSOUT
 };
 
 enum e_rsa_option_codes {

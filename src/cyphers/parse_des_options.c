@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 10:20:12 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/12 17:53:46 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 14:52:26 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int			read_des_password(char *value, const char *cmd,
 
 	prompt = verify ? 1 : prompt;
 	if (prompt)
-		ft_printf("enter %s ", cmd);
+		ft_dprintf(2, "enter %s ", cmd);
 	if (!(pass = getpass(prompt ? "encryption password:" : "")))
 		return (!!ft_dprintf(2, "ft_ssl: %s: %s\n", cmd, strerror(errno)));
 	ft_strncpy(value, pass, _SC_PASS_MAX);
@@ -80,7 +80,7 @@ int			read_des_password(char *value, const char *cmd,
 			"discarded)\n", cmd, _SC_PASS_MAX);
 	if (verify)
 	{
-		ft_printf("Verifying - enter %s ", cmd);
+		ft_dprintf(2, "Verifying - enter %s ", cmd);
 		ft_bzero((void *)pass, ft_strlen(pass));
 		if (!(pass = getpass("encryption password:")))
 			return (!!ft_dprintf(2, "ft_ssl: %s: %s\n", cmd, strerror(errno)));

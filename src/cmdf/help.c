@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:27:53 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/09 14:25:15 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 16:53:57 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,10 @@ const char g_cc_help[] = "[options]\n"
 "\t-help\t\t\tprint this\n";
 
 const char g_genrsa_help[] = "[options]\n"
-"\t-i file\t\t\tno idea what this does (maybe it's supposed to be -rand...)\n"
+"\t-i file\t\t\tload the file into the random number generator\n"
 "\t-o file\t\t\toutput the key to specified file\n"
+"\t-des\t\t\tencrypt the output with DES-CBC\n"
+"\t-passout val\t\toutput file pass phrase source\n"
 "\t-help\t\t\tprint this\n";
 
 const char g_rsa_help[] = "[options]\n"
@@ -65,6 +67,6 @@ const char g_rsautl_help[] = "[options]\n"
 "\t-encrypt\t\t\tencrypt with public key\n"
 "\t-decrypt\t\t\tdecrypt with private key\n"
 "\t-hexdump\t\t\thex dump output\n"
-"\t-help\t\t\tprint this\n"
 "\t-raw\t\t\tdoes nothing (for syntaxic compatibility with openssl)\n"
-"\t-passin val\t\t\tinput file pass phrase source\n";
+"\t-passin val\t\t\tinput file pass phrase source\n"
+"\t-help\t\t\tprint this\n";

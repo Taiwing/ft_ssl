@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:28:14 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/09 14:25:29 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 16:59:16 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ const t_opt g_genrsa_options[] = {
 	{ "help", 0, NULL, GENRSA_HELP },
 	{ "i", 1, NULL, GENRSA_INPUT },
 	{ "o", 1, NULL, GENRSA_OUTPUT },
+	{ "des", 0, NULL, GENRSA_DES },
+	{ "passout", 1, NULL, GENRSA_PASSOUT },
 	{ NULL, 0, NULL, 0 }
 };
 

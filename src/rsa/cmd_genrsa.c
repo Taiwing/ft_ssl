@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 23:59:02 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 10:29:28 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 16:58:21 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,33 @@
 #include "rsa.h"
 #include "base64.h"
 
-int			print_rsa_key(int fd, t_rsa_key *key)
+int			print_rsa_key(int fd, t_rsa_key *key,
+	const char *passout, const char *cmd)
 {
 	int		ret;
 	uint8_t	len;
 	uint8_t	der[KEY_BUFLEN];
 
 	encode_der_key(der, &len, key);
-	if ((ret = ft_dprintf(fd, BEGIN_PRIV"\n")) > 0
-		&& (ret = base64_writefile(fd, (char *)der, (size_t)len, 1)) >= 0)
-		ret = ft_dprintf(fd, END_PRIV"\n");
-	return (ret <= 0);
+	if (!key->is_pub && key->is_enc)
+	{
+		if (!get_rand(&key->des.salt, 0, UINT64_MAX)
+			|| rsa_des_getkey(key, passout, cmd, NULL))
+			return (1);
+		ft_memswap((void *)&key->des.salt, sizeof(uint64_t));
+		key->des.process_block = des_cbc;
+		key->des.iv = key->des.salt;
+		key->des.reverse = 0;
+		rsa_des_encrypt(der, &len, key);
+	}
+	ret = ft_dprintf(fd, "%s\n", key->is_pub ? BEGIN_PUB : BEGIN_PRIV) <= 0;
+	if (!ret && key->is_enc)
+		ret = ft_dprintf(fd, "%s\n%s%016llX\n\n",
+			PROC_TYPE, DEK_INFO, key->des.salt) <= 0;
+	if (!ret)
+		ret = base64_writefile(fd, (char *)der, (size_t)len, 1) < 0
+			|| ft_dprintf(fd, "%s\n", key->is_pub ? END_PUB : END_PRIV) <= 0;
+	return (ret);
 }
 
 #define MAX_TRY	5
@@ -77,7 +93,9 @@ int			cmd_genrsa(const t_command *cmd, t_cmdopt *opt, char **args)
 		ret = 1;
 	if (!ret && (ret = rsa_keygen(&key)))
 		ft_dprintf(2, "ft_ssl: %s: failed to generate key\n", cmd->name);
-	if (!ret && (ret = print_rsa_key(outfd, &key)))
+	key.is_enc = opt[GENRSA_DES].is_set;
+	if (!ret && (ret = print_rsa_key(outfd, &key,
+		opt[GENRSA_PASSOUT].value, cmd->name)))
 		ft_dprintf(2, "ft_ssl: %s: failed to print key\n", cmd->name);
 	if (outfd > 1)
 		close(outfd);

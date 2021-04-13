@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 13:43:19 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 14:43:05 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ uint64_t	*der_decode_uint64(uint64_t *dst, uint8_t *der,
 void		der_encode_uint64(uint8_t *der, uint8_t *len, uint64_t n);
 int			parse_der_key(t_rsa_key *key, uint8_t *der, uint8_t len);
 void		encode_der_key(uint8_t *der, uint8_t *len, t_rsa_key *key);
-int			print_rsa_key(int fd, t_rsa_key *key);
+int			print_rsa_key(int fd, t_rsa_key *key,
+	const char *passout, const char *cmd);
 int			rsa_keygen(t_rsa_key *key);
 int			parse_rsa_key(t_rsa_key *key, const char *inkey,
 	const char *cmd, const char *passin);
