@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 09:41:32 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 10:46:29 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 12:06:43 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,23 @@ void		der_encode_uint64(uint8_t *der, uint8_t *len, uint64_t n)
 		*der++ = ptr[i];
 }
 
+static int	check_start_sequence(uint8_t *der, uint8_t *i,
+	uint8_t len, int is_pub)
+{
+	uint8_t	seqbuf[DER_SEQ_MAXLEN + 1];
+
+	ft_memcpy((void *)seqbuf, (void *)DER_SEQ, DER_SEQ_MAXLEN + 1);
+	seqbuf[DER_LEN_I] = len - (DER_LEN_I + 1);
+	seqbuf[DER_LEN_II] = len - (DER_LEN_II + 1);
+	seqbuf[DER_LEN_III] = len - (DER_LEN_III + 1);
+	if (seqbuf[DER_LEN_I] > len || (is_pub && (seqbuf[DER_LEN_II] > len
+		|| seqbuf[DER_LEN_III] > len || len <= DER_SEQ_MAXLEN)))
+		return (1);
+	*i = is_pub ? DER_SEQ_MAXLEN : DER_SEQ_MINLEN;
+	return (ft_strncmp((char *)seqbuf, (char *)der,
+		is_pub ? DER_SEQ_MAXLEN : DER_SEQ_MINLEN));
+}
+
 int			parse_der_key(t_rsa_key *key, uint8_t *der, uint8_t len)
 {
 	uint8_t		i;
@@ -65,12 +82,9 @@ int			parse_der_key(t_rsa_key *key, uint8_t *der, uint8_t len)
 	int			is_pub;
 	uint64_t	version;
 
-	i = 0;
-	ret = 0;
 	version = 0;
 	is_pub = key->is_pub;
-	if (!der || !len || der[i++] != 0x30 || i >= len || der[i++] != len - 2)
-		ret = 1;
+	ret = check_start_sequence(der, &i, len, is_pub);
 	ret = !ret && !is_pub ? !der_decode_uint64(&version, der, &i, len) : ret;
 	ret = !ret ? !der_decode_uint64(&key->n, der, &i, len) : ret;
 	ret = !ret ? !der_decode_uint64(&key->e, der, &i, len) : ret;
