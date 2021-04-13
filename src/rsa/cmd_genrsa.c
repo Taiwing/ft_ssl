@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 23:59:02 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 17:13:39 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 17:15:45 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int			print_rsa_key(int fd, t_rsa_key *key,
 		ft_memswap((void *)&key->des.salt, sizeof(uint64_t));
 		key->des.process_block = des_cbc;
 		key->des.iv = key->des.salt;
-		key->des.reverse = 0;
 		rsa_des_encrypt(der, &len, key);
 	}
 	ret = ft_dprintf(fd, "%s\n", key->is_pub ? BEGIN_PUB : BEGIN_PRIV) <= 0;
