@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/09 19:12:40 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 10:30:41 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 13:07:34 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,6 @@ int	rsa_des_decrypt(uint8_t *der, uint8_t *len,
 		*derptr++ = block;
 	}
 	padl = ((uint8_t *)&block)[sizeof(uint64_t) - 1];
-	*len -= padl ? padl : sizeof(uint64_t);
+	*len -= padl < sizeof(uint64_t) ? padl : sizeof(uint64_t);
 	return (0);
 }
