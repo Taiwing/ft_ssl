@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 17:36:51 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 10:13:42 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 10:29:58 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	flush_gnl(int fd)
 	}
 }
 
-static int	read_base64(uint8_t derkey[KEY_BUFLEN], int *len,
+static int	read_base64(uint8_t der[KEY_BUFLEN], int *len,
 	int ret, char *line)
 {
 	int	valid;
@@ -40,11 +40,11 @@ static int	read_base64(uint8_t derkey[KEY_BUFLEN], int *len,
 		ft_dprintf(2, "ft_ssl: DER key too long\n");
 		return (-1);
 	}
-	*len += base64_decrypt(derkey + *len, line, valid, 0);
+	*len += base64_decrypt(der + *len, line, valid, 0);
 	return (0);
 }
 
-static int	read_key(uint8_t derkey[KEY_BUFLEN], int fd,
+static int	read_key(uint8_t der[KEY_BUFLEN], int fd,
 	const char *cmd, t_rsa_key *key)
 {
 	char	*line;
@@ -64,7 +64,7 @@ static int	read_key(uint8_t derkey[KEY_BUFLEN], int fd,
 		if (ret == footer_len && !ft_strcmp(footer, line))
 			footer = NULL;
 		else
-			ret = read_base64(derkey, &len, ret, line);
+			ret = read_base64(der, &len, ret, line);
 		ft_memdel((void *)&line);
 	}
 	if (footer)
@@ -80,7 +80,7 @@ int			parse_rsa_key(t_rsa_key *key, const char *inkey,
 	int		fd;
 	int		ret;
 	uint8_t	len;
-	uint8_t	derkey[KEY_BUFLEN];
+	uint8_t	der[KEY_BUFLEN];
 
 	len = 0;
 	if ((fd = inkey ? open(inkey, O_RDONLY) : 0) < 0)
@@ -89,7 +89,7 @@ int			parse_rsa_key(t_rsa_key *key, const char *inkey,
 		return (!!ft_dprintf(2, "ft_ssl: %s: get_next_line error\n", cmd));
 	else if (ret)
 		return (!!ft_dprintf(2, "ft_ssl: %s: invalid header\n", cmd));
-	else if (!ret && (ret = read_key(derkey, fd, cmd, key)) < 0)
+	else if (!ret && (ret = read_key(der, fd, cmd, key)) < 0)
 		return (1);
 	else
 	{
@@ -97,9 +97,9 @@ int			parse_rsa_key(t_rsa_key *key, const char *inkey,
 		ret = 0;
 		if (key->is_enc)
 			ret = rsa_des_getkey(key, passin, cmd, inkey)
-				|| rsa_des_decrypt(derkey, &len, key, cmd);
+				|| rsa_des_decrypt(der, &len, key, cmd);
 		if (!ret)
-			ret = parse_der_key(key, derkey, len);
+			ret = parse_der_key(key, der, len);
 	}
 	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/09 19:12:40 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 10:16:41 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 10:30:41 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	rsa_des_getkey(t_rsa_key *key, const char *passin,
 	return (pbkdf(&key->des, passin, 1, "md5"));
 }
 
-int	rsa_des_decrypt(uint8_t *derkey, uint8_t *len,
+int	rsa_des_decrypt(uint8_t *der, uint8_t *len,
 	t_rsa_key *key, const char *cmd)
 {
 	uint64_t	*derptr;
@@ -55,7 +55,7 @@ int	rsa_des_decrypt(uint8_t *derkey, uint8_t *len,
 	if (!old_len || old_len % sizeof(uint64_t))
 		return (!!ft_dprintf(2, "\nft_ssl: %s: error: incomplete %u bytes"
 			" input block\n", cmd, sizeof(uint64_t)));
-	derptr = (uint64_t *)derkey;
+	derptr = (uint64_t *)der;
 	old_len /= sizeof(uint64_t);
 	des_keygen(&key->des);
 	while (old_len--)

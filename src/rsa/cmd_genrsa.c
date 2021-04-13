@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 23:59:02 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 10:05:28 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/13 10:29:28 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ int			print_rsa_key(int fd, t_rsa_key *key)
 {
 	int		ret;
 	uint8_t	len;
-	uint8_t	derkey[KEY_BUFLEN];
+	uint8_t	der[KEY_BUFLEN];
 
-	encode_der_key(derkey, &len, key);
+	encode_der_key(der, &len, key);
 	if ((ret = ft_dprintf(fd, BEGIN_PRIV"\n")) > 0
-		&& (ret = base64_writefile(fd, (char *)derkey, (size_t)len, 1)) >= 0)
+		&& (ret = base64_writefile(fd, (char *)der, (size_t)len, 1)) >= 0)
 		ret = ft_dprintf(fd, END_PRIV"\n");
 	return (ret <= 0);
 }
