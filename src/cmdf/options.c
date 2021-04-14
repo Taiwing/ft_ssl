@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:28:14 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 16:59:16 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/14 12:05:13 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,14 @@ const t_opt g_rsa_options[] = {
 	{ "check", 0, NULL, RSA_CHECK },
 	{ "pubin", 0, NULL, RSA_PUBIN },
 	{ "pubout", 0, NULL, RSA_PUBOUT },
+	{ "n", 1, NULL, RSA_N },
+	{ "e", 1, NULL, RSA_E },
+	{ "d", 1, NULL, RSA_D },
+	{ "p", 1, NULL, RSA_P },
+	{ "q", 1, NULL, RSA_Q },
+	{ "exp1", 1, NULL, RSA_EXP1 },
+	{ "exp2", 1, NULL, RSA_EXP2 },
+	{ "coeff", 1, NULL, RSA_COEFF },
 	{ NULL, 0, NULL, 0 }
 };
 

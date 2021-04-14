@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 10:20:12 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/14 05:42:28 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/14 11:43:02 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 #include "libft.h"
 #include "cmd_des_utils.h"
 #include "md.h"
-
-#define SALT_LEN	8
-#define HEX_LEN		16
-#define FLIP(x, n)	((x) >> n | ((x) << n))
 
 static size_t	md_block_exec(t_md_ctx *ctx, const char *src, size_t len)
 {

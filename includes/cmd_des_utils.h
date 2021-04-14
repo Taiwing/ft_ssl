@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 11:11:05 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 18:45:59 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/14 11:43:21 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 # include "commands.h"
 # include "des.h"
+
+# define SALT_LEN	8
+# define HEX_LEN	16
+# define FLIP(x, n)	((x) >> n | ((x) << n))
 
 int	parse_hex(uint64_t *value, const char *str, const char *cmd);
 int	get_salty(t_des_ctx *ctx, const t_command *cmd, t_cmdopt *opt);

@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:27:53 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/14 06:52:12 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/14 12:09:11 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,25 @@ const char g_rsa_help[] = "[options]\n"
 "\t-check\t\t\tverify key consistency\n"
 "\t-pubin\t\t\texpect a public key in input file\n"
 "\t-pubout\t\t\toutput a public key\n"
-"\t-help\t\t\tprint this\n";
+"\t-help\t\t\tprint this\n"
+"\n"
+"Manually modify the output key:\n"
+"\n"
+"\tThese options allow the user to set arbirary values\n"
+"\tfor the output key. This works with private and public\n"
+"\tkeys. However it will not have any effect to modify\n"
+"\ta private key only value for a public key output.\n"
+"\tValues are in hexadecimal without prefix and case\n"
+"\tagnostic (example: F86cE09dDe).\n"
+"\n"
+"\t-n\thex\t\tset modulus\n"
+"\t-e\thex\t\tset public exponent\n"
+"\t-d\thex\t\tset private exponent\n"
+"\t-p\thex\t\tset first prime\n"
+"\t-q\thex\t\tset second prime\n"
+"\t-exp1\thex\t\tset exponent1\n"
+"\t-exp2\thex\t\tset exponent2\n"
+"\t-coeff\thex\t\tset coefficient\n";
 
 const char g_rsautl_help[] = "[options]\n"
 "\t-in file\t\tinput file\n"

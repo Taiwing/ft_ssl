@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:28:24 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 16:47:53 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/14 12:03:49 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,15 @@ enum e_rsa_option_codes {
 	RSA_MODULUS,
 	RSA_CHECK,
 	RSA_PUBIN,
-	RSA_PUBOUT
+	RSA_PUBOUT,
+	RSA_N,
+	RSA_E,
+	RSA_D,
+	RSA_P,
+	RSA_Q,
+	RSA_EXP1,
+	RSA_EXP2,
+	RSA_COEFF
 };
 
 enum e_rsautl_option_codes {
