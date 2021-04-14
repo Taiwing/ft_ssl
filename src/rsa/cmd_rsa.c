@@ -6,26 +6,12 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 06:54:37 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/14 08:03:09 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/14 08:07:03 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "commands.h"
 #include "rsa.h"
-
-static int	ft_ignore_case_strcmp(const char *s1, const char *s2)
-{
-	t_uchar c1;
-	t_uchar c2;
-
-	c1 = (t_uchar)*s1;
-	c2 = (t_uchar)*s2;
-	if (c1 && c2 && (c1 == c2 || (ft_isalpha(*s1) && ft_isalpha(*s2)
-		&& (c1 + 32 == c2 || c1 - 32 == c2))))
-		return (ft_ignore_case_strcmp(s1 + 1, s2 + 1));
-	return (c1 - c2);
-}
-
 
 static int	parse_options(t_rsa_key *key, int *outfd,
 		t_cmdopt *opt, const t_command *cmd)
