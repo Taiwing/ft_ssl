@@ -50,6 +50,7 @@ RSAC			=	parse_rsa_key_headers.c\
 					get_rand.c\
 					modular_ops.c\
 					cmd_genrsa.c\
+					cmd_rsa.c\
 					parse_rsa_key.c\
 					cmd_rsautl.c\
 					prime.c\
@@ -110,6 +111,7 @@ parse_rsa_key_headers.o: libft.h rsa.h des.h cmd_des_utils.h commands.h\
 rsa_des.o: rsa.h des.h cmd_des_utils.h commands.h options.h libft.h
 modular_ops.o: rsa_math.h
 cmd_genrsa.o: commands.h options.h libft.h rsa_math.h rsa.h des.h base64.h
+cmd_rsa.o: commands.h options.h libft.h
 parse_rsa_key.o: base64.h libft.h rsa.h des.h
 cmd_rsautl.o: commands.h options.h libft.h rsa.h des.h readfile.h rsa_math.h
 prime.o: libft.h rsa_math.h
