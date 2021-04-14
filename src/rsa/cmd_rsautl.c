@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 15:11:34 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 18:43:36 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/14 07:05:18 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,11 @@ static int	parse_options(const t_command *cmd, t_cmdopt *opt,
 	if (!opt[RSAUTL_ENCRYPT].is_set && opt[RSAUTL_PUBIN].is_set)
 		return (!!ft_dprintf(2, "ft_ssl: %s: A private key is needed "
 			"for this operation\n", cmd->name));
-	key->is_enc = 0;
 	key->is_pub = opt[RSAUTL_PUBIN].is_set;
-	if (!opt[RSAUTL_INKEY].is_set || parse_rsa_key(key, cmd->name, &gk))
+	if (!opt[RSAUTL_INKEY].is_set)
+		return (!!ft_dprintf(2, "ft_ssl: %s: no keyfile specified\n",
+			cmd->name));
+	if (parse_rsa_key(key, cmd->name, &gk))
 		return (!!ft_dprintf(2, "ft_ssl: %s: unable to load %s Key\n",
 			cmd->name, key->is_pub ? "Public" : "Private"));
 	if (opt[RSAUTL_OUT].is_set)
@@ -74,6 +76,7 @@ int			cmd_rsautl(const t_command *cmd, t_cmdopt *opt, char **args)
 
 	(void)args;
 	fd = 1;
+	ft_bzero((void *)&key, sizeof(t_rsa_key));
 	ret = parse_options(cmd, opt, &key, &fd) || get_input(&in, opt, &key, cmd);
 	if (!ret)
 	{
