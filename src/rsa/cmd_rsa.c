@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 06:54:37 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/14 09:08:28 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/14 09:19:27 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,17 +72,16 @@ static int	rsa_check_key(int outfd, t_rsa_key *key)
 static int	create_output_key(int outfd, t_rsa_key *key_in,
 	t_cmdopt *opt, const t_command *cmd)
 {
-	t_rsa_key	key_out;
-	int			ret;
+	t_rsa_key		key_out;
+	t_des_getkey	gk = { NULL, opt[RSA_PASSOUT].value,
+		NULL, "Enter PEM pass phrase:", 1 };
 
-	(void)outfd;
-	(void)opt;
-	(void)cmd;
-	ret = 0;
+	ft_dprintf(2, "writing RSA key\n");
 	ft_memcpy((void *)&key_out, (void *)key_in, sizeof(t_rsa_key));
-	ft_bzero((void *)&key_in->des, sizeof(t_des_ctx));
-	//TODO: modify and print new key
-	return (ret);
+	ft_bzero((void *)&key_out.des, sizeof(t_des_ctx));
+	key_out.is_pub = !key_out.is_pub ? opt[RSA_PUBOUT].is_set : key_out.is_pub;
+	key_out.is_enc = !key_out.is_pub && opt[RSA_DES].is_set;
+	return (print_rsa_key(outfd, &key_out, cmd->name, &gk));
 }
 
 int			cmd_rsa(const t_command *cmd, t_cmdopt *opt, char **args)

@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 09:41:32 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 12:06:43 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/14 09:41:08 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,16 +99,25 @@ int			parse_der_key(t_rsa_key *key, uint8_t *der, uint8_t len)
 
 void		encode_der_key(uint8_t *der, uint8_t *len, t_rsa_key *key)
 {
-	*len = 2;
-	der[0] = 0x30;
-	der_encode_uint64(der + *len, len, 0);
+	*len = key->is_pub ? DER_SEQ_MAXLEN : DER_SEQ_MINLEN;
+	ft_memcpy((void *)der, (void *)DER_SEQ, *len);
+	if (!key->is_pub)
+		der_encode_uint64(der + *len, len, 0);
 	der_encode_uint64(der + *len, len, key->n);
 	der_encode_uint64(der + *len, len, key->e);
-	der_encode_uint64(der + *len, len, key->d);
-	der_encode_uint64(der + *len, len, key->p);
-	der_encode_uint64(der + *len, len, key->q);
-	der_encode_uint64(der + *len, len, key->exp1);
-	der_encode_uint64(der + *len, len, key->exp2);
-	der_encode_uint64(der + *len, len, key->coeff);
-	der[1] = *len - 2;
+	if (!key->is_pub)
+	{
+		der_encode_uint64(der + *len, len, key->d);
+		der_encode_uint64(der + *len, len, key->p);
+		der_encode_uint64(der + *len, len, key->q);
+		der_encode_uint64(der + *len, len, key->exp1);
+		der_encode_uint64(der + *len, len, key->exp2);
+		der_encode_uint64(der + *len, len, key->coeff);
+	}
+	der[DER_LEN_I] = *len - (DER_LEN_I + 1);
+	if (key->is_pub)
+	{
+		der[DER_LEN_II] = *len - (DER_LEN_II + 1);
+		der[DER_LEN_III] = *len - (DER_LEN_III + 1);
+	}
 }
