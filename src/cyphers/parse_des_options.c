@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 10:20:12 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 18:37:43 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/14 05:28:08 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,21 @@ int			pbkdf(t_des_ctx *des, const char *pass,
 {
 	t_md_ctx	md;
 	size_t		len;
+	uint64_t	salt;
 	size_t		pass_len;
 
 	if (init_md_context(md_name, &md))
 		return (1);
 	init_registers(&md);
-	ft_memswap((void *)&des->salt, SALT_LEN);
+	salt = des->salt;
+	ft_memswap((void *)&salt, SALT_LEN);
 	pass_len = ft_strlen(pass);
 	len = md_block_exec(&md, pass, pass_len);
 	ft_memcpy((void *)md.buf, (void *)pass + pass_len - len, len);
-	ft_memcpy((void *)md.buf + len, (void *)&des->salt,
+	ft_memcpy((void *)md.buf + len, (void *)&salt,
 		len + SALT_LEN > MD_BUF_SIZE ? MD_BUF_SIZE - len : SALT_LEN);
 	if ((len = md_block_exec(&md, NULL, len + SALT_LEN)) < SALT_LEN)
-		ft_memcpy((void *)md.buf, (void *)&des->salt + SALT_LEN - len, len);
+		ft_memcpy((void *)md.buf, (void *)&salt + SALT_LEN - len, len);
 	add_md_padding(&md, len, (pass_len + SALT_LEN - len) * 8);
 	des->key = md.is_be ? FLIP(*(uint64_t *)md.regs, 32) : *(uint64_t *)md.regs;
 	if (!iv_is_set)
