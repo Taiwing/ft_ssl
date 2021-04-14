@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 23:59:02 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/14 05:31:48 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/14 14:43:29 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int			print_rsa_key(int fd, t_rsa_key *key,
 int			rsa_keygen(t_rsa_key *key)
 {
 	uint64_t	gcd;
-	uint64_t	totient;;
+	uint64_t	totient;
 
 	ft_dprintf(2, "Generating RSA private key, "
 		"64 bit long modulus (2 primes)\n");

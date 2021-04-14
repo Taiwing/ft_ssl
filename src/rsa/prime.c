@@ -6,15 +6,13 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 17:42:56 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/11 01:29:50 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/14 14:05:53 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <limits.h>
 #include "libft.h"
 #include "rsa_math.h"
-
-#define K_MAX		100
 
 const char		g_plus[K_MAX] = { [ 0 ... K_MAX - 1 ] = '+' };
 

@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 14:55:06 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/10 15:37:42 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/14 14:06:01 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <stddef.h>
 # define uint128_t	__uint128_t
 # define int128_t	__int128_t
+
+# define K_MAX		100
 
 char		*fill_rand_buf(const char *src, int flush);
 uint64_t	*get_rand(uint64_t *n, uint64_t min, uint64_t max);

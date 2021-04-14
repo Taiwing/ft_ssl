@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/14 11:52:01 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/14 14:01:55 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@
 # define RETARDED_PREFIX		"pass:"
 # define RETARDED_PREFIX_LEN	(MC_STRLEN(RETARDED_PREFIX))
 # define MIN_PASSLEN			4
+
+# define RSA_KEY_ERR		"RSA key error: "
 
 /*
 ** s_rsa_key: rsa key structure (represent private and public key)
