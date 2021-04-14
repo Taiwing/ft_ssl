@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 10:20:12 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/14 05:28:08 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/14 05:42:28 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,13 @@ int			pbkdf(t_des_ctx *des, const char *pass,
 {
 	t_md_ctx	md;
 	size_t		len;
-	uint64_t	salt;
-	size_t		pass_len;
+	uint64_t	salt = des->salt;
+	size_t		pass_len = ft_strlen(pass);
 
 	if (init_md_context(md_name, &md))
 		return (1);
 	init_registers(&md);
-	salt = des->salt;
 	ft_memswap((void *)&salt, SALT_LEN);
-	pass_len = ft_strlen(pass);
 	len = md_block_exec(&md, pass, pass_len);
 	ft_memcpy((void *)md.buf, (void *)pass + pass_len - len, len);
 	ft_memcpy((void *)md.buf + len, (void *)&salt,
