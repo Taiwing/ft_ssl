@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 06:54:37 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/15 18:49:34 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/15 23:42:00 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ static int	rsa_check_key(int outfd, t_rsa_key *key)
 
 	ret = 0;
 	totient = (key->p - 1) * (key->q - 1);
-	modinv((int128_t)key->e, (int128_t)totient, &gcd);
 	if (key->e == 1 || (key->e % 2) == 0)
 		ret = !!ft_dprintf(2, RSA_KEY_ERR"bad e value\n");
 	if (is_prime(key->p, K_MAX))
@@ -89,9 +88,7 @@ static int	rsa_check_key(int outfd, t_rsa_key *key)
 		ret = !!ft_dprintf(2, RSA_KEY_ERR"exp2 not congruent to d\n");
 	if (key->coeff != modinv((int128_t)key->q, (int128_t)key->p, &gcd))
 		ret = !!ft_dprintf(2, RSA_KEY_ERR"coeff not inverse of q\n");
-	if (!ret)
-		ft_dprintf(outfd, "RSA key ok\n");
-	return (ret);
+	return (!ret ? !ft_dprintf(outfd, "RSA key ok\n") : ret);
 }
 
 static int	create_output_key(int outfd, t_rsa_key *key_in,
