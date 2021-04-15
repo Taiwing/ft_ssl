@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 06:54:37 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/14 14:42:12 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/15 18:49:34 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,12 @@ static int	rsa_check_key(int outfd, t_rsa_key *key)
 {
 	int			ret;
 	uint64_t	gcd;
-	uint64_t	cval;
 	uint128_t	totient;
 
 	ret = 0;
 	totient = (key->p - 1) * (key->q - 1);
-	cval = modinv((int128_t)key->e, totient, &gcd);
-	if (key->e == 1 || (key->e % 2) == 0 || key->e >= totient || gcd != 1)
+	modinv((int128_t)key->e, (int128_t)totient, &gcd);
+	if (key->e == 1 || (key->e % 2) == 0)
 		ret = !!ft_dprintf(2, RSA_KEY_ERR"bad e value\n");
 	if (is_prime(key->p, K_MAX))
 		ret = !!ft_dprintf(2, RSA_KEY_ERR"p not prime\n");
@@ -81,11 +80,12 @@ static int	rsa_check_key(int outfd, t_rsa_key *key)
 	if (((!key->p || !key->q) && key->n)
 		|| (key->p && key->q && key->n / key->p != key->q))
 		ret = !!ft_dprintf(2, RSA_KEY_ERR"n does not equal p q\n");
-	if (key->d != cval)
+	modinv((int128_t)key->p - 1, (int128_t)key->q - 1, &gcd);
+	if (!gcd || !(totient/gcd) || modmul(key->d, key->e, totient/gcd) != 1)
 		ret = !!ft_dprintf(2, RSA_KEY_ERR"d e not congruent to 1\n");
-	if (key->exp1 != (key->d % (key->p - 1)))
+	if (key->p != 1 && key->exp1 != (key->d % (key->p - 1)))
 		ret = !!ft_dprintf(2, RSA_KEY_ERR"exp1 not congruent to d\n");
-	if (key->exp2 != (key->d % (key->q - 1)))
+	if (key->q != 1 && key->exp2 != (key->d % (key->q - 1)))
 		ret = !!ft_dprintf(2, RSA_KEY_ERR"exp2 not congruent to d\n");
 	if (key->coeff != modinv((int128_t)key->q, (int128_t)key->p, &gcd))
 		ret = !!ft_dprintf(2, RSA_KEY_ERR"coeff not inverse of q\n");

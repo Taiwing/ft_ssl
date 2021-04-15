@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/14 14:01:55 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/15 17:58:31 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@
 ** d: decryption, modinv(e, T(n))
 ** p: random 32bit unsigned prime (p != q)
 ** q: random 32bit unsigned prime (p != q)
-** exp1: d mod (p -1)
-** exp2: d mod (q -1)
+** exp1: d mod (p - 1)
+** exp2: d mod (q - 1)
 ** coeff: modinv(q, p)
 ** is_pub: boolean, the key is public if true
 ** is_enc: boolean, the key is encrypted if true

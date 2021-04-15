@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 14:55:06 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/14 14:06:01 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/15 17:53:05 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ char		*fill_rand_buf(const char *src, int flush);
 uint64_t	*get_rand(uint64_t *n, uint64_t min, uint64_t max);
 uint64_t	modexp(uint128_t a, uint128_t b, uint128_t c);
 uint64_t	modinv(int128_t newr, int128_t n, uint64_t *gcd);
+uint64_t	modmul(uint128_t a, uint128_t b, uint128_t c);
 int			is_prime(uint64_t n, int k);
 uint64_t	find_prime(int k, size_t size);
 
