@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 17:42:56 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/14 14:05:53 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/04/16 09:51:26 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int		miller_test(uint64_t n, uint64_t d)
 **  orig_k - k = 12 - 3 = 9 tests successfully before failing)
 */
 
-int				is_prime(uint64_t n, int k)
+int				is_prime(uint64_t n, unsigned int k)
 {
 	uint64_t	d;
 	int			ret;
@@ -73,10 +73,10 @@ int				is_prime(uint64_t n, int k)
 			break ;
 		--k;
 	}
-	return (ret < 0 ? ret : k);
+	return (ret < 0 ? ret : (int)k);
 }
 
-uint64_t		find_prime(int k, size_t size)
+uint64_t		find_prime(unsigned int k, size_t size)
 {
 	uint64_t	n;
 	int			ret;
@@ -94,8 +94,8 @@ uint64_t		find_prime(int k, size_t size)
 	{
 		if ((ret = is_prime(n, k)) < 0)
 			break ;
-		else if (ret <= k)
-			ft_dprintf(2, ".%.*s%s", (k - ret), g_plus, !ret ? "\n" : "");
+		else if (ret <= (int)k)
+			ft_dprintf(2, ".%.*s%s", ((int)k - ret), g_plus, !ret ? "\n" : "");
 		if (!ret)
 			break ;
 		n -= 2;
