@@ -1,2 +1,4 @@
 - write the other commands
 - make the cli parsing great again
+- update the libft to the last version and use
+  the bint library for rsa computations
