@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 11:52:16 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/14 11:53:57 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/05 13:45:59 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,6 @@
 # include "rsa.h"
 # include "options.h"
 	
-void	rsa_value_options(t_rsa_key *key, t_cmdopt *opt, const char *cmd);
+void	rsa_value_options(t_rsa_key_64 *key, t_cmdopt *opt, const char *cmd);
 
 #endif

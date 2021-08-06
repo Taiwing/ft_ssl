@@ -47,6 +47,7 @@ CMDFC			=	debug.c\
 
 RSAC			=	parse_rsa_key_headers.c\
 					rsa_des.c\
+					encode_der_key.c\
 					get_rand.c\
 					modular_ops.c\
 					cmd_genrsa.c\
@@ -107,17 +108,22 @@ options.o: options.h libft.h
 commands.o: commands.h options.h libft.h help.h
 internal_commands.o: commands.h options.h libft.h
 output_option.o: libft.h
-parse_rsa_key_headers.o: libft.h rsa.h des.h cmd_des_utils.h commands.h\
+parse_rsa_key_headers.o: libft.h rsa.h des.h bint.h cmd_des_utils.h commands.h\
 	options.h
-rsa_des.o: rsa.h des.h cmd_des_utils.h commands.h options.h libft.h
+rsa_des.o: rsa.h des.h bint.h cmd_des_utils.h commands.h options.h libft.h
+encode_der_key.o: libft.h rsa.h des.h bint.h
 modular_ops.o: rsa_math.h
-cmd_genrsa.o: commands.h options.h libft.h rsa_math.h rsa.h des.h base64.h
-cmd_rsa.o: commands.h options.h libft.h rsa_value_options.h rsa.h des.h
-parse_rsa_key.o: base64.h libft.h rsa.h des.h
-cmd_rsautl.o: commands.h options.h libft.h rsa.h des.h readfile.h rsa_math.h
+cmd_genrsa.o: commands.h options.h libft.h rsa_math.h rsa.h des.h bint.h\
+	base64.h
+cmd_rsa.o: commands.h options.h libft.h rsa_value_options.h rsa.h des.h bint.h\
+	rsa_math.h
+parse_rsa_key.o: base64.h libft.h rsa.h des.h bint.h
+cmd_rsautl.o: commands.h options.h libft.h rsa.h des.h bint.h readfile.h\
+	rsa_math.h
 prime.o: libft.h rsa_math.h
-der.o: libft.h rsa.h des.h
-rsa_value_options.o: rsa.h des.h cmd_des_utils.h commands.h options.h libft.h
+der.o: libft.h rsa.h des.h bint.h
+rsa_value_options.o: rsa.h des.h bint.h cmd_des_utils.h commands.h options.h\
+	libft.h
 rsa_hexdump.o: libft.h
 %.o: %.c
 	@mkdir -p $(ODIR)

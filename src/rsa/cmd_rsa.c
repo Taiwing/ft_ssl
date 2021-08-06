@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 06:54:37 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/15 23:42:00 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/06 16:17:43 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "rsa_value_options.h"
 #include "rsa_math.h"
 
-static int	parse_options(t_rsa_key *key, int *outfd,
+static int	parse_options(t_rsa_key_64 *key, int *outfd,
 		t_cmdopt *opt, const t_command *cmd)
 {
 	t_des_getkey	gk = { opt[RSA_IN].value, opt[RSA_PASSIN].value,
@@ -40,7 +40,7 @@ static int	parse_options(t_rsa_key *key, int *outfd,
 	return (*outfd < 0);
 }
 
-static int	print_text_rsa_key(int outfd, t_rsa_key *key)
+static int	print_text_rsa_key(int outfd, t_rsa_key_64 *key)
 {
 	if (key->is_pub)
 		ft_dprintf(outfd, "RSA Public-Key: (64 bit)\n"
@@ -62,7 +62,7 @@ static int	print_text_rsa_key(int outfd, t_rsa_key *key)
 	return (0);
 }
 
-static int	rsa_check_key(int outfd, t_rsa_key *key)
+static int	rsa_check_key(int outfd, t_rsa_key_64 *key)
 {
 	int			ret;
 	uint64_t	gcd;
@@ -91,31 +91,37 @@ static int	rsa_check_key(int outfd, t_rsa_key *key)
 	return (!ret ? !ft_dprintf(outfd, "RSA key ok\n") : ret);
 }
 
-static int	create_output_key(int outfd, t_rsa_key *key_in,
+//TODO: delete t_rsa_key_64 and call to rsa_key_64_to_bint
+//(replace by t_rsa_key)
+static int	create_output_key(int outfd, t_rsa_key_64 *key_in,
 	t_cmdopt *opt, const t_command *cmd)
 {
-	t_rsa_key			key_out;
+	t_rsa_key_64		key_out;
+	t_rsa_key			key = RSA_KEY_DEFAULT;
 	t_des_getkey		gk = { NULL, opt[RSA_PASSOUT].value,
 		NULL, "Enter PEM pass phrase:", 1 };
 
+	INIT_RSA_KEY(key);
 	ft_dprintf(2, "writing RSA key\n");
-	ft_memcpy((void *)&key_out, (void *)key_in, sizeof(t_rsa_key));
+	ft_memcpy((void *)&key_out, (void *)key_in, sizeof(t_rsa_key_64));
 	ft_bzero((void *)&key_out.des, sizeof(t_des_ctx));
 	key_out.is_pub = !key_out.is_pub ? opt[RSA_PUBOUT].is_set : key_out.is_pub;
 	key_out.is_enc = !key_out.is_pub && opt[RSA_DES].is_set;
 	rsa_value_options(&key_out, opt, cmd->name);
-	return (print_rsa_key(outfd, &key_out, cmd->name, &gk));
+	if (rsa_key_64_to_bint(&key, &key_out))
+		return (1);
+	return (print_rsa_key(outfd, &key, cmd->name, &gk));
 }
 
 int			cmd_rsa(const t_command *cmd, t_cmdopt *opt, char **args)
 {
-	int			ret;
-	int			outfd;
-	t_rsa_key	key;
+	int				ret;
+	int				outfd;
+	t_rsa_key_64	key;
 
 	(void)args;
 	outfd = 1;
-	ft_bzero((void *)&key, sizeof(t_rsa_key));
+	ft_bzero((void *)&key, sizeof(t_rsa_key_64));
 	ret = parse_options(&key, &outfd, opt, cmd);
 	if (!ret && opt[RSA_TEXT].is_set)
 		print_text_rsa_key(outfd, &key);

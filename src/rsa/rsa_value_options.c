@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 11:39:57 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/14 12:14:08 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/05 13:49:13 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	set_hexbuf(char hexbuf[HEX_LEN + 1], char *str)
 		(void *)str + len - to_copy, to_copy);
 }
 
-void		rsa_value_options(t_rsa_key *key, t_cmdopt *opt, const char *cmd)
+void		rsa_value_options(t_rsa_key_64 *key, t_cmdopt *opt, const char *cmd)
 {
 	char					hexbuf[HEX_LEN + 1];
 	uint64_t				*value;

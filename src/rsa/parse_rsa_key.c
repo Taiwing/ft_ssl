@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 17:36:51 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 18:40:28 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/06 16:25:56 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int	read_base64(uint8_t der[KEY_BUFLEN], int *len,
 }
 
 static int	read_key(uint8_t der[KEY_BUFLEN], int fd,
-	const char *cmd, t_rsa_key *key)
+	const char *cmd, t_rsa_key_64 *key)
 {
 	char	*line;
 	char	*footer;
@@ -74,7 +74,7 @@ static int	read_key(uint8_t der[KEY_BUFLEN], int fd,
 	return (footer || ret < 0 ? -1 : len);
 }
 
-int			parse_rsa_key(t_rsa_key *key, const char *cmd, t_des_getkey *gk)
+int			parse_rsa_key(t_rsa_key_64 *key, const char *cmd, t_des_getkey *gk)
 {
 	int		fd;
 	int		ret;
@@ -95,7 +95,7 @@ int			parse_rsa_key(t_rsa_key *key, const char *cmd, t_des_getkey *gk)
 		len = (uint8_t)ret;
 		ret = 0;
 		if (key->is_enc)
-			ret = rsa_des_getkey(key, cmd, gk)
+			ret = rsa_des_getkey(&key->des, cmd, gk)
 				|| rsa_des_decrypt(der, &len, key, cmd);
 		if (!ret)
 			ret = parse_der_key(key, der, len);

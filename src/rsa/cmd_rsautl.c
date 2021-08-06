@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 15:11:34 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/14 07:05:18 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/05 13:48:15 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "rsa_math.h"
 
 static int	parse_options(const t_command *cmd, t_cmdopt *opt,
-		t_rsa_key *key, int *outfd)
+		t_rsa_key_64 *key, int *outfd)
 {
 	t_des_getkey	gk = { opt[RSAUTL_INKEY].value, opt[RSAUTL_PASSIN].value,
 		opt[RSAUTL_INKEY].value, "Enter pass phrase for %s:", 0 };
@@ -39,7 +39,7 @@ static int	parse_options(const t_command *cmd, t_cmdopt *opt,
 }
 
 static int	get_input(uint64_t *input, t_cmdopt *opt,
-		t_rsa_key *key, const t_command *cmd)
+		t_rsa_key_64 *key, const t_command *cmd)
 {
 	int			rd;
 	int			skip;
@@ -68,15 +68,15 @@ static int	get_input(uint64_t *input, t_cmdopt *opt,
 
 int			cmd_rsautl(const t_command *cmd, t_cmdopt *opt, char **args)
 {
-	int			fd;
-	int			ret;
-	t_rsa_key	key;
-	uint64_t	out;
-	uint64_t	in;
+	int				fd;
+	int				ret;
+	t_rsa_key_64	key;
+	uint64_t		out;
+	uint64_t		in;
 
 	(void)args;
 	fd = 1;
-	ft_bzero((void *)&key, sizeof(t_rsa_key));
+	ft_bzero((void *)&key, sizeof(t_rsa_key_64));
 	ret = parse_options(cmd, opt, &key, &fd) || get_input(&in, opt, &key, cmd);
 	if (!ret)
 	{

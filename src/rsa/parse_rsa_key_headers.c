@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/09 17:04:48 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/11 13:33:27 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/05 13:48:54 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	check_header(int fd, int is_pub)
 	return (ret < 0 ? -1 : ret != len);
 }
 
-int	check_encryption_headers(t_rsa_key *key, int fd, char **line,
+int	check_encryption_headers(t_rsa_key_64 *key, int fd, char **line,
 	const char *cmd)
 {
 	int	ret;
