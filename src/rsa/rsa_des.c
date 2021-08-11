@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/09 19:12:40 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/06 15:43:21 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/11 21:50:28 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int			rsa_des_getkey(t_des_ctx *des, const char *cmd, t_des_getkey *gk)
 }
 
 int	rsa_des_decrypt(uint8_t *der, uint8_t *len,
-	t_rsa_key_64 *key, const char *cmd)
+	t_des_ctx *des, const char *cmd)
 {
 	uint64_t	*derptr;
 	uint64_t	old_len;
@@ -66,11 +66,11 @@ int	rsa_des_decrypt(uint8_t *der, uint8_t *len,
 			" input block\n", cmd, sizeof(uint64_t)));
 	derptr = (uint64_t *)der;
 	old_len /= sizeof(uint64_t);
-	des_keygen(&key->des);
+	des_keygen(des);
 	while (old_len--)
 	{
-		key->des.plaintext = *derptr;
-		block = exec_cypher(&key->des);
+		des->plaintext = *derptr;
+		block = exec_cypher(des);
 		*derptr++ = block;
 	}
 	padl = ((uint8_t *)&block)[sizeof(uint64_t) - 1];

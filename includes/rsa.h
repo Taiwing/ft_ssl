@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/06 17:19:39 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/11 21:52:38 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,7 @@ int			check_encryption_headers(t_rsa_key_64 *key, int fd, char **line,
 	const char *cmd);
 int			rsa_des_getkey(t_des_ctx *des, const char *cmd, t_des_getkey *gk);
 int			rsa_des_decrypt(uint8_t *der, uint8_t *len,
-	t_rsa_key_64 *key, const char *cmd);
+	t_des_ctx *des, const char *cmd);
 void		rsa_des_encrypt(uint8_t *der, uint64_t *len, t_des_ctx *des);
 
 int			rsa_key_64_to_bint(t_rsa_key *dst, t_rsa_key_64 *src); //TEMP
