@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 10:20:12 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/14 11:43:02 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/12 18:56:29 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int			read_des_password(char *value, const char *cmd, t_des_getkey *gk)
 	return (0);
 }
 
-int				parse_hex(uint64_t *value, const char *str, const char *cmd)
+int				parse_hex_64(uint64_t *value, const char *str, const char *cmd)
 {
 	uint8_t		d;
 	uint64_t	n;
@@ -127,10 +127,10 @@ int				parse_des_options(t_des_ctx *ctx, const t_command *cmd,
 		&& !opt[CC_INIT_VECTOR].is_set)
 		return (!!ft_dprintf(2, "ft_ssl: %s: iv undefined\n", cmd->name));
 	else if (opt[CC_INIT_VECTOR].is_set
-		&& parse_hex(&ctx->iv, opt[CC_INIT_VECTOR].value, cmd->name))
+		&& parse_hex_64(&ctx->iv, opt[CC_INIT_VECTOR].value, cmd->name))
 		return (1);
 	if (opt[CC_KEY].is_set)
-		return (parse_hex(&ctx->key, opt[CC_KEY].value, cmd->name));
+		return (parse_hex_64(&ctx->key, opt[CC_KEY].value, cmd->name));
 	if (!opt[CC_PASSWORD].value)
 	{
 		if (read_des_password(pass, cmd->name, &gk))

@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/09 17:04:48 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/05 13:48:54 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/12 18:55:15 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	check_encryption_headers(t_rsa_key_64 *key, int fd, char **line,
 		if ((ret = get_next_line(fd, line) <= 0)
 			|| ft_strlen(*line) != DEK_INFO_LEN + IV_LEN
 			|| ft_strncmp(DEK_INFO, *line, DEK_INFO_LEN)
-			|| parse_hex(&key->des.iv, *line + DEK_INFO_LEN, cmd))
+			|| parse_hex_64(&key->des.iv, *line + DEK_INFO_LEN, cmd))
 			ret = !!ft_dprintf(2,
 				"ft_ssl: %s: invalid encryption headers\n", cmd);
 		key->des.salt = key->des.iv;

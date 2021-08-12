@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 12:15:53 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/04 19:27:22 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/12 18:55:38 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int			write_salt(int fd, t_des_ctx *ctx, t_cmdopt *opt)
 int			get_salty(t_des_ctx *ctx, const t_command *cmd, t_cmdopt *opt)
 {
 	if (opt[CC_ENCRYPT].is_set && opt[CC_SALT].is_set)
-		return (parse_hex(&ctx->salt, opt[CC_SALT].value, cmd->name));
+		return (parse_hex_64(&ctx->salt, opt[CC_SALT].value, cmd->name));
 	else if (opt[CC_ENCRYPT].is_set)
 		return (generate_salt(&ctx->salt, cmd->name));
 	else

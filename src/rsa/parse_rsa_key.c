@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 17:36:51 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/11 21:51:47 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/11 22:45:35 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ static int	read_key(uint8_t der[KEY_BUFLEN], int fd,
 	return (footer || ret < 0 ? -1 : len);
 }
 
-int			parse_rsa_key(t_rsa_key_64 *key, const char *cmd, t_des_getkey *gk)
+int			parse_rsa_key_64(t_rsa_key_64 *key,
+	const char *cmd, t_des_getkey *gk)
 {
 	int		fd;
 	int		ret;

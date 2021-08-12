@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/11 21:52:38 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/11 22:45:27 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,7 +212,8 @@ void		encode_der_key(uint8_t *der, uint64_t *len, t_rsa_key *key);
 int			print_rsa_key(int fd, t_rsa_key *key,
 	const char *cmd, t_des_getkey *gk);
 int			rsa_keygen(t_rsa_key_64 *key);
-int			parse_rsa_key(t_rsa_key_64 *key, const char *cmd, t_des_getkey *gk);
+int			parse_rsa_key_64(t_rsa_key_64 *key,
+	const char *cmd, t_des_getkey *gk);
 void		rsa_hexdump(int fd, uint8_t *data, size_t len);
 int			check_header(int fd, int is_pub);
 int			check_encryption_headers(t_rsa_key_64 *key, int fd, char **line,

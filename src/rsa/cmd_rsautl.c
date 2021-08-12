@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 15:11:34 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/05 13:48:15 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/11 22:45:12 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	parse_options(const t_command *cmd, t_cmdopt *opt,
 	if (!opt[RSAUTL_INKEY].is_set)
 		return (!!ft_dprintf(2, "ft_ssl: %s: no keyfile specified\n",
 			cmd->name));
-	if (parse_rsa_key(key, cmd->name, &gk))
+	if (parse_rsa_key_64(key, cmd->name, &gk))
 		return (!!ft_dprintf(2, "ft_ssl: %s: unable to load %s Key\n",
 			cmd->name, key->is_pub ? "Public" : "Private"));
 	if (opt[RSAUTL_OUT].is_set)
