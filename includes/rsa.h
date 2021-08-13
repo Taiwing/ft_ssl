@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/11 22:45:27 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/13 11:48:15 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ typedef struct	s_rsa_key_64
 ** coeff: modinv(q, p)
 ** is_pub: boolean, the key is public if true
 ** is_enc: boolean, the key is encrypted if true
+** size: size of the key (n) in bits
 ** des: des context if the key is encrypted
 */
 
@@ -152,6 +153,7 @@ typedef struct	s_rsa_key
 	t_bint		coeff;
 	int			is_pub;
 	int			is_enc;
+	uint32_t	size;
 	t_des_ctx	des;
 }				t_rsa_key;
 
@@ -188,6 +190,7 @@ enum			e_rsa_key_bints {
 	NULL,\
 	0,\
 	0,\
+	0,\
 	{ 0, 0, 0, 0, { 0 }, 0, NULL, 0 },\
 }
 
@@ -222,7 +225,11 @@ int			rsa_des_getkey(t_des_ctx *des, const char *cmd, t_des_getkey *gk);
 int			rsa_des_decrypt(uint8_t *der, uint8_t *len,
 	t_des_ctx *des, const char *cmd);
 void		rsa_des_encrypt(uint8_t *der, uint64_t *len, t_des_ctx *des);
+int			rsa_check_key_size(t_rsa_key *key);
+int			rsa_check_key_bint(int outfd, t_rsa_key *key, const char *cmd);
+int			rsa_check_key_64(int outfd, t_rsa_key_64 *key);
 
-int			rsa_key_64_to_bint(t_rsa_key *dst, t_rsa_key_64 *src); //TEMP
+//TODO: remove this (should only be in cmd_genrsa)
+int			rsa_key_64_to_bint(t_rsa_key *dst, t_rsa_key_64 *src);
 
 #endif

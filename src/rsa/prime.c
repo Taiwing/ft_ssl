@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 17:42:56 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/16 09:51:26 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/13 11:43:41 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "libft.h"
 #include "rsa_math.h"
 
-const char		g_plus[K_MAX] = { [ 0 ... K_MAX - 1 ] = '+' };
+const char		g_plus_loc[K_MAX] = { [ 0 ... K_MAX - 1 ] = '+' };
 
 static int		miller_test(uint64_t n, uint64_t d)
 {
@@ -95,7 +95,8 @@ uint64_t		find_prime(unsigned int k, size_t size)
 		if ((ret = is_prime(n, k)) < 0)
 			break ;
 		else if (ret <= (int)k)
-			ft_dprintf(2, ".%.*s%s", ((int)k - ret), g_plus, !ret ? "\n" : "");
+			ft_dprintf(2, ".%.*s%s", ((int)k - ret),
+				g_plus_loc, !ret ? "\n" : "");
 		if (!ret)
 			break ;
 		n -= 2;

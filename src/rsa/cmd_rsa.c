@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 06:54:37 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/12 18:49:06 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/13 12:01:09 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,35 +62,6 @@ static int	print_text_rsa_key(int outfd, t_rsa_key_64 *key)
 	return (0);
 }
 
-static int	rsa_check_key(int outfd, t_rsa_key_64 *key)
-{
-	int			ret;
-	uint64_t	gcd;
-	uint128_t	totient;
-
-	ret = 0;
-	totient = (key->p - 1) * (key->q - 1);
-	if (key->e == 1 || (key->e % 2) == 0)
-		ret = !!ft_dprintf(2, RSA_KEY_ERR"bad e value\n");
-	if (is_prime(key->p, K_MAX))
-		ret = !!ft_dprintf(2, RSA_KEY_ERR"p not prime\n");
-	if (is_prime(key->q, K_MAX))
-		ret = !!ft_dprintf(2, RSA_KEY_ERR"q not prime\n");
-	if (((!key->p || !key->q) && key->n)
-		|| (key->p && key->q && key->n / key->p != key->q))
-		ret = !!ft_dprintf(2, RSA_KEY_ERR"n does not equal p q\n");
-	modinv((int128_t)key->p - 1, (int128_t)key->q - 1, &gcd);
-	if (!gcd || !(totient/gcd) || modmul(key->d, key->e, totient/gcd) != 1)
-		ret = !!ft_dprintf(2, RSA_KEY_ERR"d e not congruent to 1\n");
-	if (key->p != 1 && key->exp1 != (key->d % (key->p - 1)))
-		ret = !!ft_dprintf(2, RSA_KEY_ERR"exp1 not congruent to d\n");
-	if (key->q != 1 && key->exp2 != (key->d % (key->q - 1)))
-		ret = !!ft_dprintf(2, RSA_KEY_ERR"exp2 not congruent to d\n");
-	if (key->coeff != modinv((int128_t)key->q, (int128_t)key->p, &gcd))
-		ret = !!ft_dprintf(2, RSA_KEY_ERR"coeff not inverse of q\n");
-	return (!ret ? !ft_dprintf(outfd, "RSA key ok\n") : ret);
-}
-
 static int	create_output_key(int outfd, t_rsa_key *key_in,
 	t_cmdopt *opt, const t_command *cmd)
 {
@@ -110,6 +81,8 @@ static int	create_output_key(int outfd, t_rsa_key *key_in,
 
 //TODO: delete t_rsa_key_64 and call to rsa_key_64_to_bint
 //(replace by t_rsa_key)
+//TODO: also add rsa_key_bint_to_64 function and use it before
+//executing check option (when key is parsed in bint)
 int			cmd_rsa(const t_command *cmd, t_cmdopt *opt, char **args)
 {
 	int				ret;
@@ -126,10 +99,10 @@ int			cmd_rsa(const t_command *cmd, t_cmdopt *opt, char **args)
 		print_text_rsa_key(outfd, &key64);
 	if (!ret && opt[RSA_MODULUS].is_set)
 		ft_dprintf(outfd, "Modulus=%llX\n", key64.n);
-	if (!ret && opt[RSA_CHECK].is_set)
-		ret = rsa_check_key(outfd, &key64);
 	if (rsa_key_64_to_bint(&key, &key64))
 		ret = 1;
+	if (!ret && opt[RSA_CHECK].is_set)
+		ret = rsa_check_key_64(outfd, &key64);
 	if (!ret && !opt[RSA_NOOUT].is_set)
 		ret = create_output_key(outfd, &key, opt, cmd);
 	if (outfd > 1)
