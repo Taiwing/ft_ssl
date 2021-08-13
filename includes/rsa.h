@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/13 12:22:43 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/13 19:42:30 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,19 +212,18 @@ enum			e_rsa_key_bints {
 
 uint64_t	*der_decode_uint64(uint64_t *dst, uint8_t *der,
 	uint8_t *i, uint8_t len);
-int			parse_der_key(t_rsa_key_64 *key, uint8_t *der, uint8_t len);
+int			parse_der_key(t_rsa_key *key, uint8_t *der, uint8_t len);
 void		encode_der_key(uint8_t *der, uint64_t *len, t_rsa_key *key);
 int			print_rsa_key(int fd, t_rsa_key *key,
 	const char *cmd, t_des_getkey *gk);
 int			rsa_keygen(t_rsa_key_64 *key);
-int			parse_rsa_key_64(t_rsa_key_64 *key,
-	const char *cmd, t_des_getkey *gk);
+int			parse_rsa_key(t_rsa_key *key, const char *cmd, t_des_getkey *gk);
 void		rsa_hexdump(int fd, uint8_t *data, size_t len);
 int			check_header(int fd, int is_pub);
-int			check_encryption_headers(t_rsa_key_64 *key, int fd, char **line,
+int			check_encryption_headers(t_rsa_key *key, int fd, char **line,
 	const char *cmd);
 int			rsa_des_getkey(t_des_ctx *des, const char *cmd, t_des_getkey *gk);
-int			rsa_des_decrypt(uint8_t *der, uint8_t *len,
+int			rsa_des_decrypt(uint8_t *der, uint64_t *len,
 	t_des_ctx *des, const char *cmd);
 void		rsa_des_encrypt(uint8_t *der, uint64_t *len, t_des_ctx *des);
 int			rsa_check_key_size(t_rsa_key *key);

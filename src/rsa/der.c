@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 09:41:32 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/05 17:59:01 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/13 20:12:53 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 #include "rsa.h"
 
 uint64_t	*der_decode_uint64(uint64_t *dst, uint8_t *der,
-	uint8_t *i, uint8_t len)
+	uint8_t *i, uint64_t len)
 {
-	uint8_t	cur_len;
+	uint64_t	cur_len;
 
 	*dst = 0;
 	if (*i >= len || der[(*i)++] != 0x02 || *i >= len
@@ -35,26 +35,39 @@ uint64_t	*der_decode_uint64(uint64_t *dst, uint8_t *der,
 	return (dst);
 }
 
-static int	check_start_sequence(uint8_t *der, uint8_t *i,
-	uint8_t len, int is_pub)
+static int	der_decode_length(uint64_t *dstlen, uint8_t *der,
+	uint64_t *i, uint64_t len)
 {
-	uint8_t	seqbuf[DER_SEQ_MAXLEN + 1];
+	uint8_t		*ptr;
+	uint64_t	lenlen;
 
-	ft_memcpy((void *)seqbuf, (void *)DER_SEQ, DER_SEQ_MAXLEN + 1);
-	seqbuf[DER_LEN_I] = len - (DER_LEN_I + 1);
-	seqbuf[DER_LEN_II] = len - (DER_LEN_II + 1);
-	seqbuf[DER_LEN_III] = len - (DER_LEN_III + 1);
-	if (seqbuf[DER_LEN_I] > len || (is_pub && (seqbuf[DER_LEN_II] > len
-		|| seqbuf[DER_LEN_III] > len || len <= DER_SEQ_MAXLEN)))
+	if (*i >= len)
 		return (1);
-	*i = is_pub ? DER_SEQ_MAXLEN : DER_SEQ_MINLEN;
-	return (ft_strncmp((char *)seqbuf, (char *)der,
-		is_pub ? DER_SEQ_MAXLEN : DER_SEQ_MINLEN));
+	if (der[*i] & 0x80)
+	{
+		lenlen = der[(*i)++] & 0x7f;
+		if (lenlen > sizeof(uint64_t) || *i + lenlen > len)
+			return (1);
+		*dstlen = 0;
+		ptr = (uint8_t *)dstlen;
+		while (lenlen && *i < len)
+			ptr[--lenlen] = der[(*i)++];
+		return (!!lenlen);
+	}
+	*dstlen = der[(*i)++];
+	return (0);
 }
 
-int			parse_der_key(t_rsa_key_64 *key, uint8_t *der, uint8_t len)
+static int	check_start_sequence(uint8_t *der, uint64_t *i,
+	uint64_t len, int is_pub)
 {
-	uint8_t		i;
+	if (!len || der[(*i)++] != 0x30)
+		return (1);
+}
+
+int			parse_der_key(t_rsa_key *key, uint8_t *der, uint64_t len)
+{
+	uint64_t	i;
 	int			ret;
 	int			is_pub;
 	uint64_t	version;

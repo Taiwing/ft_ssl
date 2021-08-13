@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 17:36:51 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/13 12:29:22 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/13 19:45:09 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int	read_base64(uint8_t der[KEY_BUFLEN], int *len,
 }
 
 static int	read_key(uint8_t der[KEY_BUFLEN], int fd,
-	const char *cmd, t_rsa_key_64 *key)
+	const char *cmd, t_rsa_key *key)
 {
 	char	*line;
 	char	*footer;
@@ -74,13 +74,12 @@ static int	read_key(uint8_t der[KEY_BUFLEN], int fd,
 	return (footer || ret < 0 ? -1 : len);
 }
 
-int			parse_rsa_key_64(t_rsa_key_64 *key,
-	const char *cmd, t_des_getkey *gk)
+int			parse_rsa_key(t_rsa_key *key, const char *cmd, t_des_getkey *gk)
 {
-	int		fd;
-	int		ret;
-	uint8_t	len = 0;
-	uint8_t	der[KEY_BUFLEN];
+	int			fd;
+	int			ret;
+	uint64_t	len = 0;
+	uint8_t		der[KEY_BUFLEN];
 
 	if ((fd = gk->inkey ? open(gk->inkey, O_RDONLY) : 0) < 0)
 		return (1);
@@ -92,14 +91,14 @@ int			parse_rsa_key_64(t_rsa_key_64 *key,
 		return (1);
 	else
 	{
-		len = (uint8_t)ret;
+		len = (uint64_t)ret;
 		ret = 0;
 		if (key->is_enc)
 			ret = rsa_des_getkey(&key->des, cmd, gk)
 				|| rsa_des_decrypt(der, &len, &key->des, cmd);
 		if (!ret)
 			ret = parse_der_key(key, der, len);
-		key->size = !ret ? (uint32_t)NBITS(key->n) : key->size;
+		key->size = !ret ? bintlog2(key->n) : key->size;
 	}
 	return (ret);
 }
