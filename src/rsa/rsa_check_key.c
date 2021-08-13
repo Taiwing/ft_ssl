@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/12 20:13:56 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/13 11:58:47 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/13 12:06:07 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@
 
 int			rsa_check_key_size(t_rsa_key *key)
 {
-	//TODO: compute key size in parsing function, here just check
-	if ((key->size = bintlog2(key->n)) > RSA_KEY_SIZE_MAX
-		|| bintlog2(key->e) > RSA_KEY_SIZE_MAX)
+	if (key->size > RSA_KEY_SIZE_MAX || bintlog2(key->e) > RSA_KEY_SIZE_MAX)
 		return (1);
 	if (!key->is_pub && (bintlog2(key->d) > RSA_KEY_SIZE_MAX
 		|| (bintlog2(key->p) + bintlog2(key->q)) > (RSA_KEY_SIZE_MAX + 1)))

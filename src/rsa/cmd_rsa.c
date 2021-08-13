@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 06:54:37 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/13 12:01:09 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/13 12:08:53 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ static int	parse_options(t_rsa_key_64 *key, int *outfd,
 static int	print_text_rsa_key(int outfd, t_rsa_key_64 *key)
 {
 	if (key->is_pub)
-		ft_dprintf(outfd, "RSA Public-Key: (64 bit)\n"
-			"Modulus: %1$llu (%1$#llx)\n"
-			"Exponent: %2$llu (%2$#llx)\n",
-			key->n, key->e);
+		ft_dprintf(outfd, "RSA Public-Key: (%3$u bit)\n"
+			"Modulus: %1$llu (%2$#llx)\n"
+			"Exponent: %2$llu (%3$#llx)\n",
+			key->n, key->e, key->size);
 	else
-		ft_dprintf(outfd, "RSA Private-Key: (64 bit, 2 primes)\n"
+		ft_dprintf(outfd, "RSA Private-Key: (%9$u bit, 2 primes)\n"
 			"modulus: %1$llu (%1$#llx)\n"
 			"publicExponent: %2$llu (%2$#llx)\n"
 			"privateExponent: %3$llu (%3$#llx)\n"
@@ -58,7 +58,7 @@ static int	print_text_rsa_key(int outfd, t_rsa_key_64 *key)
 			"exponent2: %7$llu (%7$#llx)\n"
 			"coefficient: %8$llu (%8$#llx)\n",
 			key->n, key->e, key->d, key->p, key->q,
-			key->exp1, key->exp2, key->coeff);
+			key->exp1, key->exp2, key->coeff, key->size);
 	return (0);
 }
 

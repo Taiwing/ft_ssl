@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/13 11:48:15 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/13 12:22:43 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@
 ** coeff: modinv(q, p)
 ** is_pub: boolean, the key is public if true
 ** is_enc: boolean, the key is encrypted if true
+** size: size of the key (n) in bits
 ** des: des context if the key is encrypted
 */
 
@@ -120,6 +121,7 @@ typedef struct	s_rsa_key_64
 	uint64_t	coeff;
 	int			is_pub;
 	int			is_enc;
+	uint32_t	size;
 	t_des_ctx	des;
 }				t_rsa_key_64;
 

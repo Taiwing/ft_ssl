@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 17:36:51 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/11 22:45:35 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/13 12:29:22 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,9 @@ int			parse_rsa_key_64(t_rsa_key_64 *key,
 {
 	int		fd;
 	int		ret;
-	uint8_t	len;
+	uint8_t	len = 0;
 	uint8_t	der[KEY_BUFLEN];
 
-	len = 0;
 	if ((fd = gk->inkey ? open(gk->inkey, O_RDONLY) : 0) < 0)
 		return (1);
 	if ((ret = check_header(fd, key->is_pub)) < 0)
@@ -100,6 +99,7 @@ int			parse_rsa_key_64(t_rsa_key_64 *key,
 				|| rsa_des_decrypt(der, &len, &key->des, cmd);
 		if (!ret)
 			ret = parse_der_key(key, der, len);
+		key->size = !ret ? (uint32_t)NBITS(key->n) : key->size;
 	}
 	return (ret);
 }

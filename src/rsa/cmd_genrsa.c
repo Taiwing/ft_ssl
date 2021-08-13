@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 23:59:02 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/06 16:21:18 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/13 12:36:24 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int			rsa_key_64_to_bint(t_rsa_key *dst, t_rsa_key_64 *src)
 		return (1);
 	dst->is_pub = src->is_pub;
 	dst->is_enc = src->is_enc;
+	dst->size = bintlog2(dst->n);
 	ft_memcpy((void *)&dst->des, (void *)&src->des, sizeof(t_des_ctx));
 	return (0);
 }
@@ -85,6 +86,7 @@ int			rsa_keygen(t_rsa_key_64 *key)
 	}
 	if (key->p == key->q || !(key->n >> 63))
 		return (!!ft_printf("\n"));
+	key->size = 64;
 	ft_dprintf(2, "e is %1$lu (0x%1$06lx)\n", key->e);
 	totient = (key->p - 1) * (key->q - 1);
 	key->d = modinv((int128_t)key->e, (int128_t)totient, &gcd);
