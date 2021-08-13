@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 06:54:37 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/13 16:02:12 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/13 17:26:18 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,26 +40,55 @@ static int	parse_options(t_rsa_key_64 *key, int *outfd,
 	return (*outfd < 0);
 }
 
-static int	print_text_rsa_key(int outfd, t_rsa_key_64 *key)
+static void	print_rsa_bint(int outfd, const t_bint b)
 {
-	if (key->is_pub)
-		ft_dprintf(outfd, "RSA Public-Key: (%3$u bit)\n"
-			"Modulus: %1$llu (%2$#llx)\n"
-			"Exponent: %2$llu (%3$#llx)\n",
-			key->n, key->e, key->size);
-	else
-		ft_dprintf(outfd, "RSA Private-Key: (%9$u bit, 2 primes)\n"
-			"modulus: %1$llu (%1$#llx)\n"
-			"publicExponent: %2$llu (%2$#llx)\n"
-			"privateExponent: %3$llu (%3$#llx)\n"
-			"prime1: %4$llu (%4$#llx)\n"
-			"prime2: %5$llu (%5$#llx)\n"
-			"exponent1: %6$llu (%6$#llx)\n"
-			"exponent2: %7$llu (%7$#llx)\n"
-			"coefficient: %8$llu (%8$#llx)\n",
-			key->n, key->e, key->d, key->p, key->q,
-			key->exp1, key->exp2, key->coeff, key->size);
-	return (0);
+	uint32_t	j;
+	uint8_t		byte, *digit;
+
+	j = 0;
+	ft_dprintf(outfd, "\t");
+	for (int i = BINT_LEN(b); i; --i)
+	{
+		digit = (uint8_t *)(b + i);
+		for (uint32_t k = 1; k <= sizeof(uint32_t); ++k)
+		{
+			if (j)
+				ft_dprintf(outfd, ":%s", !(j % 15) ? "\n\t" : "");
+			byte = digit[sizeof(uint32_t) - k];
+			if (j || byte)
+			{
+				ft_dprintf(outfd, "%02hhx", byte);
+				++j;
+			}
+		}
+	}
+}
+
+static void	print_text_rsa_key(int outfd, t_rsa_key *key)
+{
+	uint64_t	u;
+	int			stop = key->is_pub ? RSA_PUB_BINTS : RSA_KEY_BINTS;
+	char		*pub_names[RSA_PUB_BINTS] = { "Modulus", "Exponent" };
+	char		*priv_names[RSA_KEY_BINTS] = {
+		"modulus", "publicExponent", "privateExponent", "prime1",
+		"prime2", "exponent1", "exponent2", "coefficient"
+	};
+	char		**tab = key->is_pub ? pub_names : priv_names;
+
+	ft_dprintf(outfd, "RSA %s-Key: (%u bit%s)\n",
+		key->is_pub ? "Public" : "Private", key->size,
+		key->is_pub ? "" : " 2 primes");
+	for (int i = 0; i < stop; ++i)
+	{
+		ft_dprintf(outfd, "%s:", tab[i]);
+		if (bint_to_u64(&u, key->rsa_bints[i]) == BINT_SUCCESS)
+			ft_dprintf(outfd, " %1$llu (%1$#llx)\n", u);
+		else
+		{
+			ft_dprintf(outfd, "\n");
+			print_rsa_bint(outfd, key->rsa_bints[i]);
+		}
+	}
 }
 
 static void	print_rsa_modulus(int outfd, t_rsa_key *key)
@@ -105,10 +134,10 @@ int			cmd_rsa(const t_command *cmd, t_cmdopt *opt, char **args)
 	INIT_RSA_KEY(key);
 	ft_bzero((void *)&key64, sizeof(t_rsa_key_64));
 	ret = parse_options(&key64, &outfd, opt, cmd);
-	if (!ret && opt[RSA_TEXT].is_set)
-		print_text_rsa_key(outfd, &key64);
 	if (rsa_key_64_to_bint(&key, &key64))
 		ret = 1;
+	if (!ret && opt[RSA_TEXT].is_set)
+		print_text_rsa_key(outfd, &key);
 	if (!ret && opt[RSA_MODULUS].is_set)
 		print_rsa_modulus(outfd, &key);
 	if (!ret && opt[RSA_CHECK].is_set)
