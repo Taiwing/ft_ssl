@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 06:54:37 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/13 12:08:53 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/13 15:40:59 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int			cmd_rsa(const t_command *cmd, t_cmdopt *opt, char **args)
 	if (rsa_key_64_to_bint(&key, &key64))
 		ret = 1;
 	if (!ret && opt[RSA_CHECK].is_set)
-		ret = rsa_check_key_64(outfd, &key64);
+		rsa_check_key_64(outfd, &key64);
 	if (!ret && !opt[RSA_NOOUT].is_set)
 		ret = create_output_key(outfd, &key, opt, cmd);
 	if (outfd > 1)
