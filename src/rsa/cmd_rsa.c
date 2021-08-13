@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 06:54:37 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/13 15:56:38 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/13 16:02:12 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,11 @@ static int	print_text_rsa_key(int outfd, t_rsa_key_64 *key)
 
 static void	print_rsa_modulus(int outfd, t_rsa_key *key)
 {
-	ft_dprintf(outfd, "Modulus=%s", BINT_LEN(key->n) ? "" : "0");
-	for (int i = BINT_LEN(key->n); i; --i)
-		ft_dprintf(outfd, "%llX", key->n[i]);
+	int	i = BINT_LEN(key->n);
+
+	ft_dprintf(outfd, "Modulus=%llX", i ? key->n[i--] : 0);
+	while (i)
+		ft_dprintf(outfd, "%08llX", key->n[i--]);
 	ft_dprintf(outfd, "\n");
 }
 
