@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/05 17:58:00 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/06 17:05:17 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/16 19:44:44 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,13 @@
 
 static uint64_t	der_key_lengths(uint64_t lengths[RSA_KEY_BINTS], t_rsa_key *key)
 {
-	uint64_t	lenlen;
 	uint64_t	key_seq_length;
 
 	key_seq_length = key->is_pub ? 0 : 3;
 	for (int i = 0; i < (key->is_pub ? RSA_PUB_BINTS : RSA_KEY_BINTS); ++i)
 	{
 		lengths[i] = (bintlog2(key->rsa_bints[i]) / 8) + 1;
-		lenlen = NBITS(lengths[i]);
-		key_seq_length += 1 + (lenlen >= 8) + (lenlen / 8) + !!(lenlen % 8);
+		key_seq_length += 1 + der_lenlen(lengths[i]);
 		key_seq_length += lengths[i];
 	}
 	return (key_seq_length);
@@ -50,15 +48,12 @@ static void		der_encode_length(uint8_t *der, uint64_t *len, uint64_t length)
 static void		set_pubkey_header(uint8_t *der, uint64_t *len,
 		uint64_t key_seq_length)
 {
-	uint64_t	lenlen;
 	uint64_t	bit_string_length;
 	uint64_t	total_pubkey_length;
 
-	lenlen = NBITS(key_seq_length);
-	bit_string_length = 2 + (lenlen >= 8) + (lenlen / 8) + !!(lenlen % 8);
+	bit_string_length = 2 + der_lenlen(key_seq_length);
 	bit_string_length += key_seq_length;
-	lenlen = NBITS(bit_string_length);
-	total_pubkey_length = 1 + (lenlen >= 8) + (lenlen / 8) + !!(lenlen % 8);
+	total_pubkey_length = 1 + der_lenlen(bit_string_length);
 	total_pubkey_length += bit_string_length + DER_OID_SEQ_LEN;
 	der_encode_length(der, len, total_pubkey_length);
 	ft_memcpy((void *)(der + *len), (void *)DER_OID_SEQ, DER_OID_SEQ_LEN);

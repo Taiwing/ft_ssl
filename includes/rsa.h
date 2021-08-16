@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/13 19:42:30 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/16 19:42:26 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,7 @@ enum			e_rsa_key_bints {
 
 uint64_t	*der_decode_uint64(uint64_t *dst, uint8_t *der,
 	uint8_t *i, uint8_t len);
+uint64_t	der_lenlen(uint64_t length);
 int			parse_der_key(t_rsa_key *key, uint8_t *der, uint8_t len);
 void		encode_der_key(uint8_t *der, uint64_t *len, t_rsa_key *key);
 int			print_rsa_key(int fd, t_rsa_key *key,

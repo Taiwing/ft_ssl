@@ -6,12 +6,20 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 09:41:32 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/13 20:12:53 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/16 19:41:09 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "rsa.h"
+
+uint64_t	der_lenlen(uint64_t length)
+{
+	uint64_t	lenlen;
+
+	lenlen = NBITS(length);
+	return ((lenlen >= 8) + (lenlen / 8) + !!(lenlen % 8));
+}
 
 uint64_t	*der_decode_uint64(uint64_t *dst, uint8_t *der,
 	uint8_t *i, uint64_t len)
