@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 06:54:37 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/17 19:43:16 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/17 23:48:38 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,26 +42,31 @@ static int	parse_options(t_rsa_key *key, int *outfd,
 
 static void	print_rsa_bint(int outfd, const t_bint b)
 {
-	uint32_t	j;
+	uint32_t	j = 0;
 	uint8_t		byte, *digit;
 
-	j = 0;
-	ft_dprintf(outfd, "\t");
+	ft_dprintf(outfd, "    ");
 	for (int i = BINT_LEN(b); i; --i)
 	{
 		digit = (uint8_t *)(b + i);
 		for (uint32_t k = 1; k <= sizeof(uint32_t); ++k)
 		{
-			if (j)
-				ft_dprintf(outfd, ":%s", !(j % 15) ? "\n\t" : "");
 			byte = digit[sizeof(uint32_t) - k];
+			if (!j && (byte & 0x80))
+			{
+				ft_dprintf(outfd, "00");
+				++j;
+			}
 			if (j || byte)
 			{
-				ft_dprintf(outfd, "%02hhx", byte);
+				ft_dprintf(outfd, "%s%s%02hhx", j ? ":" : "",
+					j && !(j % 15) ? "\n    " : "", byte);
 				++j;
 			}
 		}
 	}
+	if (j % 15)
+		ft_dprintf(outfd, "\n");
 }
 
 static void	print_text_rsa_key(int outfd, t_rsa_key *key)
@@ -77,7 +82,7 @@ static void	print_text_rsa_key(int outfd, t_rsa_key *key)
 
 	ft_dprintf(outfd, "RSA %s-Key: (%u bit%s)\n",
 		key->is_pub ? "Public" : "Private", key->size,
-		key->is_pub ? "" : " 2 primes");
+		key->is_pub ? "" : ", 2 primes");
 	for (int i = 0; i < stop; ++i)
 	{
 		ft_dprintf(outfd, "%s:", tab[i]);
