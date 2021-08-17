@@ -6,12 +6,20 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/05 17:58:00 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/16 19:44:44 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/17 19:53:55 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "rsa.h"
+
+static uint64_t	der_lenlen(uint64_t length)
+{
+	uint64_t	lenlen;
+
+	lenlen = NBITS(length);
+	return ((lenlen >= 8) + (lenlen / 8) + !!(lenlen % 8));
+}
 
 static uint64_t	der_key_lengths(uint64_t lengths[RSA_KEY_BINTS], t_rsa_key *key)
 {

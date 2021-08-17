@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 15:11:34 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/11 22:45:12 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/17 19:52:11 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "readfile.h"
 #include "rsa_math.h"
 
+/*
 static int	parse_options(const t_command *cmd, t_cmdopt *opt,
 		t_rsa_key_64 *key, int *outfd)
 {
@@ -93,4 +94,18 @@ int			cmd_rsautl(const t_command *cmd, t_cmdopt *opt, char **args)
 	if (fd > 1)
 		close(fd);
 	return (ret);
+}
+*/
+
+/*
+** TODO: un-comment and adapt the real cmd_rsautl function to
+** the new key format and remove this
+*/
+int			cmd_rsautl(const t_command *cmd, t_cmdopt *opt, char **args)
+{
+	(void)cmd;
+	(void)opt;
+	(void)args;
+
+	return (0);
 }

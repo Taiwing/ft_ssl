@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 17:36:51 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/17 19:25:01 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/17 19:53:53 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,6 @@
 #include "base64.h"
 #include "libft.h"
 #include "rsa.h"
-
-static uint64_t	der_lenlen(uint64_t length)
-{
-	uint64_t	lenlen;
-
-	lenlen = NBITS(length);
-	return ((lenlen >= 8) + (lenlen / 8) + !!(lenlen % 8));
-}
 
 static void		flush_gnl(int fd)
 {

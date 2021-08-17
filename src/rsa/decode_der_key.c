@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/17 19:26:36 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/17 19:26:38 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/17 19:55:08 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static int	check_start_sequence(uint8_t *der, uint64_t *i,
 		|| ft_memcmp((void *)(der + *i), (void *)DER_OID_SEQ, DER_OID_SEQ_LEN))
 		return (1);
 	*i += DER_OID_SEQ_LEN;
-	if (der[(*i)++] != 0x03 || *i => len
+	if (der[(*i)++] != 0x03 || *i >= len
 		|| der_decode_length(&bit_string_length, der, i, len)
 		|| bit_string_length != len - *i || *i >= len
 		|| der[(*i)++] != 0x00 || *i >= len || der[(*i)++] != 0x30)
@@ -95,7 +95,6 @@ int			decode_der_key(t_rsa_key *key, uint8_t *der, uint64_t len)
 	uint32_t	version[BINT_SIZE_DEF] = BINT_DEFAULT(0);
 	uint64_t	stop = key->is_pub ? RSA_PUB_BINTS : RSA_KEY_BINTS;
 
-	version = 0;
 	if (check_start_sequence(der, &i, len, key->is_pub))
 		return (1);
 	if (!key->is_pub && (!der_decode_bint(version, der, &i, len)

@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/17 19:24:56 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/17 19:55:35 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,6 @@
 # define DEK_INFO_LEN		(MC_STRLEN(DEK_INFO))
 # define IV_LEN				16
 # define RSABUF_SIZE		(8+1)
-
-//TODO: delete these lines (from DER_SEQ to DER_LEN_III)
-# define DER_SEQ			"\x30\xFF\x30\x0D\x06\x09\x2A\x86"\
-							"\x48\x86\xF7\x0D\x01\x01\x01\x05"\
-							"\x00\x03\xFF\x00\x30\xFF"
-# define DER_SEQ_MAXLEN		(MC_STRLEN(DER_SEQ))
-# define DER_SEQ_MINLEN		0x02
-# define DER_LEN_I			0x01
-# define DER_LEN_II			0x12
-# define DER_LEN_III		0x15
 
 # define DER_OID_SEQ		"\x30\x0D\x06\x09\x2A\x86\x48\x86"\
 							"\xF7\x0D\x01\x01\x01\x05\x00"
@@ -210,7 +200,7 @@ enum			e_rsa_key_bints {
 ** rsa functions
 */
 
-int			decode_der_key(t_rsa_key *key, uint8_t *der, uint8_t len);
+int			decode_der_key(t_rsa_key *key, uint8_t *der, uint64_t len);
 void		encode_der_key(uint8_t *der, uint64_t *len, t_rsa_key *key);
 int			print_rsa_key(int fd, t_rsa_key *key,
 	const char *cmd, t_des_getkey *gk);
@@ -227,8 +217,5 @@ void		rsa_des_encrypt(uint8_t *der, uint64_t *len, t_des_ctx *des);
 int			rsa_check_key_size(t_rsa_key *key);
 int			rsa_check_key_bint(int outfd, t_rsa_key *key, const char *cmd);
 int			rsa_check_key_64(int outfd, t_rsa_key_64 *key);
-
-//TODO: remove this (should only be in cmd_genrsa)
-int			rsa_key_64_to_bint(t_rsa_key *dst, t_rsa_key_64 *src);
 
 #endif

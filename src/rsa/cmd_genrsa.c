@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 23:59:02 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/13 12:36:24 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/17 19:49:08 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,7 @@
 #include "rsa.h"
 #include "base64.h"
 
-
-/*
-** TODO: make this function static when we will have delete all
-** external calls to it
-*/
-int			rsa_key_64_to_bint(t_rsa_key *dst, t_rsa_key_64 *src)
+static int	rsa_key_64_to_bint(t_rsa_key *dst, t_rsa_key_64 *src)
 {
 	if (bintset_u64(dst->n, src->n) == BINT_FAILURE
 		|| bintset_u64(dst->e, src->e) == BINT_FAILURE
