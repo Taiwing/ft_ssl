@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/17 19:26:36 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/17 19:55:08 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/17 21:00:59 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ static t_bint	der_decode_bint(t_bint dst, uint8_t *der,
 		return (NULL);
 	SET_BINT_LEN(dst, bint_len);
 	ft_bzero((void *)(dst + 1), bint_len * sizeof(uint32_t));
+	der += *i;
 	*i += cur_len;
 	for (uint8_t *d = (uint8_t *)(dst + 1); cur_len; ++d)
 		*d = der[--cur_len];
@@ -91,7 +92,7 @@ static int	check_start_sequence(uint8_t *der, uint64_t *i,
 
 int			decode_der_key(t_rsa_key *key, uint8_t *der, uint64_t len)
 {
-	uint64_t	i;
+	uint64_t	i = 0;
 	uint32_t	version[BINT_SIZE_DEF] = BINT_DEFAULT(0);
 	uint64_t	stop = key->is_pub ? RSA_PUB_BINTS : RSA_KEY_BINTS;
 
