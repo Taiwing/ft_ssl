@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 06:54:37 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/17 23:48:38 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/17 23:53:29 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,9 @@ static void	print_text_rsa_key(int outfd, t_rsa_key *key)
 	for (int i = 0; i < stop; ++i)
 	{
 		ft_dprintf(outfd, "%s:", tab[i]);
-		if (bint_to_u64(&u, key->rsa_bints[i]) == BINT_SUCCESS)
+		if (!BINT_LEN(key->rsa_bints[i]))
+			ft_dprintf(outfd, " 0\n");
+		else if (bint_to_u64(&u, key->rsa_bints[i]) == BINT_SUCCESS)
 			ft_dprintf(outfd, " %1$llu (%1$#llx)\n", u);
 		else
 		{
