@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 09:41:32 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/16 19:41:09 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/17 18:27:04 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,25 @@ static int	der_decode_length(uint64_t *dstlen, uint8_t *der,
 static int	check_start_sequence(uint8_t *der, uint64_t *i,
 	uint64_t len, int is_pub)
 {
-	if (!len || der[(*i)++] != 0x30)
+	uint64_t	total_key_length = 0;
+	uint64_t	bit_string_length = 0;
+
+	if (!len || der[(*i)++] != 0x30
+		|| der_decode_length(&total_key_length, der, i, len)
+		|| total_key_length != len - *i)
 		return (1);
+	if (!is_pub)
+		return (0);
+	if (*i >= len || len - *i <= DER_OID_SEQ_LEN
+		|| ft_memcmp((void *)(der + *i), (void *)DER_OID_SEQ, DER_OID_SEQ_LEN))
+		return (1);
+	*i += DER_OID_SEQ_LEN;
+	if (der[(*i)++] != 0x03 || *i => len
+		|| der_decode_length(&bit_string_length, der, i, len)
+		|| bit_string_length != len - *i || *i >= len
+		|| der[(*i)++] != 0x00 || *i >= len || der[(*i)++] != 0x30)
+		return (1);
+	return (0);
 }
 
 int			parse_der_key(t_rsa_key *key, uint8_t *der, uint64_t len)
