@@ -52,11 +52,11 @@ RSAC			=	parse_rsa_key_headers.c\
 					modular_ops.c\
 					rsa_check_key.c\
 					cmd_genrsa.c\
+					decode_der_key.c\
 					cmd_rsa.c\
 					parse_rsa_key.c\
 					cmd_rsautl.c\
 					prime.c\
-					der.c\
 					rsa_value_options.c\
 					rsa_hexdump.c\
 
@@ -117,13 +117,13 @@ modular_ops.o: rsa_math.h
 rsa_check_key.o: libft.h rsa.h des.h bint.h rsa_math.h
 cmd_genrsa.o: commands.h options.h libft.h rsa_math.h rsa.h des.h bint.h\
 	base64.h
+decode_der_key.o: libft.h rsa.h des.h bint.h
 cmd_rsa.o: commands.h options.h libft.h rsa_value_options.h rsa.h des.h bint.h\
 	rsa_math.h
 parse_rsa_key.o: base64.h libft.h rsa.h des.h bint.h
 cmd_rsautl.o: commands.h options.h libft.h rsa.h des.h bint.h readfile.h\
 	rsa_math.h
 prime.o: libft.h rsa_math.h
-der.o: libft.h rsa.h des.h bint.h
 rsa_value_options.o: rsa.h des.h bint.h cmd_des_utils.h commands.h options.h\
 	libft.h
 rsa_hexdump.o: libft.h

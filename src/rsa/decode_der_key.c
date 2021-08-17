@@ -1,47 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   der.c                                              :+:      :+:    :+:   */
+/*   decode_der_key.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/13 09:41:32 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/17 18:27:04 by yforeau          ###   ########.fr       */
+/*   Created: 2021/08/17 19:26:36 by yforeau           #+#    #+#             */
+/*   Updated: 2021/08/17 19:26:38 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "rsa.h"
-
-uint64_t	der_lenlen(uint64_t length)
-{
-	uint64_t	lenlen;
-
-	lenlen = NBITS(length);
-	return ((lenlen >= 8) + (lenlen / 8) + !!(lenlen % 8));
-}
-
-uint64_t	*der_decode_uint64(uint64_t *dst, uint8_t *der,
-	uint8_t *i, uint64_t len)
-{
-	uint64_t	cur_len;
-
-	*dst = 0;
-	if (*i >= len || der[(*i)++] != 0x02 || *i >= len
-		|| (cur_len = der[(*i)++]) > RSA_DER_INT_MAXLEN
-		|| (*i) + cur_len > len
-		|| (cur_len < RSA_DER_INT_MAXLEN && (der[*i] & 0x80)))
-		return (NULL);
-	if (!der[*i])
-	{
-		++(*i);
-		--cur_len;
-	}
-	ft_memcpy((void *)dst, der + *i, cur_len);
-	ft_memswap((void *)dst, cur_len);
-	*i += cur_len;
-	return (dst);
-}
 
 static int	der_decode_length(uint64_t *dstlen, uint8_t *der,
 	uint64_t *i, uint64_t len)
@@ -64,6 +34,35 @@ static int	der_decode_length(uint64_t *dstlen, uint8_t *der,
 	}
 	*dstlen = der[(*i)++];
 	return (0);
+}
+
+static t_bint	der_decode_bint(t_bint dst, uint8_t *der,
+		uint64_t *i, uint64_t len)
+{
+	uint64_t	cur_len;
+	uint64_t	bint_len;
+
+	if (bintcpy(dst, BINT_ZERO) == BINT_FAILURE)
+		return (NULL);
+	if (*i > len || der[(*i)++] != 0x02
+		|| der_decode_length(&cur_len, der, i, len) || *i + cur_len > len)
+		return (NULL);
+	if (!der[*i])
+	{
+		++(*i);
+		--cur_len;
+	}
+	else if (der[*i] & 0x80)
+		return (NULL);
+	bint_len = cur_len / sizeof(uint32_t) + !!(cur_len % sizeof(uint32_t));
+	if (bint_len >= BINT_SIZE(dst))
+		return (NULL);
+	SET_BINT_LEN(dst, bint_len);
+	ft_bzero((void *)(dst + 1), bint_len * sizeof(uint32_t));
+	*i += cur_len;
+	for (uint8_t *d = (uint8_t *)(dst + 1); cur_len; ++d)
+		*d = der[--cur_len];
+	return (dst);
 }
 
 static int	check_start_sequence(uint8_t *der, uint64_t *i,
@@ -90,24 +89,20 @@ static int	check_start_sequence(uint8_t *der, uint64_t *i,
 	return (0);
 }
 
-int			parse_der_key(t_rsa_key *key, uint8_t *der, uint64_t len)
+int			decode_der_key(t_rsa_key *key, uint8_t *der, uint64_t len)
 {
 	uint64_t	i;
-	int			ret;
-	int			is_pub;
-	uint64_t	version;
+	uint32_t	version[BINT_SIZE_DEF] = BINT_DEFAULT(0);
+	uint64_t	stop = key->is_pub ? RSA_PUB_BINTS : RSA_KEY_BINTS;
 
 	version = 0;
-	is_pub = key->is_pub;
-	ret = check_start_sequence(der, &i, len, is_pub);
-	ret = !ret && !is_pub ? !der_decode_uint64(&version, der, &i, len) : ret;
-	ret = !ret ? !der_decode_uint64(&key->n, der, &i, len) : ret;
-	ret = !ret ? !der_decode_uint64(&key->e, der, &i, len) : ret;
-	ret = !ret && !is_pub ? !der_decode_uint64(&key->d, der, &i, len) : ret;
-	ret = !ret && !is_pub ? !der_decode_uint64(&key->p, der, &i, len) : ret;
-	ret = !ret && !is_pub ? !der_decode_uint64(&key->q, der, &i, len) : ret;
-	ret = !ret && !is_pub ? !der_decode_uint64(&key->exp1, der, &i, len) : ret;
-	ret = !ret && !is_pub ? !der_decode_uint64(&key->exp2, der, &i, len) : ret;
-	ret = !ret && !is_pub ? !der_decode_uint64(&key->coeff, der, &i, len) : ret;
-	return (!ret && is_pub ? i != len : ret);
+	if (check_start_sequence(der, &i, len, key->is_pub))
+		return (1);
+	if (!key->is_pub && (!der_decode_bint(version, der, &i, len)
+		|| bintcmp(version, BINT_ZERO)))
+		return (1);
+	for (uint64_t j = 0; j < stop; ++j)
+		if (!der_decode_bint(key->rsa_bints[j], der, &i, len))
+			return (1);
+	return (i != len);
 }

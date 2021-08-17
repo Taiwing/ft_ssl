@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 17:36:51 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/13 19:45:09 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/17 19:25:01 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,15 @@
 #include "libft.h"
 #include "rsa.h"
 
-static void	flush_gnl(int fd)
+static uint64_t	der_lenlen(uint64_t length)
+{
+	uint64_t	lenlen;
+
+	lenlen = NBITS(length);
+	return ((lenlen >= 8) + (lenlen / 8) + !!(lenlen % 8));
+}
+
+static void		flush_gnl(int fd)
 {
 	char	*line;
 
@@ -29,7 +37,7 @@ static void	flush_gnl(int fd)
 	}
 }
 
-static int	read_base64(uint8_t der[KEY_BUFLEN], int *len,
+static int		read_base64(uint8_t der[KEY_BUFLEN], int *len,
 	int ret, char *line)
 {
 	int	valid;
@@ -44,7 +52,7 @@ static int	read_base64(uint8_t der[KEY_BUFLEN], int *len,
 	return (0);
 }
 
-static int	read_key(uint8_t der[KEY_BUFLEN], int fd,
+static int		read_key(uint8_t der[KEY_BUFLEN], int fd,
 	const char *cmd, t_rsa_key *key)
 {
 	char	*line;
@@ -74,7 +82,7 @@ static int	read_key(uint8_t der[KEY_BUFLEN], int fd,
 	return (footer || ret < 0 ? -1 : len);
 }
 
-int			parse_rsa_key(t_rsa_key *key, const char *cmd, t_des_getkey *gk)
+int				parse_rsa_key(t_rsa_key *key, const char *cmd, t_des_getkey *gk)
 {
 	int			fd;
 	int			ret;
@@ -97,7 +105,7 @@ int			parse_rsa_key(t_rsa_key *key, const char *cmd, t_des_getkey *gk)
 			ret = rsa_des_getkey(&key->des, cmd, gk)
 				|| rsa_des_decrypt(der, &len, &key->des, cmd);
 		if (!ret)
-			ret = parse_der_key(key, der, len);
+			ret = decode_der_key(key, der, len);
 		key->size = !ret ? bintlog2(key->n) : key->size;
 	}
 	return (ret);
