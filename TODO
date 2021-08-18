@@ -1,3 +1,4 @@
 - write the other commands
 - make the cli parsing great again
 - replace most instances of t_rsa_key_64 by t_rsa_key
+- handle length as an argument for genrsa

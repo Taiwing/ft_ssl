@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/18 13:42:28 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/18 15:00:25 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@
 # define PROC_TYPE_LEN		(MC_STRLEN(PROC_TYPE))
 # define DEK_INFO_LEN		(MC_STRLEN(DEK_INFO))
 # define IV_LEN				16
-# define RSABUF_SIZE		(8+1)
+# define RSA_KEY_BYTES_MAX	(RSA_KEY_SIZE_MAX/8)
+# define RSABUF_SIZE		(RSA_KEY_BYTES_MAX+1)
 
 # define DER_OID_SEQ		"\x30\x0D\x06\x09\x2A\x86\x48\x86"\
 							"\xF7\x0D\x01\x01\x01\x05\x00"
@@ -217,5 +218,8 @@ void		rsa_des_encrypt(uint8_t *der, uint64_t *len, t_des_ctx *des);
 int			rsa_check_key_size(t_rsa_key *key, uint64_t max);
 int			rsa_check_key_bint(int outfd, t_rsa_key *key, const char *cmd);
 int			rsa_check_key_64(int outfd, t_rsa_key_64 *key);
+
+//TODO: probably move bintset_bytes to libft
+int			bintset_bytes(t_bint b, uint8_t *bytes, uint64_t len);
 
 #endif

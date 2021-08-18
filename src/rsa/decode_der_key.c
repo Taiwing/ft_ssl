@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/17 19:26:36 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/18 13:01:18 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/18 15:00:09 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,24 @@ static int	der_decode_length(uint64_t *dstlen, uint8_t *der,
 	return (0);
 }
 
+int				bintset_bytes(t_bint b, uint8_t *bytes, uint64_t len)
+{
+	uint64_t	bint_len;
+
+	bint_len = len / sizeof(uint32_t) + !!(len % sizeof(uint32_t));
+	if (bint_len >= BINT_SIZE(b))
+		return (BINT_FAILURE);
+	SET_BINT_LEN(b, bint_len);
+	ft_bzero((void *)(b + 1), bint_len * sizeof(uint32_t));
+	for (uint8_t *d = (uint8_t *)(b + 1); len; ++d)
+		*d = bytes[--len];
+	return (BINT_SUCCESS);
+}
+
 static t_bint	der_decode_bint(t_bint dst, uint8_t *der,
 		uint64_t *i, uint64_t len)
 {
 	uint64_t	cur_len;
-	uint64_t	bint_len;
 
 	if (bintcpy(dst, BINT_ZERO) == BINT_FAILURE)
 		return (NULL);
@@ -54,15 +67,10 @@ static t_bint	der_decode_bint(t_bint dst, uint8_t *der,
 	}
 	else if (der[*i] & 0x80)
 		return (NULL);
-	bint_len = cur_len / sizeof(uint32_t) + !!(cur_len % sizeof(uint32_t));
-	if (bint_len >= BINT_SIZE(dst))
-		return (NULL);
-	SET_BINT_LEN(dst, bint_len);
-	ft_bzero((void *)(dst + 1), bint_len * sizeof(uint32_t));
 	der += *i;
 	*i += cur_len;
-	for (uint8_t *d = (uint8_t *)(dst + 1); cur_len; ++d)
-		*d = der[--cur_len];
+	if (bintset_bytes(dst, der, cur_len) == BINT_FAILURE)
+		return (NULL);
 	return (dst);
 }
 
