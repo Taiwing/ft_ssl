@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 15:19:24 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/04 17:26:07 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/18 20:14:10 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	print_bits(uint64_t n)
 	int		ret;
 	char	byte[9];
 
+	ret = 0;
 	for (int i = 0; i < 8; ++i)
 	{
 		for (int j = 0; j < 8; ++j)

@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 10:20:12 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/12 18:56:29 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/18 22:11:17 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,19 @@ static size_t	md_block_exec(t_md_ctx *ctx, const char *src, size_t len)
 	return (len);
 }
 
-int			pbkdf(t_des_ctx *des, const char *pass,
+static uint64_t	set_u64_des_value(char *regs, int is_be)
+{
+	uint64_t	u;
+
+	ft_memcpy((void *)&u, (void *)regs, sizeof(uint64_t));
+	if (is_be)
+		u = FLIP(u, 32);
+	else
+		ft_memswap((void *)&u, sizeof(uint64_t));
+	return (u);
+}
+
+int				pbkdf(t_des_ctx *des, const char *pass,
 	int iv_is_set, const char *md_name)
 {
 	t_md_ctx	md;
@@ -47,18 +59,14 @@ int			pbkdf(t_des_ctx *des, const char *pass,
 	if ((len = md_block_exec(&md, NULL, len + SALT_LEN)) < SALT_LEN)
 		ft_memcpy((void *)md.buf, (void *)&salt + SALT_LEN - len, len);
 	add_md_padding(&md, len, (pass_len + SALT_LEN - len) * 8);
-	des->key = md.is_be ? FLIP(*(uint64_t *)md.regs, 32) : *(uint64_t *)md.regs;
+	des->key = set_u64_des_value((char *)md.regs, md.is_be);
 	if (!iv_is_set)
-		des->iv = md.is_be ? FLIP(*(uint64_t *)(md.regs + 2), 32)
-			: *(uint64_t *)(md.regs + 2);
-	if (!md.is_be)
-		ft_memswap((void *)&des->key, sizeof(uint64_t));
-	if (!md.is_be && !iv_is_set)
-		ft_memswap((void *)&des->iv, sizeof(uint64_t));
+		des->iv = set_u64_des_value((char *)(md.regs + 2), md.is_be);
 	return (0);
 }
 
-int			read_des_password(char *value, const char *cmd, t_des_getkey *gk)
+int				read_des_password(char *value,
+		const char *cmd, t_des_getkey *gk)
 {
 	char	*pass;
 

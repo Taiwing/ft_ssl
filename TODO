@@ -1,3 +1,4 @@
 - write the other commands
 - make the cli parsing great again
 - handle length as an argument for genrsa
+- test this program like an absolute mofo

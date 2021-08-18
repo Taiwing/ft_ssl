@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/09 19:12:40 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/13 19:43:01 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/18 20:15:25 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int	rsa_des_decrypt(uint8_t *der, uint64_t *len,
 	derptr = (uint64_t *)der;
 	old_len /= sizeof(uint64_t);
 	des_keygen(des);
+	block = 0;
 	while (old_len--)
 	{
 		des->plaintext = *derptr;
