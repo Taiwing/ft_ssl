@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/12 20:13:56 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/13 12:06:07 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/18 13:42:31 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 #include "rsa.h"
 #include "rsa_math.h"
 
-int			rsa_check_key_size(t_rsa_key *key)
+int			rsa_check_key_size(t_rsa_key *key, uint64_t max)
 {
-	if (key->size > RSA_KEY_SIZE_MAX || bintlog2(key->e) > RSA_KEY_SIZE_MAX)
+	if (key->size > max || bintlog2(key->e) > max)
 		return (1);
-	if (!key->is_pub && (bintlog2(key->d) > RSA_KEY_SIZE_MAX
-		|| (bintlog2(key->p) + bintlog2(key->q)) > (RSA_KEY_SIZE_MAX + 1)))
+	if (!key->is_pub && (bintlog2(key->d) > max
+		|| (bintlog2(key->p) + bintlog2(key->q)) > (max + 1)))
 		return (1);
 	return (0);
 }
@@ -89,7 +89,7 @@ int			rsa_check_key_bint(int outfd, t_rsa_key *key, const char *cmd)
 	uint32_t	q1[BINT_SIZE_DEF] = BINT_DEFAULT(0);
 	uint32_t	totient[BINT_SIZE_DEF] = BINT_DEFAULT(0);
 
-	if ((ret = rsa_check_key_size(key)) > 0)
+	if ((ret = rsa_check_key_size(key, RSA_KEY_SIZE_MAX)) > 0)
 		return (!!ft_dprintf(2,
 			"ft_ssl: %1$s: rsa key is too long (%2$u bit)\n"
 			"ft_ssl: %1$s: ft_ssl handles keys up to %3$u bit long\n",

@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 06:54:37 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/17 23:53:29 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/18 13:50:52 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,33 +125,47 @@ static int	create_output_key(int outfd, t_rsa_key *key_in,
 	return (print_rsa_key(outfd, &key_out, cmd->name, &gk));
 }
 
-/*
-** TODO: create rsa_key_bint_to_64 function and use it before
-** executing check option (when key is parsed in bint)
-** also print an error if the key is bigger than 64 bits
-*/
+static int	rsa_key_bint_to_64(t_rsa_key_64 *key64, t_rsa_key *key)
+{
+	ft_bzero((void *)key64, sizeof(t_rsa_key_64));
+	if (bint_to_u64(&key64->n, key->n) == BINT_FAILURE
+		|| bint_to_u64(&key64->e, key->e) == BINT_FAILURE)
+		return (1);
+	if (!key->is_pub && (bint_to_u64(&key64->d, key->d) == BINT_FAILURE
+		|| bint_to_u64(&key64->p, key->p) == BINT_FAILURE
+		|| bint_to_u64(&key64->q, key->q) == BINT_FAILURE
+		|| bint_to_u64(&key64->exp1, key->exp1) == BINT_FAILURE
+		|| bint_to_u64(&key64->exp2, key->exp2) == BINT_FAILURE
+		|| bint_to_u64(&key64->coeff, key->coeff) == BINT_FAILURE))
+		return (1);
+	key64->is_pub = key->is_pub;
+	key64->is_enc = key->is_enc;
+	key64->size = key->size;
+	ft_memcpy((void *)&key64->des, (void *)&key->des, sizeof(t_des_ctx));
+	return (0);
+}
+
 int			cmd_rsa(const t_command *cmd, t_cmdopt *opt, char **args)
 {
 	int				ret;
-	int				outfd;
 	t_rsa_key_64	key64;
+	int				outfd = 1;
 	t_rsa_key		key = RSA_KEY_DEFAULT;
 
 	(void)args;
-	outfd = 1;
 	INIT_RSA_KEY(key);
-	ft_bzero((void *)&key64, sizeof(t_rsa_key_64));
 	ret = parse_options(&key, &outfd, opt, cmd);
 	if (!ret && opt[RSA_TEXT].is_set)
 		print_text_rsa_key(outfd, &key);
 	if (!ret && opt[RSA_MODULUS].is_set)
 		print_rsa_modulus(outfd, &key);
-	/*
-	if (rsa_key_bint_to_64(&key64, &key))
-		ret = 1;
-	if (!ret && opt[RSA_CHECK].is_set)
+	if (!ret && opt[RSA_CHECK].is_set
+		&& rsa_check_key_size(&key, GENRSA_KEY_SIZE_MAX))
+		ft_dprintf(2, "ft_ssl: %1$s: rsa key is too long (%2$u bit)\n"
+			"ft_ssl: %1$s: -check option handles keys up to %3$u bit long\n",
+			cmd->name, key.size, GENRSA_KEY_SIZE_MAX);
+	else if (!ret && opt[RSA_CHECK].is_set && !rsa_key_bint_to_64(&key64, &key))
 		rsa_check_key_64(outfd, &key64);
-	*/
 	if (!ret && !opt[RSA_NOOUT].is_set)
 		ret = create_output_key(outfd, &key, opt, cmd);
 	if (outfd > 1)
