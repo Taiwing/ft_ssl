@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/17 19:26:36 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/17 21:00:59 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/18 13:01:18 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ static int	check_start_sequence(uint8_t *der, uint64_t *i,
 {
 	uint64_t	total_key_length = 0;
 	uint64_t	bit_string_length = 0;
+	uint64_t	key_seq_length = 0;
 
 	if (!len || der[(*i)++] != 0x30
 		|| der_decode_length(&total_key_length, der, i, len)
@@ -85,7 +86,9 @@ static int	check_start_sequence(uint8_t *der, uint64_t *i,
 	if (der[(*i)++] != 0x03 || *i >= len
 		|| der_decode_length(&bit_string_length, der, i, len)
 		|| bit_string_length != len - *i || *i >= len
-		|| der[(*i)++] != 0x00 || *i >= len || der[(*i)++] != 0x30)
+		|| der[(*i)++] != 0x00 || *i >= len || der[(*i)++] != 0x30
+		|| der_decode_length(&key_seq_length, der, i, len)
+		|| key_seq_length != len - *i)
 		return (1);
 	return (0);
 }
