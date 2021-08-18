@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 15:11:34 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/18 15:30:08 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/18 22:39:24 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,8 @@ static int	print_rsautl_output(int fd, t_bint out, t_cmdopt *opt)
 	if (!ft_memswap((void *)ptr, byte_len))
 		return (1);
 	if (opt[RSAUTL_HEXDUMP].is_set)
-		rsa_hexdump(fd, ptr, byte_len);
-	else
-		write(fd, (void *)ptr, byte_len);
-	return (0);
+		return (rsa_hexdump(fd, ptr, byte_len) < 0);
+	return (write(fd, (void *)ptr, byte_len) < 0);
 }
 
 int			cmd_rsautl(const t_command *cmd, t_cmdopt *opt, char **args)
