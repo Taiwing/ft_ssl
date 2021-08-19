@@ -6,13 +6,12 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 15:38:30 by yforeau           #+#    #+#             */
-/*   Updated: 2022/04/10 11:47:17 by yforeau          ###   ########.fr       */
+/*   Updated: 2022/04/11 06:51:34 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "commands.h"
 
-/* TODO: do some real parsing beside field splitting */
 static char **parse_input(char *line)
 {
 	return (ft_split_whitespaces(line));

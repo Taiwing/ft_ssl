@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 16:17:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/03 15:40:32 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/19 17:58:19 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	base64_file_encrypt(int outfd, const char *input_file, const char *cmd)
 	return (0);
 }
 
-/* TODO: maybe stop at equal instead of just ignoring it */
 int	base64_buffer_parse(char *buf, int len)
 {
 	int	i;

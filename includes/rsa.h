@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/18 22:40:13 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/19 17:56:35 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@
 ** Util macros
 */
 
-# define MC_STRLEN(s)		(sizeof(s) - 1)
-//TODO: move this to libft.h as it could be useful everywhere tbh
+# define		MC_STRLEN(s)		(sizeof(s) - 1)
 # define		NBITS2(n)			((n & 2) ? 1 : 0)
 # define		NBITS4(n)			((n & 0xC) ? (2 + NBITS2(n >> 2))\
 		: (NBITS2(n)))
@@ -218,8 +217,6 @@ void		rsa_des_encrypt(uint8_t *der, uint64_t *len, t_des_ctx *des);
 int			rsa_check_key_size(t_rsa_key *key, uint64_t max);
 int			rsa_check_key_bint(int outfd, t_rsa_key *key, const char *cmd);
 int			rsa_check_key_64(int outfd, t_rsa_key_64 *key);
-
-//TODO: probably move bintset_bytes to libft
 int			bintset_bytes(t_bint b, uint8_t *bytes, uint64_t len);
 
 #endif
