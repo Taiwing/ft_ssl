@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 06:54:37 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/18 13:50:52 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/20 11:48:47 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,74 +40,6 @@ static int	parse_options(t_rsa_key *key, int *outfd,
 	return (*outfd < 0);
 }
 
-static void	print_rsa_bint(int outfd, const t_bint b)
-{
-	uint32_t	j = 0;
-	uint8_t		byte, *digit;
-
-	ft_dprintf(outfd, "    ");
-	for (int i = BINT_LEN(b); i; --i)
-	{
-		digit = (uint8_t *)(b + i);
-		for (uint32_t k = 1; k <= sizeof(uint32_t); ++k)
-		{
-			byte = digit[sizeof(uint32_t) - k];
-			if (!j && (byte & 0x80))
-			{
-				ft_dprintf(outfd, "00");
-				++j;
-			}
-			if (j || byte)
-			{
-				ft_dprintf(outfd, "%s%s%02hhx", j ? ":" : "",
-					j && !(j % 15) ? "\n    " : "", byte);
-				++j;
-			}
-		}
-	}
-	if (j % 15)
-		ft_dprintf(outfd, "\n");
-}
-
-static void	print_text_rsa_key(int outfd, t_rsa_key *key)
-{
-	uint64_t	u;
-	int			stop = key->is_pub ? RSA_PUB_BINTS : RSA_KEY_BINTS;
-	char		*pub_names[RSA_PUB_BINTS] = { "Modulus", "Exponent" };
-	char		*priv_names[RSA_KEY_BINTS] = {
-		"modulus", "publicExponent", "privateExponent", "prime1",
-		"prime2", "exponent1", "exponent2", "coefficient"
-	};
-	char		**tab = key->is_pub ? pub_names : priv_names;
-
-	ft_dprintf(outfd, "RSA %s-Key: (%u bit%s)\n",
-		key->is_pub ? "Public" : "Private", key->size,
-		key->is_pub ? "" : ", 2 primes");
-	for (int i = 0; i < stop; ++i)
-	{
-		ft_dprintf(outfd, "%s:", tab[i]);
-		if (!BINT_LEN(key->rsa_bints[i]))
-			ft_dprintf(outfd, " 0\n");
-		else if (bint_to_u64(&u, key->rsa_bints[i]) == BINT_SUCCESS)
-			ft_dprintf(outfd, " %1$llu (%1$#llx)\n", u);
-		else
-		{
-			ft_dprintf(outfd, "\n");
-			print_rsa_bint(outfd, key->rsa_bints[i]);
-		}
-	}
-}
-
-static void	print_rsa_modulus(int outfd, t_rsa_key *key)
-{
-	int	i = BINT_LEN(key->n);
-
-	ft_dprintf(outfd, "Modulus=%llX", i ? key->n[i--] : 0);
-	while (i)
-		ft_dprintf(outfd, "%08llX", key->n[i--]);
-	ft_dprintf(outfd, "\n");
-}
-
 static int	create_output_key(int outfd, t_rsa_key *key_in,
 	t_cmdopt *opt, const t_command *cmd)
 {
@@ -123,26 +55,6 @@ static int	create_output_key(int outfd, t_rsa_key *key_in,
 	key_out.is_enc = !key_out.is_pub && opt[RSA_DES].is_set;
 	rsa_value_options(&key_out, opt, cmd->name);
 	return (print_rsa_key(outfd, &key_out, cmd->name, &gk));
-}
-
-static int	rsa_key_bint_to_64(t_rsa_key_64 *key64, t_rsa_key *key)
-{
-	ft_bzero((void *)key64, sizeof(t_rsa_key_64));
-	if (bint_to_u64(&key64->n, key->n) == BINT_FAILURE
-		|| bint_to_u64(&key64->e, key->e) == BINT_FAILURE)
-		return (1);
-	if (!key->is_pub && (bint_to_u64(&key64->d, key->d) == BINT_FAILURE
-		|| bint_to_u64(&key64->p, key->p) == BINT_FAILURE
-		|| bint_to_u64(&key64->q, key->q) == BINT_FAILURE
-		|| bint_to_u64(&key64->exp1, key->exp1) == BINT_FAILURE
-		|| bint_to_u64(&key64->exp2, key->exp2) == BINT_FAILURE
-		|| bint_to_u64(&key64->coeff, key->coeff) == BINT_FAILURE))
-		return (1);
-	key64->is_pub = key->is_pub;
-	key64->is_enc = key->is_enc;
-	key64->size = key->size;
-	ft_memcpy((void *)&key64->des, (void *)&key->des, sizeof(t_des_ctx));
-	return (0);
 }
 
 int			cmd_rsa(const t_command *cmd, t_cmdopt *opt, char **args)

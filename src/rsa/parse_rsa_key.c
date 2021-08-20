@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 17:36:51 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/17 23:56:11 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/20 09:19:34 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ static int		read_base64(uint8_t der[KEY_BUFLEN], int *len,
 	int	valid;
 
 	valid = base64_buffer_parse(line, ret);
-	if ((KEY_BUFLEN - *len) < (((valid *  3) / 4) + 3 * !!((valid * 3) % 4)))
+	if ((int)(KEY_BUFLEN - *len)
+		< (((valid *  3) / 4) + 3 * !!((valid * 3) % 4)))
 	{
 		ft_dprintf(2, "ft_ssl: DER key too long\n");
 		return (-1);

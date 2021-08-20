@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 23:59:02 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/17 19:49:08 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/20 11:55:23 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,73 +15,30 @@
 #include "commands.h"
 #include "rsa_math.h"
 #include "rsa.h"
-#include "base64.h"
 
-static int	rsa_key_64_to_bint(t_rsa_key *dst, t_rsa_key_64 *src)
-{
-	if (bintset_u64(dst->n, src->n) == BINT_FAILURE
-		|| bintset_u64(dst->e, src->e) == BINT_FAILURE
-		|| bintset_u64(dst->d, src->d) == BINT_FAILURE
-		|| bintset_u64(dst->p, src->p) == BINT_FAILURE
-		|| bintset_u64(dst->q, src->q) == BINT_FAILURE
-		|| bintset_u64(dst->exp1, src->exp1) == BINT_FAILURE
-		|| bintset_u64(dst->exp2, src->exp2) == BINT_FAILURE
-		|| bintset_u64(dst->coeff, src->coeff) == BINT_FAILURE)
-		return (1);
-	dst->is_pub = src->is_pub;
-	dst->is_enc = src->is_enc;
-	dst->size = bintlog2(dst->n);
-	ft_memcpy((void *)&dst->des, (void *)&src->des, sizeof(t_des_ctx));
-	return (0);
-}
+#define MAX_TRY 5
 
-int			print_rsa_key(int fd, t_rsa_key *key,
-	const char *cmd, t_des_getkey *gk)
-{
-	int			ret;
-	uint64_t	len;
-	uint8_t		der[KEY_BUFLEN];
-
-	encode_der_key(der, &len, key);
-	if (!key->is_pub && key->is_enc)
-	{
-		if (!get_rand(&key->des.salt, 0, UINT64_MAX)
-			|| rsa_des_getkey(&key->des, cmd, gk))
-			return (1);
-		key->des.process_block = des_cbc;
-		key->des.iv = key->des.salt;
-		rsa_des_encrypt(der, &len, &key->des);
-	}
-	ret = ft_dprintf(fd, "%s\n", key->is_pub ? BEGIN_PUB : BEGIN_PRIV) <= 0;
-	if (!ret && !key->is_pub && key->is_enc)
-		ret = ft_dprintf(fd, "%s\n%s%016llX\n\n",
-			PROC_TYPE, DEK_INFO, key->des.salt) <= 0;
-	if (!ret)
-		ret = base64_writefile(fd, (char *)der, (size_t)len, 1) < 0
-			|| ft_dprintf(fd, "%s\n", key->is_pub ? END_PUB : END_PRIV) <= 0;
-	return (ret);
-}
-
-#define MAX_TRY	5
-
+//TODO: fix small key generation (create dedicated function for that)
+// and maybe precompute some of it
+// Also maybe keep one of the generated primes and double the MAX_TRY
+// value so that retries are more efficient.
 int			rsa_keygen(t_rsa_key_64 *key)
 {
-	uint64_t	gcd;
-	uint64_t	totient;
+	uint64_t	ps, gcd, totient;
 
-	ft_dprintf(2, "Generating RSA private key, "
-		"64 bit long modulus (2 primes)\n");
-	ft_bzero((void *)key, sizeof(t_rsa_key_64));
+	ft_dprintf(2, "Generating RSA private key, %llu bit long modulus "
+		"(2 primes)\n", key->size);
 	key->e = E_VALUE;
-	for (int i = 0; i < MAX_TRY && (key->p == key->q || !(key->n >> 63)) ; ++i)
+	for (int i = 0; i < MAX_TRY
+		&& (key->p == key->q || NBITS(key->n) != key->size) ; ++i)
 	{
-		if (!(key->p = find_prime(12, 32)) || !(key->q = find_prime(12, 32)))
+		ps = (key->size / 2) + !!(key->size % 2);
+		if (!(key->p = find_prime(12, ps)) || !(key->q = find_prime(12, ps)))
 			return (!!ft_printf("\n"));
 		key->n = key->p * key->q;
 	}
-	if (key->p == key->q || !(key->n >> 63))
+	if (key->p == key->q || NBITS(key->n) != key->size)
 		return (!!ft_printf("\n"));
-	key->size = 64;
 	ft_dprintf(2, "e is %1$lu (0x%1$06lx)\n", key->e);
 	totient = (key->p - 1) * (key->q - 1);
 	key->d = modinv((int128_t)key->e, (int128_t)totient, &gcd);
@@ -93,12 +50,21 @@ int			rsa_keygen(t_rsa_key_64 *key)
 	return (!key->coeff || gcd != 1);
 }
 
-static void	genrsa_init_getkey(t_des_getkey *gk, t_cmdopt *opt)
+static int	init_genrsa(t_des_getkey *gk, t_cmdopt *opt,
+		int *outfd, t_rsa_key_64 *key)
 {
 	ft_bzero((void *)gk, sizeof(t_des_getkey));
 	gk->pass = opt[GENRSA_PASSOUT].value;
 	gk->prompt = "Enter pass phrase:";
 	gk->verify = 1;
+	if (opt[GENRSA_INPUT].is_set && !fill_rand_buf(opt[GENRSA_INPUT].value, 0))
+		return (!!ft_dprintf(2, "ft_ssl: genrsa: %s: %s\n",
+			opt[GENRSA_INPUT].value, strerror(errno)));
+	if (opt[GENRSA_OUTPUT].is_set
+		&& (*outfd = output_option(opt[GENRSA_OUTPUT].value, "genrsa")) < 0)
+		return (1);
+	ft_bzero((void *)key, sizeof(t_rsa_key_64));
+	return (0);
 }
 
 int			cmd_genrsa(const t_command *cmd, t_cmdopt *opt, char **args)
@@ -109,15 +75,15 @@ int			cmd_genrsa(const t_command *cmd, t_cmdopt *opt, char **args)
 	t_rsa_key_64	key64;
 	t_des_getkey	gk;
 
-	(void)args;
 	INIT_RSA_KEY(key);
-	genrsa_init_getkey(&gk, opt);
-	if (opt[GENRSA_INPUT].is_set && !fill_rand_buf(opt[GENRSA_INPUT].value, 0))
-		return (!!ft_dprintf(2, "ft_ssl: %s: %s: %s\n",
-			cmd->name, opt[GENRSA_INPUT].value, strerror(errno)));
-	if (opt[GENRSA_OUTPUT].is_set
-		&& (outfd = output_option(opt[GENRSA_OUTPUT].value, cmd->name)) < 0)
-		ret = 1;
+	ret = init_genrsa(&gk, opt, &outfd, &key64);
+	if (!ret && !*args)
+		key64.size = GENRSA_KEY_SIZE_MAX;
+	else if (!ret && (!(key64.size = ft_atoi(*args)) || key64.size
+		> GENRSA_KEY_SIZE_MAX || key64.size < GENRSA_KEY_SIZE_MIN))
+		ret = !!ft_dprintf(2, "ft_ssl: '%s' is not a valid key size\n"
+			"ft_ssl: rsa key length must be between %u and %u\n",
+			*args, GENRSA_KEY_SIZE_MIN, GENRSA_KEY_SIZE_MAX);
 	if (!ret && ((ret = rsa_keygen(&key64))
 		|| rsa_key_64_to_bint(&key, &key64)))
 		ft_dprintf(2, "ft_ssl: %s: failed to generate key\n", cmd->name);

@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/19 17:56:35 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/20 11:51:44 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,15 @@
 		: (NBITS16(n)))
 # define		NBITS64(n)			((n & 0xFFFFFFFF00000000) ?\
 		(32 + NBITS32(n >> 32)) : (NBITS32(n)))
-# define		NBITS(n)			(n == 0 ? 0 : NBITS64(n) + 1)
+# define		NBITS(n)			(!n ?\
+		(uint64_t)0 : (uint64_t)NBITS64(n) + 1)
 
 /*
 ** RSA constants
 */
 
 # define RSA_KEY_SIZE_MAX		1024
+# define GENRSA_KEY_SIZE_MIN	3
 # define GENRSA_KEY_SIZE_MAX	64
 # define E_VALUE				0x00010001
 
@@ -204,6 +206,8 @@ int			decode_der_key(t_rsa_key *key, uint8_t *der, uint64_t len);
 void		encode_der_key(uint8_t *der, uint64_t *len, t_rsa_key *key);
 int			print_rsa_key(int fd, t_rsa_key *key,
 	const char *cmd, t_des_getkey *gk);
+void		print_text_rsa_key(int outfd, t_rsa_key *key);
+void		print_rsa_modulus(int outfd, t_rsa_key *key);
 int			rsa_keygen(t_rsa_key_64 *key);
 int			parse_rsa_key(t_rsa_key *key, const char *cmd, t_des_getkey *gk);
 int			rsa_hexdump(int fd, uint8_t *data, size_t len);
@@ -217,6 +221,8 @@ void		rsa_des_encrypt(uint8_t *der, uint64_t *len, t_des_ctx *des);
 int			rsa_check_key_size(t_rsa_key *key, uint64_t max);
 int			rsa_check_key_bint(int outfd, t_rsa_key *key, const char *cmd);
 int			rsa_check_key_64(int outfd, t_rsa_key_64 *key);
+int			rsa_key_64_to_bint(t_rsa_key *dst, t_rsa_key_64 *src);
+int			rsa_key_bint_to_64(t_rsa_key_64 *key64, t_rsa_key *key);
 int			bintset_bytes(t_bint b, uint8_t *bytes, uint64_t len);
 
 #endif
