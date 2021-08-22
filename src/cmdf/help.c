@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:27:53 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/14 12:09:11 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/22 19:52:10 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,15 @@ const char g_cc_help[] = "[options]\n"
 "\t-v val\t\t\tinitialization vector in hex is the next argument\n"
 "\t-help\t\t\tprint this\n";
 
-const char g_genrsa_help[] = "[options]\n"
+const char g_genrsa_help[] = "[options] [keysize]\n"
 "\t-i file\t\t\tload the file into the random number generator\n"
 "\t-o file\t\t\toutput the key to specified file\n"
 "\t-des\t\t\tencrypt the output with DES-CBC\n"
 "\t-passout val\t\toutput file pass phrase source\n"
-"\t-help\t\t\tprint this\n";
+"\t-help\t\t\tprint this\n"
+"\n\tkeysize: The length in bits of the key to be generated.\n"
+"\tEvery value from 3 to 64 (inclusive) is valid. keysize\n"
+"\twill be equal to 64 if it is not given.\n";
 
 const char g_rsa_help[] = "[options]\n"
 "\t-inform val\t\tinput format - PEM (already default)\n"

@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 23:59:02 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/20 11:55:23 by yforeau          ###   ########.fr       */
+/*   Updated: 2021/08/22 19:45:44 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,60 @@
 #include "rsa_math.h"
 #include "rsa.h"
 
-#define MAX_TRY 5
+#define MAX_TRY 10
 
-//TODO: fix small key generation (create dedicated function for that)
-// and maybe precompute some of it
-// Also maybe keep one of the generated primes and double the MAX_TRY
-// value so that retries are more efficient.
-int			rsa_keygen(t_rsa_key_64 *key)
+const uint64_t	g_small_primes[3][3][2] = {
+	{
+		{ 2, 3 }
+	},
+	{
+		{ 2, 5 },
+		{ 2, 7 },
+		{ 3, 5 }
+	},
+	{
+		{ 3, 7 },
+		{ 2, 11 },
+		{ 2, 13 }
+	}
+};
+
+static int	rsa_ngen(t_rsa_key_64 *key)
 {
-	uint64_t	ps, gcd, totient;
+	uint64_t	ps = 0;
 
-	ft_dprintf(2, "Generating RSA private key, %llu bit long modulus "
-		"(2 primes)\n", key->size);
-	key->e = E_VALUE;
+	if (key->size < 6)
+	{
+		if (key->size > 3 && !get_rand(&ps, 0, 2))
+			return (!!ft_printf("\n"));
+		key->p = g_small_primes[key->size - 3][ps][0];
+		key->q = g_small_primes[key->size - 3][ps][1];
+		key->n = key->p * key->q;
+	}
+	ps = (key->size / 2) + !!(key->size % 2);
 	for (int i = 0; i < MAX_TRY
 		&& (key->p == key->q || NBITS(key->n) != key->size) ; ++i)
 	{
-		ps = (key->size / 2) + !!(key->size % 2);
-		if (!(key->p = find_prime(12, ps)) || !(key->q = find_prime(12, ps)))
+		if ((!i || !(i & 1)) && !(key->p = find_prime(12, ps)))
+			return (!!ft_printf("\n"));
+		if ((!i || !!(i & 1)) && !(key->q = find_prime(12, ps)))
 			return (!!ft_printf("\n"));
 		key->n = key->p * key->q;
 	}
 	if (key->p == key->q || NBITS(key->n) != key->size)
 		return (!!ft_printf("\n"));
+	return (0);
+}
+
+int			rsa_keygen(t_rsa_key_64 *key)
+{
+	uint64_t	gcd, totient;
+
+	ft_dprintf(2, "Generating RSA private key, %llu bit long modulus "
+		"(2 primes)\n", key->size);
+	if (rsa_ngen(key))
+		return (1);
+	key->e = E_VALUE;
 	ft_dprintf(2, "e is %1$lu (0x%1$06lx)\n", key->e);
 	totient = (key->p - 1) * (key->q - 1);
 	key->d = modinv((int128_t)key->e, (int128_t)totient, &gcd);
@@ -82,7 +113,7 @@ int			cmd_genrsa(const t_command *cmd, t_cmdopt *opt, char **args)
 	else if (!ret && (!(key64.size = ft_atoi(*args)) || key64.size
 		> GENRSA_KEY_SIZE_MAX || key64.size < GENRSA_KEY_SIZE_MIN))
 		ret = !!ft_dprintf(2, "ft_ssl: '%s' is not a valid key size\n"
-			"ft_ssl: rsa key length must be between %u and %u\n",
+			"ft_ssl: rsa key length must be between %u and %u (inclusive)\n",
 			*args, GENRSA_KEY_SIZE_MIN, GENRSA_KEY_SIZE_MAX);
 	if (!ret && ((ret = rsa_keygen(&key64))
 		|| rsa_key_64_to_bint(&key, &key64)))
