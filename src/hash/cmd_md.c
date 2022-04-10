@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 13:51:44 by yforeau           #+#    #+#             */
-/*   Updated: 2022/04/10 18:19:30 by yforeau          ###   ########.fr       */
+/*   Updated: 2022/04/10 18:54:36 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,9 @@ static int	md_from_file(t_md_ctx *ctx, const char *file_name, t_cmdopt *opt)
 		print_readfile_error(ctx->name, file_name ? file_name : "stdin");
 		return (1);
 	}
-	add_md_padding(ctx, rd, size);
 	if (rd > 0 && rd < MD_BUF_SIZE && !file_name && opt[MDC_PRINT].is_set)
 		ft_printf("%.*s", rd, ctx->buf);
+	add_md_padding(ctx, rd, size);
 	print_hash(file_name, opt, ctx);
 	return (0);
 }
