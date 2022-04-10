@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 13:51:44 by yforeau           #+#    #+#             */
-/*   Updated: 2022/04/10 18:54:36 by yforeau          ###   ########.fr       */
+/*   Updated: 2022/04/10 19:32:27 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ static void	print_hash(const char *name, t_cmdopt *opt, t_md_ctx *ctx)
 	if (name && !opt[MDC_QUIET].is_set && !opt[MDC_REVERSE].is_set)
 		ft_printf("%s (%3$s%2$s%3$s) = ", ctx->label, name,
 			opt[MDC_STRING].value == name ? "\"" : "");
+	else if (!name && !opt[MDC_QUIET].is_set && !opt[MDC_PRINT].is_set)
+		ft_printf("(stdin)= ");
 	if (ctx->is_be)
 		ft_printf("%*t%08x", (int)ctx->regs_size, ctx->regs);
 	else
