@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 13:51:44 by yforeau           #+#    #+#             */
-/*   Updated: 2021/01/30 14:34:31 by yforeau          ###   ########.fr       */
+/*   Updated: 2022/04/10 18:19:30 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,10 +134,16 @@ int	cmd_md(const t_command *cmd, t_cmdopt *opt, char **args)
 	if (init_md_context(cmd->name, &ctx))
 		return (1);
 	if (opt[MDC_PRINT].is_set || (!opt[MDC_STRING].is_set && !*args))
+	{
 		ret = md_from_file(&ctx, NULL, opt);
+		readfile(NULL, NULL, 0);
+	}
 	if (opt[MDC_STRING].is_set)
 		md_from_string(&ctx, opt[MDC_STRING].value, opt);
 	while (*args)
+	{
 		ret += md_from_file(&ctx, *args++, opt);
+		readfile(NULL, NULL, 0);
+	}
 	return (ret);
 }
