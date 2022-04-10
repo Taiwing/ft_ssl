@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 15:38:30 by yforeau           #+#    #+#             */
-/*   Updated: 2020/12/30 17:59:25 by yforeau          ###   ########.fr       */
+/*   Updated: 2022/04/10 11:47:17 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ static char	**read_input(void)
 
 	line = NULL;
 	if ((ret = get_next_line(0, &line)) < 0)
-		ft_exit("read_input: get_next_line error\n", EXIT_FAILURE);
+		ft_exit(EXIT_FAILURE, "%s: get_next_line error\n", __func__);
 	else if (!ret)
-		ft_exit(NULL, EXIT_SUCCESS);
+		ft_exit(EXIT_SUCCESS, NULL);
 	argv = parse_input(line);
 	ft_memdel((void **)&line);
 	return (argv);
