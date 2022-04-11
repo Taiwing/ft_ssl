@@ -4,6 +4,11 @@ This program implements functions related to cryptographic security. It takes
 data, it hashes it, passes it through a cypher or an encoding function and
 returns the result.
 
+<br />
+<p align="center">
+  <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/cipher.jpg?raw=true" alt="cipher"/>
+</p>
+
 ## Setup
 
 ```shell
@@ -30,9 +35,16 @@ The md5 algorithm takes an arbitrary long input and turns it into a 128bit hash.
 
 #### usage:
 
-<p align="center">
-  <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/md5usage.png?raw=true" alt="md5 usage"/>
-</p>
+Run `./ft_ssl md5 -help`.
+
+```
+Usage: md5 [options] [file...]
+	-p			echo STDIN to STDOUT and append the checksum to STDOUT
+	-q			quiet mode
+	-r			reverse the format of the output
+	-s val		print the sum of the given string
+	-help		print this
+```
 
 #### example:
 
@@ -49,9 +61,16 @@ hash.
 
 #### usage:
 
-<p align="center">
-  <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/sha256usage.png?raw=true" alt="sha256 usage"/>
-</p>
+Run `./ft_ssl sha256 -help`.
+
+```
+Usage: sha256 [options] [file...]
+	-p			echo STDIN to STDOUT and append the checksum to STDOUT
+	-q			quiet mode
+	-r			reverse the format of the output
+	-s val		print the sum of the given string
+	-help		print this
+```
 
 #### example:
 
