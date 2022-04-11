@@ -28,14 +28,13 @@ check file integrity as they are fast and cheap to execute.
 
 The md5 algorithm takes an arbitrary long input and turns it into a 128bit hash.
 
-#### Usage
+#### usage:
 
-<br />
 <p align="center">
   <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/md5usage.png?raw=true" alt="md5 usage"/>
 </p>
 
-#### Example
+#### example:
 
 ```shell
 # run md5 hash on Makefile
@@ -48,14 +47,13 @@ The md5 algorithm takes an arbitrary long input and turns it into a 128bit hash.
 The sha256 algorithm takes an arbitrary long input and turns it into a 256bit
 hash.
 
-#### Usage
+#### usage:
 
-<br />
 <p align="center">
   <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/sha256usage.png?raw=true" alt="sha256 usage"/>
 </p>
 
-#### Example
+#### example:
 
 ```shell
 # run sha256 hash with a string
