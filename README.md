@@ -7,7 +7,10 @@ returns the result.
 ## Setup
 
 ```shell
+# clone it with the libft submodule
 git clone --recurse-submodules https://github.com/Taiwing/ft_ssl
-cd ft_ssl/
-make
+# build it
+cd ft_ssl/ && make
+# run it
+./ft_ssl
 ```
