@@ -6,7 +6,7 @@ returns the result.
 
 <br />
 <p align="center">
-  <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/cipher.jpg?raw=true" alt="cipher"/>
+  <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/cipher.jpg?raw=true" alt="cipher" style="width: 25vw;"/>
 </p>
 
 ## Setup
@@ -35,13 +35,16 @@ The md5 algorithm takes an arbitrary long input and turns it into a 128bit hash.
 
 #### usage:
 
-Run `./ft_ssl md5 -help`.
+```shell
+# get some help
+./ft_ssl md5 -help
+```
 
 ```
 Usage: md5 [options] [file...]
-	-p			echo STDIN to STDOUT and append the checksum to STDOUT
-	-q			quiet mode
-	-r			reverse the format of the output
+	-p		echo STDIN to STDOUT and append the checksum to STDOUT
+	-q		quiet mode
+	-r		reverse the format of the output
 	-s val		print the sum of the given string
 	-help		print this
 ```
@@ -61,13 +64,16 @@ hash.
 
 #### usage:
 
-Run `./ft_ssl sha256 -help`.
+```shell
+# get some help
+./ft_ssl sha256 -help
+```
 
 ```
 Usage: sha256 [options] [file...]
-	-p			echo STDIN to STDOUT and append the checksum to STDOUT
-	-q			quiet mode
-	-r			reverse the format of the output
+	-p		echo STDIN to STDOUT and append the checksum to STDOUT
+	-q		quiet mode
+	-r		reverse the format of the output
 	-s val		print the sum of the given string
 	-help		print this
 ```
