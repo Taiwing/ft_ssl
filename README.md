@@ -6,7 +6,7 @@ returns the result.
 
 <br />
 <p align="center">
-  <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/cipher.jpg?raw=true" alt="cipher" style="width: 25vw;"/>
+  <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/cipher.jpg?raw=true" alt="cipher" style="width: 50%;"/>
 </p>
 
 ## Setup
