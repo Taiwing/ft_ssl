@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/29 16:10:24 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/19 18:08:53 by yforeau          ###   ########.fr       */
+/*   Updated: 2022/04/11 06:56:25 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,6 @@ int	main(int argc, char **argv)
 		input_cmd();
 	else
 		ret = exec_cmd(argv + 1);
-	ft_exit(NULL, ret);
+	ft_exit(ret, NULL);
 	return (EXIT_FAILURE);
 }
