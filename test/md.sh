@@ -6,10 +6,15 @@ function test_result() {
 	local mine=$3
 
 	echo
-	echo ====== TEST $id ======
+	echo ====== TEST $id \(expected\) ======
 	echo $orig
-	echo =====================
-	[ "$orig" == "$mine" ] || (echo "FAIL" && exit 1)
+	echo ===================================
+	if [ "$orig" != "$mine" ]; then
+		echo ====== FAIL $id \(got\) ======
+		echo $mine
+		echo ==============================
+		exit 1
+	fi
 	echo "PASS"
 	echo
 }
@@ -22,7 +27,7 @@ for md in md5 sha256; do
 	mine=$(echo "$str" | ./ft_ssl $md)
 	test_result 1 "$orig" "$mine"
 	
-	orig=$(echo "$str" && echo "$str" | openssl $md | awk '{print $2}')
+	orig="(\"$str\")= "$(echo $str | openssl $md | awk '{print $2}')
 	mine=$(echo "$str" | ./ft_ssl $md -p)
 	test_result 2 "$orig" "$mine"
 	
@@ -46,9 +51,9 @@ for md in md5 sha256; do
 	test_result 6 "$orig" "$mine"
 	
 	str="be sure to handle edge cases carefully"
-	str_result=$(echo "$str" | openssl $md | awk '{print $2}')
+	str_result="(\"$str\")= "$(echo $str | openssl $md | awk '{print $2}')
 	file_result=$(openssl $md file | awk '{print $2}')
-	orig=$(echo $str && echo $str_result && echo $hash_label \(file\) \= $file_result)
+	orig=$(echo $str_result && echo $hash_label \(file\) \= $file_result)
 	mine=$(echo "$str" | ./ft_ssl $md -p file)
 	test_result 7 "$orig" "$mine"
 	
@@ -58,28 +63,28 @@ for md in md5 sha256; do
 	test_result 8 "$orig" "$mine"
 	
 	str="but eventually you will understand"
-	str_result=$(echo "$str" | openssl $md | awk '{print $2}')
+	str_result="(\"$str\")= "$(echo $str | openssl $md | awk '{print $2}')
 	file_result=$(openssl $md file | awk '{print $2}')
-	orig=$(echo $str && echo $str_result && echo $file_result file)
+	orig=$(echo $str_result && echo $file_result file)
 	mine=$(echo $str | ./ft_ssl $md -p -r file)
 	test_result 9 "$orig" "$mine"
 	
 	str="GL HF let's go"
 	mine=$(echo "$str" | ./ft_ssl $md -p -s "foo" file)
-	stdin_result=$(echo "$str" | openssl $md | awk '{print $2}')
+	stdin_result="(\"$str\")= "$(echo $str | openssl $md | awk '{print $2}')
 	str_result=$(echo -n "foo" | openssl $md | awk '{print $2}')
 	file_result=$(openssl $md file | awk '{print $2}')
-	orig=$(echo $str && echo $stdin_result \
+	orig=$(echo $stdin_result \
 		&& echo $hash_label \(\"foo\"\) \= $str_result \
 		&& echo $hash_label \(file\) = $file_result)
 	test_result 10 "$orig" "$mine"
 	
 	str="one more thing"
 	mine=$(echo "$str" | ./ft_ssl $md -r -p -s "foo" file -s "bar")
-	stdin_result=$(echo "$str" | openssl $md | awk '{print $2}')
+	stdin_result="(\"$str\")= "$(echo $str | openssl $md | awk '{print $2}')
 	str_result=$(echo -n "foo" | openssl $md | awk '{print $2}')
 	file_result=$(openssl $md file | awk '{print $2}')
-	orig=$(echo $str && echo $stdin_result \
+	orig=$(echo $stdin_result \
 		&& echo $str_result \"foo\" \
 		&& echo $file_result file)
 	test_result 11 "$orig" "$mine"
