@@ -32,7 +32,7 @@ The md5 algorithm takes an arbitrary long input and turns it into a 128bit hash.
 
 <br />
 <p align="center">
-  <img src="https://github.com/Taiwing/dr_quine/blob/master/resources/md5usage.png?raw=true" alt="infinite mirrors"/>
+  <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/md5usage.png?raw=true" alt="md5 usage"/>
 </p>
 
 #### Example
@@ -52,7 +52,7 @@ hash.
 
 <br />
 <p align="center">
-  <img src="https://github.com/Taiwing/dr_quine/blob/master/resources/sha256usage.png?raw=true" alt="infinite mirrors"/>
+  <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/sha256usage.png?raw=true" alt="sha256 usage"/>
 </p>
 
 #### Example
