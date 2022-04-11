@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 13:51:44 by yforeau           #+#    #+#             */
-/*   Updated: 2022/04/10 19:32:27 by yforeau          ###   ########.fr       */
+/*   Updated: 2022/04/11 16:19:33 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,15 @@ static void	print_hash(const char *name, t_cmdopt *opt, t_md_ctx *ctx)
 	ft_printf("\n");
 }
 
+static void	print_stdin(char *buf, int rd, int quiet)
+{
+	if (quiet)
+		ft_printf("%.*s", rd, buf);
+	else
+		ft_printf("(\"%.*s\")= ",
+			rd > 0 && buf[rd - 1] == '\n' ? rd - 1 : rd, buf);
+}
+
 static int	md_from_file(t_md_ctx *ctx, const char *file_name, t_cmdopt *opt)
 {
 	uint64_t	size;
@@ -90,7 +99,7 @@ static int	md_from_file(t_md_ctx *ctx, const char *file_name, t_cmdopt *opt)
 	while ((rd = readfile(file_name, ctx->buf, MD_BUF_SIZE)) == MD_BUF_SIZE)
 	{
 		if (!file_name && opt[MDC_PRINT].is_set)
-			ft_printf("%.*s", rd, ctx->buf);
+			print_stdin(ctx->buf, rd, opt[MDC_QUIET].is_set);
 		exec_md(ctx);
 		size += rd * 8;
 	}
@@ -99,8 +108,9 @@ static int	md_from_file(t_md_ctx *ctx, const char *file_name, t_cmdopt *opt)
 		print_readfile_error(ctx->name, file_name ? file_name : "stdin");
 		return (1);
 	}
-	if (rd > 0 && rd < MD_BUF_SIZE && !file_name && opt[MDC_PRINT].is_set)
-		ft_printf("%.*s", rd, ctx->buf);
+	else if ((rd > 0 || (!rd && !size)) && rd < MD_BUF_SIZE
+		&& !file_name && opt[MDC_PRINT].is_set)
+		print_stdin(ctx->buf, rd, opt[MDC_QUIET].is_set);
 	add_md_padding(ctx, rd, size);
 	print_hash(file_name, opt, ctx);
 	return (0);
