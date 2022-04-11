@@ -1,0 +1,1 @@
+-n ft_ssl -sn libft libft.a -f '-Wall -Wextra -Werror'
