@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:05:16 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/05 00:36:34 by yforeau          ###   ########.fr       */
+/*   Updated: 2022/04/12 18:13:24 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 t_des_cmd	g_des_cmds[] = {
 	{ "des-ecb", des_ecb },
 	{ "des-cbc", des_cbc },
+	{ "des-pcbc", des_pcbc },
 	{ "des", des_cbc },
 	{ NULL, NULL }
 };
@@ -26,6 +27,7 @@ static int	init_context(t_des_ctx *ctx, const t_command *cmd, t_cmdopt *opt)
 	t_des_cmd	*cmds;
 
 	ft_bzero((void *)ctx, sizeof(t_des_ctx));
+	ctx->first_block = 1;
 	cmds = g_des_cmds;
 	while (cmds->name && ft_strcmp(cmds->name, cmd->name))
 		++cmds;

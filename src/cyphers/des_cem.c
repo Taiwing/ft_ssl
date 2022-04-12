@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 13:07:20 by yforeau           #+#    #+#             */
-/*   Updated: 2021/02/04 14:40:53 by yforeau          ###   ########.fr       */
+/*   Updated: 2022/04/12 19:59:50 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,34 @@ uint64_t	des_cbc(struct s_des_ctx *ctx)
 	{
 		ctx->cyphertext ^= ctx->iv;
 		ctx->iv = ctx->plaintext;
+	}
+	else
+		ctx->iv = ctx->cyphertext;
+	return (ctx->cyphertext);
+}
+
+uint64_t	des_pcbc(struct s_des_ctx *ctx)
+{
+	uint64_t	last_plaintext;
+
+	if (!ctx->reverse)
+	{
+		last_plaintext = ctx->plaintext;
+		ctx->plaintext ^= ctx->iv;
+		if (!ctx->first_block)
+			ctx->plaintext ^= ctx->last_plaintext;
+		ctx->first_block = 0;
+		ctx->last_plaintext = last_plaintext;
+	}
+	ctx->cyphertext = des(ctx);
+	if (ctx->reverse)
+	{
+		ctx->cyphertext ^= ctx->iv;
+		ctx->iv = ctx->plaintext;
+		if (!ctx->first_block)
+			ctx->cyphertext ^= ctx->last_plaintext;
+		ctx->first_block = 0;
+		ctx->last_plaintext = ctx->cyphertext;
 	}
 	else
 		ctx->iv = ctx->cyphertext;

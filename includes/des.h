@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:23:37 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 18:39:15 by yforeau          ###   ########.fr       */
+/*   Updated: 2022/04/12 18:12:16 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 ** s_des_ctx: DES context
 **
 ** plaintext: raw 64-bit input block
+** last_plaintext: last input block (for pcbc)
 ** salt: not directly useful in des but needed in context
 ** iv: initialization vector (for cbc)
 ** key: generated or given key of 64-bit (56 without parity bits)
@@ -33,11 +34,13 @@
 ** cyphertext: raw 64-bit output block
 ** process_block: block cypher encryption mode (ecb, cbc, etc...)
 ** reverse: boolean indicating if executing in decryption mode
+** first_block: boolean set to true if is the first block (for pcbc)
 */
 
 typedef struct	s_des_ctx
 {
 	uint64_t	plaintext;
+	uint64_t	last_plaintext;
 	uint64_t	salt;
 	uint64_t	iv;
 	uint64_t	key;
@@ -45,6 +48,7 @@ typedef struct	s_des_ctx
 	uint64_t	cyphertext;
 	uint64_t	(*process_block)(struct s_des_ctx *ctx);
 	int			reverse;
+	int			first_block;
 }				t_des_ctx;
 
 /*
@@ -94,6 +98,7 @@ extern const uint64_t		g_sbox[SBOX_NB][SBOX_ROW][SBOX_COL];
 
 uint64_t		des_ecb(struct s_des_ctx *ctx);
 uint64_t		des_cbc(struct s_des_ctx *ctx);
+uint64_t		des_pcbc(struct s_des_ctx *ctx);
 
 /*
 ** des functions
