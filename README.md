@@ -33,13 +33,6 @@ check file integrity as they are fast and cheap to execute.
 
 The md5 algorithm takes an arbitrary long input and turns it into a 128bit hash.
 
-#### usage:
-
-```shell
-# get some help
-./ft_ssl md5 -help
-```
-
 ```
 Usage: md5 [options] [file...]
 	-p		echo STDIN to STDOUT and append the checksum to STDOUT
@@ -61,13 +54,6 @@ Usage: md5 [options] [file...]
 
 The sha256 algorithm takes an arbitrary long input and turns it into a 256bit
 hash.
-
-#### usage:
-
-```shell
-# get some help
-./ft_ssl sha256 -help
-```
 
 ```
 Usage: sha256 [options] [file...]
