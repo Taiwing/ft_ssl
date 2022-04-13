@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/30 12:27:58 by yforeau           #+#    #+#             */
-/*   Updated: 2022/04/13 16:19:27 by yforeau          ###   ########.fr       */
+/*   Updated: 2022/04/13 16:39:35 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ const t_command	g_commands[] = {
 	{ "des-ofb", cmd_des, g_cc_options, g_cc_help, CIC },
 	{ "des-ctr", cmd_des, g_cc_options, g_cc_help, CIC },
 	{ "des-xex", cmd_des, g_cc_options, g_cc_help, CIC },
+	{ "des-kek", cmd_des, g_cc_options, g_cc_help, CIC },
 	{ "des-pcbc", cmd_des, g_cc_options, g_cc_help, CIC },
 
 	/* Standard Commands */

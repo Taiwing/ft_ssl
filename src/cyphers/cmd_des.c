@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:05:16 by yforeau           #+#    #+#             */
-/*   Updated: 2022/04/13 16:19:41 by yforeau          ###   ########.fr       */
+/*   Updated: 2022/04/13 16:53:59 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ t_des_cmd	g_des_cmds[] = {
 	{ "des-cfb", des_cfb },
 	{ "des-ofb", des_ofb },
 	{ "des-ctr", des_ctr },
-	{ "des-xex", des_ctr },
+	{ "des-xex", des_xex },
+	{ "des-kek", des_kek },
 	{ "des-pcbc", des_pcbc },
 	{ "des", des_cbc },
 	{ NULL, NULL }
@@ -36,7 +37,8 @@ static int	init_context(t_des_ctx *ctx, const t_command *cmd, t_cmdopt *opt)
 	while (cmds->name && ft_strcmp(cmds->name, cmd->name))
 		++cmds;
 	ctx->padding = cmds->process_block == des_ecb
-		|| cmds->process_block == des_cbc || cmds->process_block == des_pcbc;
+		|| cmds->process_block == des_cbc || cmds->process_block == des_pcbc
+		|| cmds->process_block == des_xex || cmds->process_block == des_kek;
 	if ((ctx->process_block = cmds->process_block))
 		return (parse_des_options(ctx, cmd, opt));
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:23:37 by yforeau           #+#    #+#             */
-/*   Updated: 2022/04/13 16:19:48 by yforeau          ###   ########.fr       */
+/*   Updated: 2022/04/13 16:40:08 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ uint64_t		des_cfb(struct s_des_ctx *ctx);
 uint64_t		des_ofb(struct s_des_ctx *ctx);
 uint64_t		des_ctr(struct s_des_ctx *ctx);
 uint64_t		des_xex(struct s_des_ctx *ctx);
+uint64_t		des_kek(struct s_des_ctx *ctx);
 uint64_t		des_pcbc(struct s_des_ctx *ctx);
 
 /*
