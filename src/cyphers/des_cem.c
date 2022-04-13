@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 13:07:20 by yforeau           #+#    #+#             */
-/*   Updated: 2022/04/13 16:58:43 by yforeau          ###   ########.fr       */
+/*   Updated: 2022/04/13 17:31:16 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ uint64_t	des_ctr(struct s_des_ctx *ctx)
 
 uint64_t	des_xex(struct s_des_ctx *ctx)
 {
-	ctx->plaintext ^= ctx->subkey[ctx->reverse];
+	ctx->plaintext ^= ctx->subkey[ctx->reverse ? DES_ROUNDS - 2 : 0];
 	ctx->cyphertext = des(ctx);
-	ctx->cyphertext ^= ctx->subkey[!ctx->reverse];
+	ctx->cyphertext ^= ctx->subkey[ctx->reverse ? DES_ROUNDS - 1 : 1];
 	return (ctx->cyphertext);
 }
 
