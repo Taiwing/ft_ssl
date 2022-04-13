@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:05:16 by yforeau           #+#    #+#             */
-/*   Updated: 2022/04/13 16:04:43 by yforeau          ###   ########.fr       */
+/*   Updated: 2022/04/13 16:19:41 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_des_cmd	g_des_cmds[] = {
 	{ "des-cfb", des_cfb },
 	{ "des-ofb", des_ofb },
 	{ "des-ctr", des_ctr },
+	{ "des-xex", des_ctr },
 	{ "des-pcbc", des_pcbc },
 	{ "des", des_cbc },
 	{ NULL, NULL }
