@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:05:16 by yforeau           #+#    #+#             */
-/*   Updated: 2022/04/12 18:13:24 by yforeau          ###   ########.fr       */
+/*   Updated: 2022/04/13 12:02:16 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 t_des_cmd	g_des_cmds[] = {
 	{ "des-ecb", des_ecb },
 	{ "des-cbc", des_cbc },
+	{ "des-cfb", des_cfb },
 	{ "des-pcbc", des_pcbc },
 	{ "des", des_cbc },
 	{ NULL, NULL }
@@ -31,6 +32,8 @@ static int	init_context(t_des_ctx *ctx, const t_command *cmd, t_cmdopt *opt)
 	cmds = g_des_cmds;
 	while (cmds->name && ft_strcmp(cmds->name, cmd->name))
 		++cmds;
+	ctx->padding = cmds->process_block == des_ecb
+		|| cmds->process_block == des_cbc || cmds->process_block == des_pcbc;
 	if ((ctx->process_block = cmds->process_block))
 		return (parse_des_options(ctx, cmd, opt));
 	return (1);
@@ -39,8 +42,7 @@ static int	init_context(t_des_ctx *ctx, const t_command *cmd, t_cmdopt *opt)
 int	cmd_des(const t_command *cmd, t_cmdopt *opt, char **args)
 {
 	t_des_ctx	ctx;
-	int			ret;
-	int			outfd;
+	int			ret, outfd, reverse;
 
 	(void)args;
 	ret = 1;
@@ -56,8 +58,12 @@ int	cmd_des(const t_command *cmd, t_cmdopt *opt, char **args)
 		return (ret);
 	if (write_salt(outfd, &ctx, opt))
 		return (ret);
+	reverse = ctx.reverse;
+	ctx.reverse = ctx.padding ? ctx.reverse : 0;
 	des_keygen(&ctx);
-	ret = opt[CC_ENCRYPT].is_set ? des_encrypt(outfd, &ctx, opt, cmd->name)
+	ctx.reverse = reverse;
+	ret = opt[CC_ENCRYPT].is_set || !ctx.padding
+		? des_encrypt(outfd, &ctx, opt, cmd->name)
 		: des_decrypt(outfd, &ctx, opt, cmd->name);
 	if (outfd > 1)
 		close(outfd);

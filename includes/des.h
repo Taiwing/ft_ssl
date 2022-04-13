@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:23:37 by yforeau           #+#    #+#             */
-/*   Updated: 2022/04/12 18:12:16 by yforeau          ###   ########.fr       */
+/*   Updated: 2022/04/13 10:22:32 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 ** process_block: block cypher encryption mode (ecb, cbc, etc...)
 ** reverse: boolean indicating if executing in decryption mode
 ** first_block: boolean set to true if is the first block (for pcbc)
+** padding: add padded bytes to encrypted output
 */
 
 typedef struct	s_des_ctx
@@ -49,6 +50,7 @@ typedef struct	s_des_ctx
 	uint64_t	(*process_block)(struct s_des_ctx *ctx);
 	int			reverse;
 	int			first_block;
+	int			padding;
 }				t_des_ctx;
 
 /*
@@ -98,6 +100,7 @@ extern const uint64_t		g_sbox[SBOX_NB][SBOX_ROW][SBOX_COL];
 
 uint64_t		des_ecb(struct s_des_ctx *ctx);
 uint64_t		des_cbc(struct s_des_ctx *ctx);
+uint64_t		des_cfb(struct s_des_ctx *ctx);
 uint64_t		des_pcbc(struct s_des_ctx *ctx);
 
 /*

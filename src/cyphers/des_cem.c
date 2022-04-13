@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 13:07:20 by yforeau           #+#    #+#             */
-/*   Updated: 2022/04/12 19:59:50 by yforeau          ###   ########.fr       */
+/*   Updated: 2022/04/13 12:04:30 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,17 @@ uint64_t	des_cbc(struct s_des_ctx *ctx)
 	}
 	else
 		ctx->iv = ctx->cyphertext;
+	return (ctx->cyphertext);
+}
+
+uint64_t	des_cfb(struct s_des_ctx *ctx)
+{
+	uint64_t	plaintext = ctx->plaintext;
+
+	ctx->plaintext = ctx->iv;
+	ctx->cyphertext = des(ctx);
+	ctx->cyphertext ^= plaintext;
+	ctx->iv = ctx->reverse ? plaintext : ctx->cyphertext;
 	return (ctx->cyphertext);
 }
 

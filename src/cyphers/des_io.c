@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 23:58:22 by yforeau           #+#    #+#             */
-/*   Updated: 2021/04/13 13:12:05 by yforeau          ###   ########.fr       */
+/*   Updated: 2022/04/13 10:39:58 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,15 @@ int	des_decrypt(int outfd, t_des_ctx *ctx, t_cmdopt *opt, const char *cmd)
 	wr = 1;
 	prev = NULL;
 	while (wr >= 0 && (rd = des_readfile(opt[CC_INPUT].value,
-		(char *)&ctx->plaintext, sizeof(uint64_t), opt)) == sizeof(uint64_t))
+		(char *)&ctx->plaintext, sizeof(uint64_t), opt)) > 0
+		&& (!ctx->padding || rd == sizeof(uint64_t)))
 	{
 		if (prev)
 			wr = des_writefile(outfd, prev, sizeof(uint64_t), opt);
 		prev = (char *)&block;
 		block = exec_cypher(ctx);
 	}
-	if (rd > 0 && rd < (int)sizeof(uint64_t))
+	if (rd > 0 && rd < (int)sizeof(uint64_t) && ctx->padding)
 		return (!!ft_dprintf(2, "\nft_ssl: %s: error: incomplete %u bytes"
 			" input block\n", cmd, sizeof(uint64_t)));
 	if (!rd && wr >= 0 && prev && (last = prev[sizeof(uint64_t) - 1])
@@ -86,7 +87,8 @@ int	des_encrypt(int outfd, t_des_ctx *ctx, t_cmdopt *opt, const char *cmd)
 		if ((c = sizeof(uint64_t) - rd))
 			ft_memset((void *)&ctx->plaintext + rd, c, c);
 		block = exec_cypher(ctx);
-		wr = des_writefile(outfd, (char *)&block, sizeof(uint64_t), opt);
+		wr = des_writefile(outfd, (char *)&block,
+			ctx->padding ? sizeof(uint64_t) : (size_t)rd, opt);
 	}
 	if (rd >= 0 && wr >= 0 && opt[CC_BASE64].is_set)
 		return (base64_writefile(outfd, NULL, 0, 1));
