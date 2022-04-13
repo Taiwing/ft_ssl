@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 11:23:37 by yforeau           #+#    #+#             */
-/*   Updated: 2022/04/13 10:22:32 by yforeau          ###   ########.fr       */
+/*   Updated: 2022/04/13 15:47:15 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ extern const uint64_t		g_sbox[SBOX_NB][SBOX_ROW][SBOX_COL];
 uint64_t		des_ecb(struct s_des_ctx *ctx);
 uint64_t		des_cbc(struct s_des_ctx *ctx);
 uint64_t		des_cfb(struct s_des_ctx *ctx);
+uint64_t		des_ofb(struct s_des_ctx *ctx);
 uint64_t		des_pcbc(struct s_des_ctx *ctx);
 
 /*
