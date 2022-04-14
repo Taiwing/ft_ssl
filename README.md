@@ -71,3 +71,39 @@ Usage: sha256 [options] [file...]
 ./ft_ssl sha256 -q -s 'Hello sha256!'
 # prints --> 5b83d7b46ad7678f9fdd416309e9ff324edb30e424a409f751ebe39c313b05c5
 ```
+
+## Cipher commands
+
+These commands perform encryption/decryption and encoding/decoding functions.
+They take an arbitrary long input and return encoded/crypted data. The input
+can be retrieved by performing the inverse operation on the output.
+
+### base64
+
+This is an encoding scheme that simply takes binary data and represents it in
+a 65 characters format. Each character encodes 6bits of data. So the input is
+encoded 3 bytes at a time wich is 3 * 8 = 24 bits of data and 24 / 6 = 4
+base64 characters. The first 64 characters in the set are the digits in base
+base 64, like '0123456789abcdef' are the digits in base 16, and the last one
+is the '=' sign with is only there to pad the output to make sure its length
+is a multiple of 4.
+
+> The valid base64 digits for this program are (from 0 to 63):
+> ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
+
+```
+Usage: base64 [options]
+	-d			decode mode
+	-e			encode mode (default)
+	-i file			input file
+	-o file			output file
+	-help			print this
+```
+
+#### example:
+
+```shell
+# turn stdin data to base64
+echo 'toto' | ./ft_ssl base64 -e
+# prints --> dG90bwo=
+```
