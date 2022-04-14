@@ -80,12 +80,12 @@ can be retrieved by performing the inverse operation on the output.
 
 ### base64
 
-This is an encoding scheme that simply takes binary data and represents it in
-a 65 characters format. Each character encodes 6bits of data. So the input is
-encoded 3 bytes at a time wich is 3 * 8 = 24 bits of data and 24 / 6 = 4
+This is an encoding scheme that simply takes binary data to represent it in a
+65 characters format. Each character encodes 6bits of data. So the input is
+encoded 3 bytes at a time wich is 3 * 8 = 24 bits of data for 24 / 6 = 4
 base64 characters. The first 64 characters in the set are the digits in base
 base 64, like '0123456789abcdef' are the digits in base 16, and the last one
-is the '=' sign with is only there to pad the output to make sure its length
+is the '=' sign wich is only there to pad the output to make sure its length
 is a multiple of 4.
 
 ```
