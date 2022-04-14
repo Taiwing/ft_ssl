@@ -88,7 +88,7 @@ base 64, like '0123456789abcdef' are the digits in base 16, and the last one
 is the '=' sign with is only there to pad the output to make sure its length
 is a multiple of 4.
 
-> The valid base64 digits for this program are (from 0 to 63):
+The valid base64 digits for this program are (from 0 to 63):
 > ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/
 
 ```
