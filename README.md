@@ -107,3 +107,9 @@ The valid base64 digits for this program are (from 0 to 63):
 echo 'toto' | ./ft_ssl base64 -e
 # prints --> dG90bwo=
 ```
+
+### des
+
+DES (for 'Data Encryption System') is symmetric-key cipher for encrypting data.
+A key is provided or generated at start. This key will be used for encryption
+and decryption of the input data.
