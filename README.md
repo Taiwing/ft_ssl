@@ -112,4 +112,35 @@ echo 'toto' | ./ft_ssl base64 -e
 
 DES (for 'Data Encryption System') is symmetric-key cipher for encrypting data.
 A key is provided or generated at start. This key will be used for encryption
-and decryption of the input data.
+and decryption of the input data. As for the md commands the input is handled
+block per block. Each block is 8 bytes long and is processed via a specific
+process block function. That's actually the only difference between the each
+version of des included in this program. Running `./ft_ssl des` is equivalent to
+`./ft_ssl des-cbc`.
+
+```
+Usage: des [options]
+	-a		decode/encode in base64 depending on the encrypt mode
+	-d		decrypt mode
+	-e		encypt mode (default)
+	-i file		input file for message
+	-k val		key in hex is the next arguement
+	-o file		output file for message
+	-p val		password in ascii is the next argument
+	-s val		the salt in hex is the next argument
+	-v val		initialization vector in hex is the next argument
+	-help		print this
+```
+
+#### password option:
+
+```shell
+# data to be encrypted
+echo 'toto' > clear_text_file
+# encryption with des
+./ft_ssl des -p 'verySecurePassword' -i clear_text_file -o encrypted_file
+# decryption with des
+./ft_ssl des -d -p 'verySecurePassword' -i encrypted_file -o decrypted_file
+# diff shows no difference
+diff clear_text_file decrypted_file
+```
