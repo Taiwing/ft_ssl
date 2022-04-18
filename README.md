@@ -108,7 +108,7 @@ echo 'toto' | ./ft_ssl base64 -e
 # prints --> dG90bwo=
 ```
 
-### DES
+### des
 
 DES (for 'Data Encryption System') is symmetric-key cipher for encrypting data.
 A key is provided or generated at start. This key will be used for encryption
