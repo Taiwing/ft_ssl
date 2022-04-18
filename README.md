@@ -155,7 +155,8 @@ diff clear_text_file decrypted_file
 This skips the key generation step by directly giving the key to the des
 algorithm. Since there is no password no salt is generated. The output is simply
 the cypher text. An initialization vector can and should be provided for every
-process block mode other than ecb (cbc is the default). It will be 0 by default.
+process block mode other than ecb (cbc is the default). It will be set to 0
+otherwise.
 
 ```shell
 # data to be encrypted
