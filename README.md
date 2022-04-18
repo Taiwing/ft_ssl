@@ -185,21 +185,9 @@ An RSA private key is generated as follows:
 The public key will only hold _n_ and _e_, whereas the private key will also
 contain _p_ , _q_ and _d_ which is used for decryption.
 
-Encryption:
-![encryption](https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-encryption-equation.svg?raw=true)
-
-<div style="width:50%">
-![cipher = message ^ e mod n](https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-encryption-equation.svg?raw=true#gh-dark-mode-only)
-</div>
-![cipher = message ^ e mod n](https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-encryption-equation.svg?raw=true#gh-light-mode-only)
-
-<p align="center" style="background-color: white !important;">
-  <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-encryption-equation.svg?raw=true" alt="ciphertext = message ^ e mod n" style="width: 50%;"/>
-</p>
-<p align="center" style="background-color: white !important;">
-  <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-encryption-equation.svg?raw=true#gh-light-mode-only" alt="ciphertext = message ^ e mod n" style="width: 100%;"/>
-</p>
-
+Encryption: 
+![cipher = message ^ e mod n](https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-encryption-equation-dark.svg?raw=true#gh-dark-mode-only){: height=50%, width=50% }
+![cipher = message ^ e mod n](https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-encryption-equation-light.svg?raw=true#gh-light-mode-only)
 
 Decryption:
 <p align="center" style="background-color: white;">
