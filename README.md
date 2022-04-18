@@ -216,6 +216,12 @@ Usage: genrsa [options] [keysize]
 	will be equal to 64 if it is not given.
 ```
 
+> This command can only generate up to 64 bit rsa keys because of the Miller
+> Rabin algorithm. To test the primality of a number modular exponentiation
+> needs to be executed many times. This computation itself is basically a
+> division loop on big numbers. This can be done fairly fast with C's native
+> integer types but it's harder to do with arbitrarily long integers (big ints).
+
 #### example:
 
 ```shell
@@ -281,6 +287,9 @@ Manually modify the output key:
 	-coeff	hex		set coefficient
 ```
 
+> This command can handle keys of any size because no hard computation is
+> required on the input it is given.
+
 #### generate a public key from a private key:
 
 ```shell
@@ -345,3 +354,7 @@ Exponent: 65537 (0x10001)
 ./ft_ssl rsa -in new-key.priv -check -noout
 # prints --> RSA key error: n does not equal p q
 ```
+
+### rsautl
+
+Use rsa keys to encrypt and decrypt data.
