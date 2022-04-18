@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/11 15:11:34 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/18 22:39:24 by yforeau          ###   ########.fr       */
+/*   Updated: 2022/04/18 21:26:26 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ static int	parse_options(const t_command *cmd, t_cmdopt *opt,
 	if (parse_rsa_key(key, cmd->name, &gk))
 		return (!!ft_dprintf(2, "ft_ssl: %s: unable to load %s Key\n",
 			cmd->name, key->is_pub ? "Public" : "Private"));
+	else if (key->size > RSA_KEY_SIZE_MAX)
+		return (!!ft_dprintf(2, "ft_ssl: %s: key too big (max is %d)\n",
+			cmd->name, RSA_KEY_SIZE_MAX));
 	if (opt[RSAUTL_OUT].is_set)
 		*outfd = output_option(opt[RSAUTL_OUT].value, cmd->name);
 	return (*outfd < 0);
