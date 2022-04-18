@@ -186,7 +186,7 @@ The public key will only hold _n_ and _e_, whereas the private key will also
 contain _p_ , _q_ and _d_ which is used for decryption.
 
 Encryption:
-$$cyphertext = message^e mod n$$
+![\Large cyphertext=message^e mod n](https://latex.codecogs.com/svg.latex?\Large&space;cyphertext=message^e\%20mod\%20n)
 
 Decryption:
-$$message = $cyphertext^d$ mod n$$
+![\Large message=cyphertext^d mod n](https://latex.codecogs.com/svg.latex?\Large&space;message=cyphertext^d\%20mod\%20n)
