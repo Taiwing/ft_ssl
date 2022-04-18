@@ -169,7 +169,7 @@ echo 'super secret stuff' > clear_text_file
 diff clear_text_file decrypted_file
 ```
 
-### rsa
+### RSA
 
 RSA is a public-key cryptosystem. The public key is used to encrypt messages and
 can be freely shared whereas the private key is used for decryption and is
@@ -186,7 +186,7 @@ The public key will only hold _n_ and _e_, whereas the private key will also
 contain _p_ , _q_ and _d_ which is used for decryption.
 
 Encryption:
-> cyphertext = $message^e$ mod n
+$$cyphertext = message^e mod n$$
 
 Decryption:
-> message = $cyphertext^d$ mod n
+$$message = $cyphertext^d$ mod n$$
