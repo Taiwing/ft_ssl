@@ -185,9 +185,9 @@ An RSA private key is generated as follows:
 The public key will only hold _n_ and _e_, whereas the private key will also
 contain _p_ , _q_ and _d_ which is used for decryption.
 
-Encryption:
+Encryption:  
 <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-encryption-equation-light.png?raw=true" alt="cipher" style="width: 50%;"/>
 
-Decryption:
+Decryption:  
 <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-decryption-equation-light.png?raw=true" alt="cipher" style="width: 50%;"/>
 
