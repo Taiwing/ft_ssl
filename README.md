@@ -304,3 +304,31 @@ key.pub:
 MCQwDQYJKoZIhvcNAQEBBQADEwAwEAIJAJh3uoO745NrAgMBAAE=
 -----END PUBLIC KEY-----
 ```
+
+#### change a key's modulus:
+
+```shell
+# set key.pub modulus to 1234abcd
+./ft_ssl rsa -in key.pub -pubin -n '1234abcd' -out new-key.pub
+```
+
+new-key.pub:
+```
+-----BEGIN PUBLIC KEY-----
+MB8wDQYJKoZIhvcNAQEBBQADDgAwCwIEEjSrzQIDAQAB
+-----END PUBLIC KEY-----
+```
+
+#### show a key in textual format:
+
+```shell
+# print new-key.pub in clear text
+./ft_ssl rsa -in new-key.pub -pubin -text -noout
+```
+
+output:
+```
+RSA Public-Key: (29 bit)
+Modulus: 305441741 (0x1234abcd)
+Exponent: 65537 (0x10001)
+```
