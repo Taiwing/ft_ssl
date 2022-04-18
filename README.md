@@ -288,7 +288,8 @@ Manually modify the output key:
 ```
 
 > This command can handle keys of any size because no hard computation is
-> required on the input it is given.
+> required on the input it is given. Except for the -check option wich only
+> takes keys up to 64 bit (for the same reason as genrsa).
 
 #### generate a public key from a private key:
 
