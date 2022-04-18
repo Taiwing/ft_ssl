@@ -220,7 +220,7 @@ Usage: genrsa [options] [keysize]
 
 ```shell
 # generate a 64-bit key
-./ft_ssl genrsa -o key.priv
+./ft_ssl genrsa
 ```
 
 possible output:
