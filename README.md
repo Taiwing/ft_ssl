@@ -357,4 +357,28 @@ Exponent: 65537 (0x10001)
 
 ### rsautl
 
-Use rsa keys to encrypt and decrypt data.
+Use rsa keys to encrypt and decrypt data. This actually applies the encryption
+and decryption formulas on the input it is given. Data can be encrypted with a
+public or a private key but can only be decrypted with a private key.
+
+```
+Usage: rsautl [options]
+	-in file		input file
+	-out file		output file
+	-inkey val		input key
+	-pubin			input is an RSA public
+	-encrypt		encrypt with public key
+	-decrypt		decrypt with private key
+	-hexdump		hex dump output
+	-raw			no padding (already default)
+	-passin val		input file pass phrase source
+	-help			print this
+```
+
+> This command can handle keys up to 1024 bits. Decryption gets pretty slow from
+> there and it only gets longer and harder after that. Also it does not support
+> any padding scheme because it mostly deals with 64 bit keys for which padding
+> cannot be implemented (the padding overhead is actually bigger than the data
+> it can handle). So input data needs to be rigorously equal in length to the
+> key in bytes (ex: 1024/8=128 bytes for a 1024 bit key) and also be less than
+> the modulus of the key value-wise (it would get cropped otherwise).
