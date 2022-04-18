@@ -238,3 +238,69 @@ lfb5kQIFAMAPUFECBQDeSP0E
 > Do not actually use this key for anything ever. A 64-bit key is really weak by
 > today standards. Any information encrypted with it can be retrieved without
 > direct access to the private key.
+
+### rsa
+
+This command handles public and private key edition. It can modify the input
+key, encrypt it and add a password or generate a public key from a private key.
+It can also simply print the key in a textual format.
+
+```
+Usage: rsa [options]
+	-inform val		input format - PEM (already default)
+	-outform val		output format - PEM (already default)
+	-in file		input file
+	-passin val		input file pass phrase source
+	-out file		output file
+	-passout val		output file pass phrase source
+	-des			use des as a cypher
+	-text			print the key in text
+	-noout			don't print key out
+	-modulus		print the RSA key modulus
+	-check			verify key consistency
+	-pubin			expect a public key in input file
+	-pubout			output a public key
+	-help			print this
+
+Manually modify the output key:
+
+	These options allow the user to set arbirary values
+	for the output key. This works with private and public
+	keys. However it will not have any effect to modify
+	a private key only value for a public key output.
+	Values are in hexadecimal without prefix and case
+	agnostic (example: F86cE09dDe).
+
+	-n	hex		set modulus
+	-e	hex		set public exponent
+	-d	hex		set private exponent
+	-p	hex		set first prime
+	-q	hex		set second prime
+	-exp1	hex		set exponent1
+	-exp2	hex		set exponent2
+	-coeff	hex		set coefficient
+```
+
+#### generate a public key from a private key:
+
+```shell
+# create a private key
+./ft_ssl genrsa -o key.priv
+# generate its public key
+./ft_ssl rsa -in key.priv -pubout -out key.pub
+```
+
+key.priv:
+```
+-----BEGIN RSA PRIVATE KEY-----
+MD4CAQACCQCYd7qDu+OTawIDAQABAggjxNr1lhDkaQIFAMrBDJ8CBQDAgfm1AgQz
+I7IdAgUAn9aLjQIEd0vWNg==
+-----END RSA PRIVATE KEY-----
+```
+
+key.pub:
+```
+-----BEGIN PUBLIC KEY-----
+MCQwDQYJKoZIhvcNAQEBBQADEwAwEAIJAJh3uoO745NrAgMBAAE=
+-----END PUBLIC KEY-----
+```
