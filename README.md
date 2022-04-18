@@ -169,7 +169,7 @@ echo 'super secret stuff' > clear_text_file
 diff clear_text_file decrypted_file
 ```
 
-### RSA
+## Standard commands (RSA)
 
 RSA is a public-key cryptosystem. The public key is used to encrypt messages and
 can be freely shared whereas the private key is used for decryption and is
@@ -195,3 +195,42 @@ contain _p_ , _q_ and _d_ which is used for decryption.
   <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-decryption-equation-light.png?raw=true" alt="cipher" style="width: 50%;"/>
 </p>
 
+### genrsa
+
+Generate an rsa private key from random primes. The key can be of arbitrary size
+from 3 to 64 (inclusive) and defaults to 64. The prime numbers are found with
+the Miller-Rabin algorithm. This applies a pre-defined number of tests to a
+randomly selected integer to probabilistically check if it is prime. The key can
+be password protected if needed.
+
+```
+Usage: genrsa [options] [keysize]
+	-i file		load the file into the random number generator
+	-o file		output the key to specified file
+	-des		encrypt the output with DES-CBC
+	-passout val	output file pass phrase source
+	-help		print this
+
+	keysize: The length in bits of the key to be generated.
+	Every value from 3 to 64 (inclusive) is valid. keysize
+	will be equal to 64 if it is not given.
+```
+
+#### example:
+
+```shell
+# generate a 64-bit key
+./ft_ssl genrsa -o key.priv
+```
+
+possible output:
+```
+Generating RSA private key, 64 bit long modulus (2 primes)
+..++++++++++++
+..............++++++++++++
+e is 65537 (0x010001)
+-----BEGIN RSA PRIVATE KEY-----
+MEACAQACCQDHoWnL4oGI/QIDAQABAghMszvOJzpBAQIFAP6jLFECBQDIsuLtAgUA
+lfb5kQIFAMAPUFECBQDeSP0E
+-----END RSA PRIVATE KEY-----
+```
