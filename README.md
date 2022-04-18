@@ -149,3 +149,21 @@ echo 'toto' > clear_text_file
 # diff shows no difference
 diff clear_text_file decrypted_file
 ```
+
+#### key option:
+
+This skips the key generation step by directly giving the key to the des
+algorithm. Since there is no password no salt is generated. The output is simply
+the cypher text. An initialization vector can and should be provided for every
+process block mode other than ecb (cbc is the default). It will be 0 by default.
+
+```shell
+# data to be encrypted
+echo 'super secret stuff' > clear_text_file
+# encryption with des
+./ft_ssl des -k 'C0FFEE' -v '1234ABCD' -i clear_text_file -o encrypted_file
+# decryption with des
+./ft_ssl des -d -k 'C0FFEE' -v '1234ABCD' -i encrypted_file -o decrypted_file
+# diff shows no difference
+diff clear_text_file decrypted_file
+```
