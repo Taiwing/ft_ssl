@@ -332,3 +332,16 @@ RSA Public-Key: (29 bit)
 Modulus: 305441741 (0x1234abcd)
 Exponent: 65537 (0x10001)
 ```
+
+#### check private key:
+
+```shell
+# check key.priv
+./ft_ssl rsa -in key.priv -check -noout
+# prints --> RSA key ok
+# set key.priv modulus to 1234abcd
+./ft_ssl rsa -in key.priv -n '1234abcd' -out new-key.priv
+# check new-key.priv
+./ft_ssl rsa -in new-key.priv -check -noout
+# prints --> RSA key error: n does not equal p q
+```
