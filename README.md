@@ -382,3 +382,15 @@ Usage: rsautl [options]
 > it can handle). So input data needs to be rigorously equal in length to the
 > key in bytes (ex: 1024/8=128 bytes for a 1024 bit key) and also be less than
 > the modulus of the key value-wise (it would get cropped otherwise).
+
+#### encrypt and decrypt data:
+
+```shell
+# create an 8 byte long input file
+echo 'abcd123' > plaintext
+# encrypt it with a 64 bit key
+./ft_ssl rsautl -in plaintext -pubin -inkey key.pub -encrypt -o ciphertext
+# decrypt with the private key
+./ft_ssl rsautl -in ciphertext -inkey key.priv -decrypt
+# prints --> abcd123
+```
