@@ -186,12 +186,12 @@ The public key will only hold _n_ and _e_, whereas the private key will also
 contain _p_ , _q_ and _d_ which is used for decryption.
 
 #### Encryption:
-<p align="center">
+<p align="center" style="padding: 10%; background-color: white;">
   <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-encryption-equation-light.png?raw=true" alt="cipher" style="width: 50%;"/>
 </p>
 
 #### Decryption:
-<p align="center">
+<p align="center" style="padding: 10%; background-color: white;">
   <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-decryption-equation-light.png?raw=true" alt="cipher" style="width: 50%;"/>
 </p>
 
