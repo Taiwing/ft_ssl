@@ -196,6 +196,10 @@ Encryption:
 <p align="center" style="background-color: white !important;">
   <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-encryption-equation.svg?raw=true" alt="ciphertext = message ^ e mod n" style="width: 50%;"/>
 </p>
+<p align="center" style="background-color: white !important;">
+  <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-encryption-equation.svg?raw=true#gh-light-mode-only" alt="ciphertext = message ^ e mod n" style="width: 100%;"/>
+</p>
+
 
 Decryption:
 <p align="center" style="background-color: white;">
