@@ -108,14 +108,14 @@ echo 'toto' | ./ft_ssl base64 -e
 # prints --> dG90bwo=
 ```
 
-### des
+### DES
 
 DES (for 'Data Encryption System') is symmetric-key cipher for encrypting data.
 A key is provided or generated at start. This key will be used for encryption
 and decryption of the input data. As for the md commands the input is handled
 block per block. Each block is 8 bytes long and is processed via a specific
 process block function. That's actually the only difference between the each
-version of des included in this program. Running `./ft_ssl des` is equivalent to
+version of DES included in this program. Running `./ft_ssl des` is equivalent to
 `./ft_ssl des-cbc`.
 
 ```
@@ -134,17 +134,17 @@ Usage: des [options]
 
 #### password option:
 
-Encrypt with des by providing a password. A salt is generated if none is given.
+Encrypt with DES by providing a password. A salt is generated if none is given.
 The password string is appended to it and a 56bit key (64bit if counting parity
-bits) is generated for the des algorithm. The salt is prepended to the cypher
-text (the output of des) so only the password is required for decryption.
+bits) is generated for the DES algorithm. The salt is prepended to the cypher
+text (the output of DES) so only the password is required for decryption.
 
 ```shell
 # data to be encrypted
 echo 'toto' > clear_text_file
-# encryption with des
+# encryption with DES
 ./ft_ssl des -p 'verySecurePassword' -i clear_text_file -o encrypted_file
-# decryption with des
+# decryption with DES
 ./ft_ssl des -d -p 'verySecurePassword' -i encrypted_file -o decrypted_file
 # diff shows no difference
 diff clear_text_file decrypted_file
@@ -152,7 +152,7 @@ diff clear_text_file decrypted_file
 
 #### key option:
 
-This skips the key generation step by directly giving the key to the des
+This skips the key generation step by directly giving the key to the DES
 algorithm. Since there is no password no salt is generated. The output is simply
 the cypher text. An initialization vector can and should be provided for every
 process block mode other than ecb (cbc is the default). It will be set to 0
@@ -161,10 +161,32 @@ otherwise.
 ```shell
 # data to be encrypted
 echo 'super secret stuff' > clear_text_file
-# encryption with des
+# encryption with DES
 ./ft_ssl des -k 'C0FFEE' -v '1234ABCD' -i clear_text_file -o encrypted_file
-# decryption with des
+# decryption with DES
 ./ft_ssl des -d -k 'C0FFEE' -v '1234ABCD' -i encrypted_file -o decrypted_file
 # diff shows no difference
 diff clear_text_file decrypted_file
 ```
+
+### rsa
+
+RSA is a public-key cryptosystem. The public key is used to encrypt messages and
+can be freely shared whereas the private key is used for decryption and is
+supposed to stay secret. The security of the RSA system is based on how
+difficult it is to factor the product of two big prime numbers.
+
+An RSA private key is generated as follows:
+* select a public exponent _e_ that will be used for decryption
+* generate two prime numbers _p_ and _q_
+* multiply them to compute the modulus _n_
+* compute the private exponent _d_ from _p_, _q_ and _e_
+
+The public key will only hold _n_ and _e_, whereas the private key will also
+contain _p_ , _q_ and _d_ which is used for decryption.
+
+Encryption:
+> cyphertext = $message^e$ mod n
+
+Decryption:
+> message = $cyphertext^d$ mod n
