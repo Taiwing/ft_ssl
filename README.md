@@ -134,6 +134,11 @@ Usage: des [options]
 
 #### password option:
 
+Encrypt with des by providing a password. A salt is generated if none is given.
+The password string is appended to it and a 56bit key (64bit if counting parity
+bits) is generated for the des algorithm. The salt is prepended to the cypher
+text (the output of des) so only the password is required for decryption.
+
 ```shell
 # data to be encrypted
 echo 'toto' > clear_text_file
