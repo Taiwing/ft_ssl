@@ -6,7 +6,7 @@
 /*   By: yforeau <yforeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 10:20:12 by yforeau           #+#    #+#             */
-/*   Updated: 2021/08/18 22:11:17 by yforeau          ###   ########.fr       */
+/*   Updated: 2022/04/18 10:04:30 by yforeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,10 +131,7 @@ int				parse_des_options(t_des_ctx *ctx, const t_command *cmd,
 	opt[CC_ENCRYPT].is_set = !opt[CC_DECRYPT].is_set
 		|| opt[CC_DECRYPT].ind < opt[CC_ENCRYPT].ind;
 	ctx->reverse = !opt[CC_ENCRYPT].is_set;
-	if (ctx->process_block == des_cbc && opt[CC_KEY].is_set
-		&& !opt[CC_INIT_VECTOR].is_set)
-		return (!!ft_dprintf(2, "ft_ssl: %s: iv undefined\n", cmd->name));
-	else if (opt[CC_INIT_VECTOR].is_set
+	if (opt[CC_INIT_VECTOR].is_set
 		&& parse_hex_64(&ctx->iv, opt[CC_INIT_VECTOR].value, cmd->name))
 		return (1);
 	if (opt[CC_KEY].is_set)
