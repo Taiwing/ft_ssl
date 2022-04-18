@@ -234,3 +234,7 @@ MEACAQACCQDHoWnL4oGI/QIDAQABAghMszvOJzpBAQIFAP6jLFECBQDIsuLtAgUA
 lfb5kQIFAMAPUFECBQDeSP0E
 -----END RSA PRIVATE KEY-----
 ```
+
+> Do not actually use this key for anything ever. A 64-bit key is really weak by
+> today standards. Any information encrypted with it can be retrieved without
+> direct access to the private key.
