@@ -187,11 +187,11 @@ contain _p_ , _q_ and _d_ which is used for decryption.
 
 Encryption:
 <p align="center">
-  <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-encryption-equation-dark.png?raw=true" alt="cipher" style="width: 50%;"/>
+  <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-encryption-equation-light.png?raw=true" alt="cipher" style="width: 50%;"/>
 </p>
 
 Decryption:
 <p align="center">
-  <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-decryption-equation-dark.png?raw=true" alt="cipher" style="width: 50%;"/>
+  <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-decryption-equation-light.png?raw=true" alt="cipher" style="width: 50%;"/>
 </p>
 
