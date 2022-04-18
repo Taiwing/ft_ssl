@@ -186,7 +186,7 @@ The public key will only hold _n_ and _e_, whereas the private key will also
 contain _p_ , _q_ and _d_ which is used for decryption.
 
 Encryption:
-![cipher = message ^ e mod n|50%](https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-encryption-equation.svg?raw=true)
+![encryption|50%](https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-encryption-equation.svg?raw=true)
 
 ![cipher = message ^ e mod n](https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-encryption-equation.svg?raw=true#gh-dark-mode-only)
 
