@@ -185,11 +185,13 @@ An RSA private key is generated as follows:
 The public key will only hold _n_ and _e_, whereas the private key will also
 contain _p_ , _q_ and _d_ which is used for decryption.
 
-Encryption: 
-![cipher = message ^ e mod n](https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-encryption-equation-dark.svg?raw=true#gh-dark-mode-only){: height=50%, width=50% }
-![cipher = message ^ e mod n](https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-encryption-equation-light.svg?raw=true#gh-light-mode-only)
+Encryption:
+<p align="center">
+  <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-encryption-equation-dark.png?raw=true" alt="cipher" style="width: 50%;"/>
+</p>
 
 Decryption:
-<p align="center" style="background-color: white;">
-  <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-decryption-equation.svg?raw=true" alt="message = ciphertext ^ d mod n" style="width: 50%;"/>
+<p align="center">
+  <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-decryption-equation-dark.png?raw=true" alt="cipher" style="width: 50%;"/>
 </p>
+
