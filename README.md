@@ -1,7 +1,7 @@
 # ft\_ssl
 
 This program implements functions related to cryptographic security. It takes
-data, it hashes it, passes it through a cypher or an encoding function and
+data, it hashes it, passes it through a cipher or an encoding function and
 returns the result.
 
 <br />
@@ -136,7 +136,7 @@ Usage: des [options]
 
 Encrypt with DES by providing a password. A salt is generated if none is given.
 The password string is appended to it and a 56bit key (64bit if counting parity
-bits) is generated for the DES algorithm. The salt is prepended to the cypher
+bits) is generated for the DES algorithm. The salt is prepended to the cipher
 text (the output of DES) so only the password is required for decryption.
 
 ```shell
@@ -154,7 +154,7 @@ diff clear_text_file decrypted_file
 
 This skips the key generation step by directly giving the key to the DES
 algorithm. Since there is no password no salt is generated. The output is simply
-the cypher text. An initialization vector can and should be provided for every
+the cipher text. An initialization vector can and should be provided for every
 process block mode other than ecb (cbc is the default). It will be set to 0
 otherwise.
 
@@ -186,7 +186,11 @@ The public key will only hold _n_ and _e_, whereas the private key will also
 contain _p_ , _q_ and _d_ which is used for decryption.
 
 Encryption:
-![\Large cyphertext=message^e\ mod\ n](https://latex.codecogs.com/svg.latex?\Large&space;cyphertext=message^e\%20mod\%20n)
+<p align="center">
+  <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-encryption-equation.jpg?raw=true" alt="ciphertext = message ^ e mod n" style="width: 50%;"/>
+</p>
 
 Decryption:
-![\Large message=cyphertext^d\ mod\ n](https://latex.codecogs.com/svg.latex?\Large&space;message=cyphertext^d\%20mod\%20n)
+<p align="center">
+  <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-decryption-equation.jpg?raw=true" alt="message = ciphertext ^ d mod n" style="width: 50%;"/>
+</p>
