@@ -195,6 +195,19 @@ contain _p_ , _q_ and _d_ which is used for decryption.
   <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-decryption-equation-light.png?raw=true" alt="cipher" style="width: 50%;"/>
 </p>
 
+An important part of the RSA cryptosytem is the prime numbers generator. It
+randomly selects an odd number _n_ which is our potential prime. Then it applies
+the Miller-Rabin test algorithm _k_ number of times (_k_ being an arbitrary
+pre-selected constant). The test verifies some mathematical properties on _n_.
+It computes an odd factor _d_ which satisfies this formula `n = 2^s * d`. It
+selects a random integer _a_ which is called the 'base'. From there, it computes
+`x = a^d % n`. If _x_ == _n_-1 or _x_ == 1, then the base _a_ is said to be a
+strong probable prime to n. Otherwise _a_ is a Miller witness, which means that
+_n_ cannot be prime. This test is probabilistic because it can't say that _n_ is
+prime with 100% certainty, it checks how improbable it is to be composite. This
+is because deterministic tests are really expensive to perform, especially for
+big numbers which is how the RSA cryptosystem should be used.
+
 ### genrsa
 
 Generate an rsa private key from random primes. The key can be of arbitrary size
