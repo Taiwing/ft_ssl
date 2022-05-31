@@ -186,14 +186,10 @@ The public key will only hold _n_ and _e_, whereas the private key will also
 contain _p_ , _q_ and _d_ which is used for decryption.
 
 #### Encryption:
-<p align="center">
-  <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-encryption-equation-light.png?raw=true" alt="cipher" style="width: 50%;"/>
-</p>
+$$ciphertext = message^e \pmod n$$
 
 #### Decryption:
-<p align="center">
-  <img src="https://github.com/Taiwing/ft_ssl/blob/master/resources/rsa-decryption-equation-light.png?raw=true" alt="cipher" style="width: 50%;"/>
-</p>
+$$message = ciphertext^d \pmod n$$
 
 An important part of the RSA cryptosytem is the prime numbers generator. It
 randomly selects an odd number _n_ which is our potential prime. Then it applies
