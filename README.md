@@ -191,6 +191,8 @@ $$ciphertext \equiv message^e \pmod n$$
 #### Decryption:
 $$message \equiv ciphertext^d \pmod n$$
 
+<br />
+
 An important part of the RSA cryptosytem is the prime numbers generator. It
 randomly selects an odd number _n_ which is our potential prime. Then it applies
 the Miller-Rabin test algorithm _k_ number of times (_k_ being an arbitrary
